@@ -10,30 +10,44 @@ import glob
 import pprint
 import sys
 
-if len(sys.argv)==2:
-  mod_dir = sys.argv[1]
-elif len(sys.argv)==1:
-  s = raw_input("Please enter MOD DIR [" + mod_dir + "] ")
-  if s: mod_dir = s
+
+def main():
+  mod_dir = ''
+  if len(sys.argv)==2:
+    mod_dir = sys.argv[1]
+  elif len(sys.argv)==1:
+    s = raw_input("Please enter MOD DIR [" + mod_dir + "] ")
+    if s: mod_dir = s
+
+  for mod_file in glob.glob(os.path.join(mod_dir, "*.mod")):
+    print "****************************************************"
+    print "***** Process file ", mod_file
+    print "****************************************************"
+    pretty_dir = os.path.join(
+      os.path.dirname(mod_file)
+      , os.path.basename(mod_file) + ".pretty")
+    convertModToPretty(mod_file, pretty_dir)
+    print "Result can be find in ", pretty_dir
+
 
 mod_Unit = 2.54e-3 # Assume default in is in 0.1mil/count
 
-layerDic = { \
-    0  : 'B.Cu', \
-    15 : 'F.Cu', \
-    16 : 'B.Adhes',  \
-    17 : 'F.Adhes', \
-    18 : 'B.Paste', \
-    19 : 'F.Paste', \
-    20 : 'B.SilkS', \
-    21 : 'F.SilkS', \
-    22 : 'B.Mask', \
-    23 : 'F.Mask', \
-    24 : 'Dwgs.User', \
-    25 : 'Cmts.User', \
-    26 : 'Eco1.User', \
-    27 : 'Eco2.User', \
-    28 : 'Edge.Cuts', \
+layerDic = {
+    0  : 'B.Cu',
+    15 : 'F.Cu',
+    16 : 'B.Adhes',
+    17 : 'F.Adhes',
+    18 : 'B.Paste',
+    19 : 'F.Paste',
+    20 : 'B.SilkS',
+    21 : 'F.SilkS',
+    22 : 'B.Mask',
+    23 : 'F.Mask',
+    24 : 'Dwgs.User',
+    25 : 'Cmts.User',
+    26 : 'Eco1.User',
+    27 : 'Eco2.User',
+    28 : 'Edge.Cuts',
 }
 
 def getLayers(bitMask, testMask=0xFFFFFFFF):
@@ -44,7 +58,7 @@ def getLayers(bitMask, testMask=0xFFFFFFFF):
         if (bitMask & 0x1)!=0:
             if i in layerDic:
                 layers.append(layerDic[i])
-        bitMask = bitMask >> 1;
+        bitMask = bitMask >> 1
         i = i + 1
     return ' '.join(layers)
     
@@ -92,7 +106,7 @@ def convertModToPretty(mod_file, pretty_dir):
     for line in open(mod_file):
         # Process a line
         lineCnt = lineCnt + 1
-        items = line.replace('\n','').split(' ');
+        items = line.replace('\n','').split(' ')
         
         # Generate pretty file here
         if items[0].startswith('$EndMODULE'):
@@ -123,15 +137,15 @@ def convertModToPretty(mod_file, pretty_dir):
             
             pp.pprint("*** Processing [{line:5}] on {mod} ***".format(mod=modName,line=lineCnt))
 
-            prettyfile = pretty_dir + "\\" + modName + '.kicad_mod'
+            prettyfile = os.path.join(pretty_dir, modName + '.kicad_mod')
             fout = open( prettyfile, 'w+' )
             fout.write('(module {mod} {locked}{placed}(layer {layer}) (tedit {tedit})\n' \
-                .format( \
-                    mod   = genText(modName), \
-                    tedit = tedit, \
-                    layer = layer, \
-                    locked= locked, \
-                    placed= placed, \
+                .format(
+                    mod   = genText(modName),
+                    tedit = tedit,
+                    layer = layer,
+                    locked= locked,
+                    placed= placed,
                   ) )
             if descr: fout.write('  (descr {0})\n'.format(descr))
             if tags : fout.write('  (tags {0})\n'.format(tags))
@@ -155,14 +169,14 @@ def convertModToPretty(mod_file, pretty_dir):
                 fout.write('  (fp_text {type} {lbl} (at {at}) (layer {layer}){visible}\n' \
                            '    (effects (font (size {W} {H}) (thickness {Pen})))\n'\
                            '  )\n' \
-                  .format(\
-                    lbl     = genText(lbl), \
-                    at      = genAT(txt[1], txt[2], txt[5]), \
-                    layer   = layerDic[int(txt[9])], \
-                    visible = ' hide' if txt[8]=='I' else '', \
-                    type    = type, \
-                    W       = genNum(txt[3]), \
-                    H       = genNum(txt[4]), \
+                  .format(
+                    lbl     = genText(lbl),
+                    at      = genAT(txt[1], txt[2], txt[5]),
+                    layer   = layerDic[int(txt[9])],
+                    visible = ' hide' if txt[8]=='I' else '',
+                    type    = type,
+                    W       = genNum(txt[3]),
+                    H       = genNum(txt[4]),
                     Pen     = genNum(txt[6]), ))
                 y = float(txt[2])
                 if y>yMax: yMax = y
@@ -176,36 +190,36 @@ def convertModToPretty(mod_file, pretty_dir):
                 # Process all DS X1 Y1 X2 Y2 Pen Layer
                 if d[0]=='DS':
                     fout.write('  (fp_line (start {x1} {y1}) (end {x2} {y2}) (layer {layer}) (width {pen}))\n' \
-                      .format( x1   =genNum(d[1]), \
-                               y1   =genNum(d[2]), \
-                               x2   =genNum(d[3]), \
-                               y2   =genNum(d[4]), \
-                               layer=layerDic[int(d[6])], \
-                               pen  =genNum(d[5]), \
+                      .format( x1   =genNum(d[1]),
+                               y1   =genNum(d[2]),
+                               x2   =genNum(d[3]),
+                               y2   =genNum(d[4]),
+                               layer=layerDic[int(d[6])],
+                               pen  =genNum(d[5]),
                              ))
                              
                 # Process all DC X Y Xp Yp Pen Layer
                 elif d[0]=='DC':
                     fout.write('  (fp_circle (center {x} {y}) (end {xp} {yp}) (layer {layer}) (width {pen}))\n'\
-                      .format( x    =genNum(d[1]), \
-                               y    =genNum(d[2]), \
-                               xp   =genNum(d[3]), \
-                               yp   =genNum(d[4]), \
-                               layer=layerDic[int(d[6])], \
-                               pen  =genNum(d[5]), \
+                      .format( x    =genNum(d[1]),
+                               y    =genNum(d[2]),
+                               xp   =genNum(d[3]),
+                               yp   =genNum(d[4]),
+                               layer=layerDic[int(d[6])],
+                               pen  =genNum(d[5]),
                              ))
                                 
                 # Process all DA X Y Xp Yp Angle Pen Layer
                 elif d[0]=='DA':
                     fout.write('  (fp_arc (start {x} {y}) (end {xp} {yp}) (angle {a}) '\
                                '(layer {layer}) (width {pen}))\n'\
-                      .format( x    = genNum(d[1]), \
-                               y    = genNum(d[2]), \
-                               xp   = genNum(d[3]), \
-                               yp   = genNum(d[4]), \
-                               a    = d[5], \
-                               layer= layerDic[int(d[7])], \
-                               pen  = genNum(d[6]), \
+                      .format( x    = genNum(d[1]),
+                               y    = genNum(d[2]),
+                               xp   = genNum(d[3]),
+                               yp   = genNum(d[4]),
+                               a    = d[5],
+                               layer= layerDic[int(d[7])],
+                               pen  = genNum(d[6]),
                              ))
                                 
                              
@@ -220,9 +234,9 @@ def convertModToPretty(mod_file, pretty_dir):
                     DpCount = DpCount - 1
                     if DpCount>=0:                    
                         fout.write(' (xy {x} {y})' \
-                            .format( \
-                                x = genNum(d[1]), \
-                                y = genNum(d[2]), \
+                            .format(
+                                x = genNum(d[1]),
+                                y = genNum(d[2]),
                             ))
                         if DpCount % 4==3: fout.write('\n   ')
                     else:
@@ -232,9 +246,9 @@ def convertModToPretty(mod_file, pretty_dir):
                         fout.write(')\n'
                                    '    (layer {layer}) (width {pen})\n ' \
                                    '  )\n' \
-                                .format( \
-                                    layer = DpLayer, \
-                                    pen   = DpPen, \
+                                .format(
+                                    layer = DpLayer,
+                                    pen   = DpPen,
                                 ))
                 else:
                     pp.pprint(["Unrecognized ", d])
@@ -270,25 +284,25 @@ def convertModToPretty(mod_file, pretty_dir):
                         
                     if dic['Sh'][1]=='R':
                         shape = 'rect (at {at}) (size {W} {H})' \
-                            .format( \
-                                at = genAT(dic['Po'][0], dic['Po'][1], dic['Sh'][6]), \
-                                W  = genNum(dic['Sh'][2]), \
-                                H  = genNum(dic['Sh'][3]), \
+                            .format(
+                                at = genAT(dic['Po'][0], dic['Po'][1], dic['Sh'][6]),
+                                W  = genNum(dic['Sh'][2]),
+                                H  = genNum(dic['Sh'][3]),
                                 )
                     elif dic['Sh'][1]=='C':
                         shape = 'circle (at {x} {y}) (size {W} {H})'\
-                            .format( \
-                                x = genNum(dic['Po'][0]), \
-                                y = genNum(dic['Po'][1]), \
-                                W = genNum(dic['Sh'][2]), \
-                                H = genNum(dic['Sh'][3]), \
+                            .format(
+                                x = genNum(dic['Po'][0]),
+                                y = genNum(dic['Po'][1]),
+                                W = genNum(dic['Sh'][2]),
+                                H = genNum(dic['Sh'][3]),
                                 )
                     elif dic['Sh'][1]=='O':
                         shape ='oval (at {at}) (size {W} {H})'\
-                            .format( \
-                                at= genAT(dic['Po'][0], dic['Po'][1], dic['Sh'][6]), \
-                                W = genNum(dic['Sh'][2]), \
-                                H = genNum(dic['Sh'][3]), \
+                            .format(
+                                at= genAT(dic['Po'][0], dic['Po'][1], dic['Sh'][6]),
+                                W = genNum(dic['Sh'][2]),
+                                H = genNum(dic['Sh'][3]),
                                 )
                     #TODO elif dic['Sh'][1]=='T':
                     else:
@@ -303,13 +317,13 @@ def convertModToPretty(mod_file, pretty_dir):
                         if d[0]=='Dr':
                             if float(d[1])!=0:
                                 if len(d)==4:
-                                    drill.append('(drill {sz}{ofs})'.format( \
-                                            sz = genNum(d[1]), ofs = genOfs(d[2], d[3]), \
+                                    drill.append('(drill {sz}{ofs})'.format(
+                                            sz = genNum(d[1]), ofs = genOfs(d[2], d[3]),
                                         ))
                                 elif len(d)==7 and d[4]=='O':
-                                    drill.append('(drill oval {w} {h} {ofs})'.format( \
-                                            sz = genNum(d[1]), ofs = genOfs(d[2], d[3]), \
-                                            w  = genNum(d[5]), h   = genNum(d[6]), \
+                                    drill.append('(drill oval {w} {h} {ofs})'.format(
+                                            sz = genNum(d[1]), ofs = genOfs(d[2], d[3]),
+                                            w  = genNum(d[5]), h   = genNum(d[6]),
                                         ))
                                 else:
                                     pp.pprint(['Unrecognized ',d])
@@ -319,12 +333,12 @@ def convertModToPretty(mod_file, pretty_dir):
                     else:     drill = ''
                     
                     fout.write('  (pad {name} {kind} {shape}{drill}{layers}'\
-                        .format(\
-                            name    = genText(dic['Sh'][0][1:-1]), \
-                            kind    = kind, \
-                            shape   = shape, \
-                            drill   = drill, \
-                            layers  = layers, \
+                        .format(
+                            name    = genText(dic['Sh'][0][1:-1]),
+                            kind    = kind,
+                            shape   = shape,
+                            drill   = drill,
+                            layers  = layers,
                                 ))
                     
                     y = float(dic['Po'][1])
@@ -339,11 +353,11 @@ def convertModToPretty(mod_file, pretty_dir):
                                '    (scale (xyz {Sc}))\n' \
                                '    (rotate (xyz {Ro}))\n' \
                                '  )\n' \
-                        .format(model= genText(dic['Na'][0][1:-1]), \
-                                Ofsx = genNum(dic['Of'][0]), \
-                                Ofsy = genNum(dic['Of'][1]), \
-                                Ofsz = genNum(dic['Of'][2]), \
-                                Sc   = ' '.join(dic['Sc']), \
+                        .format(model= genText(dic['Na'][0][1:-1]),
+                                Ofsx = genNum(dic['Of'][0]),
+                                Ofsy = genNum(dic['Of'][1]),
+                                Ofsz = genNum(dic['Of'][2]),
+                                Sc   = ' '.join(dic['Sc']),
                                 Ro   = ' '.join(dic['Ro']) ))
                     
             fout.write('  (fp_text user "{0}[{1}]" (at 0 {2:g}) (layer Cmts.User) hide\n' \
@@ -366,8 +380,8 @@ def convertModToPretty(mod_file, pretty_dir):
             
         # Generate child structure
         elif items[0].startswith('$'):
-            curDIC = {' name':items[0], \
-                      ' prev':curDIC, \
+            curDIC = {' name':items[0],
+                      ' prev':curDIC,
                       ' dics':[] }
             curARR.append(curDIC)
             curARR = curDIC[' dics']
@@ -382,12 +396,5 @@ def convertModToPretty(mod_file, pretty_dir):
         else:
             curDIC[items[0]] = items[1:]
 
-for mod_file in glob.glob(mod_dir + "\\*.mod"):
-    print "****************************************************"
-    print "***** Process file ", mod_file
-    print "****************************************************"
-    pretty_dir = \
-        os.path.dirname(mod_file) + "\\" + \
-        os.path.basename(mod_file) + ".pretty"
-    convertModToPretty(mod_file, pretty_dir)
-print "Result can be find in ", pretty_dir
+if __name__  == "__main__":
+  main()

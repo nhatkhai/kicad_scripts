@@ -16,7 +16,7 @@ import pprint
 
 import pcbnew
 
-lib_path = os.path.join(os.path.dirname(__file__),'..')
+lib_path = os.path.join(os.path.dirname(__file__), '..')
 lib_path = os.path.normpath(lib_path)
 if lib_path not in sys.path:
   sys.path.append(lib_path)
@@ -56,10 +56,10 @@ class equivalentNetlist:
           eqvNetCode = eqvPad.GetNetCode()
           self._NetCodeToNetCode[localNetCode] = eqvNetCode
           print "    %3s.%-2s and %s.%-2s suggest %15s map to %-15s" \
-              % (    module.GetReference(),    pad.GetPadName() \
-                , eqvModule.GetReference(), eqvPad.GetPadName() \
-                ,       pad.GetShortNetname() \
-                ,    eqvPad.GetShortNetname() \
+              % (    module.GetReference(),    pad.GetPadName()
+                , eqvModule.GetReference(), eqvPad.GetPadName()
+                ,       pad.GetShortNetname()
+                ,    eqvPad.GetShortNetname()
                 )
           if localNetCode==netCode:
             return eqvNetCode
@@ -101,8 +101,8 @@ class _helper:
     if cloneModule.GetLayer() is not module.GetLayer():
       cloneModule.Flip(modPos)
 
-    cloneLoc = pcbnew.wxPoint( \
-        cloneOfs.x + srcPos.x + srcEnd.x - modPos.x, \
+    cloneLoc = pcbnew.wxPoint(
+        cloneOfs.x + srcPos.x + srcEnd.x - modPos.x,
         cloneOfs.y + modPos.y)
     cloneModule.SetPosition(cloneLoc)
     cloneModule.SetOrientation(module.GetOrientation() + FromDeg(180))
@@ -115,8 +115,8 @@ class _helper:
     if cloneModule.GetLayer() is not module.GetLayer():
       cloneModule.Flip(modPos)
 
-    cloneLoc = pcbnew.wxPoint( \
-        cloneOfs.x + modPos.x , \
+    cloneLoc = pcbnew.wxPoint(
+        cloneOfs.x + modPos.x ,
         cloneOfs.y + srcPos.y + srcEnd.y - modPos.y )
     cloneModule.SetPosition(cloneLoc)
     cloneModule.SetOrientation(module.GetOrientation())
@@ -129,8 +129,8 @@ class _helper:
     if cloneModule.GetLayer() is not module.GetLayer():
       cloneModule.Flip(modPos)
 
-    cloneLoc = pcbnew.wxPoint( \
-        cloneOfs.x + srcPos.x + srcEnd.x - modPos.x, \
+    cloneLoc = pcbnew.wxPoint(
+        cloneOfs.x + srcPos.x + srcEnd.x - modPos.x,
         cloneOfs.y + srcPos.y + srcEnd.y - modPos.y)
     cloneModule.SetPosition(cloneLoc)
     cloneModule.SetOrientation(module.GetOrientation() + FromDeg(180))
@@ -189,12 +189,12 @@ class _helper:
     trackStart= cloneTrack.GetStart()
     trackEnd  = cloneTrack.GetEnd()
 
-    trackStart = pcbnew.wxPoint( \
-        cloneOfs.x + srcPos.x + srcEnd.x - trackStart.x, \
+    trackStart = pcbnew.wxPoint(
+        cloneOfs.x + srcPos.x + srcEnd.x - trackStart.x,
         cloneOfs.y + trackStart.y )
 
-    trackEnd = pcbnew.wxPoint( \
-        cloneOfs.x + srcPos.x + srcEnd.x - trackEnd.x, \
+    trackEnd = pcbnew.wxPoint(
+        cloneOfs.x + srcPos.x + srcEnd.x - trackEnd.x,
         cloneOfs.y + trackEnd.y )
 
     cloneTrack.SetStart(trackStart)
@@ -218,12 +218,12 @@ class _helper:
     trackStart= cloneTrack.GetStart()
     trackEnd  = cloneTrack.GetEnd()
 
-    trackStart = pcbnew.wxPoint( \
-        cloneOfs.x + trackStart.x , \
+    trackStart = pcbnew.wxPoint(
+        cloneOfs.x + trackStart.x ,
         cloneOfs.y + srcPos.y + srcEnd.y - trackStart.y)
 
-    trackEnd = pcbnew.wxPoint( \
-        cloneOfs.x + trackEnd.x , \
+    trackEnd = pcbnew.wxPoint(
+        cloneOfs.x + trackEnd.x ,
         cloneOfs.y + srcPos.y + srcEnd.y - trackEnd.y)
 
     cloneTrack.SetStart(trackStart)
@@ -235,12 +235,12 @@ class _helper:
     trackStart= cloneTrack.GetStart()
     trackEnd  = cloneTrack.GetEnd()
 
-    trackStart = pcbnew.wxPoint( \
-        cloneOfs.x + srcPos.x + srcEnd.x - trackStart.x, \
+    trackStart = pcbnew.wxPoint(
+        cloneOfs.x + srcPos.x + srcEnd.x - trackStart.x,
         cloneOfs.y + srcPos.y + srcEnd.y - trackStart.y)
 
-    trackEnd = pcbnew.wxPoint( \
-        cloneOfs.x + srcPos.x + srcEnd.x - trackEnd.x, \
+    trackEnd = pcbnew.wxPoint(
+        cloneOfs.x + srcPos.x + srcEnd.x - trackEnd.x,
         cloneOfs.y + srcPos.y + srcEnd.y - trackEnd.y)
 
     cloneTrack.SetStart(trackStart)
@@ -344,6 +344,8 @@ def clone():
   if len(srcZones)>1:
     i = int(raw_input("Please choose a zone #"))
     srcZone = srcZones[i]
+  else:
+    srcZone = srcZones[0]
   del srcZones
   srcRect = srcZone.GetBoundingBox()
 
@@ -405,7 +407,7 @@ def clone():
     for ch_idx, ch_name in enumerate(channel_names):
       print " ", ch_idx," -- ", ch_name[1]
 
-    tmp  = __helper.getInputList( \
+    tmp  = __helper.getInputList(
         "Enter set of channels will be cloned [all channels if empty]: ")
 
     if tmp:
@@ -455,7 +457,7 @@ def clone():
 
     if len(cloneChs)>1:
       if 'Xdim' in ask:
-        tmp = __helper.getInputList( \
+        tmp = __helper.getInputList(
             "Enter number of clones in X direction [%d]:" \
             % (cloneArrayXdim))
         if tmp: cloneArrayXdim = int(tmp)
@@ -465,14 +467,14 @@ def clone():
         if cloneArrayXdim > 1:
           #Ask for X and Y spacing between clone
           if ('dX' in ask) or ('dY' in ask):
-            tmp = __helper.getInputList( \
+            tmp = __helper.getInputList(
                 "X and Y spacing between clones [%f, %f]: " \
                 % (ToUnit(cloneArraydX), ToUnit(cloneArraydY)) )
             tmp = tmp.split(' ') + [ '', '' ]
         else:
           #Ask for Y spacing between clone
           if ('dY' in ask):
-            tmp = __helper.getInputList( \
+            tmp = __helper.getInputList(
                 "Y spacing between clones [%f]: " \
                 % (ToUnit(cloneArraydY)) )
             tmp = ['', tmp]
@@ -480,9 +482,9 @@ def clone():
         if cloneArrayXdim > 1:
           # Ask for X spacing between clone
           if ('dX' in ask):
-            tmp = __helper.getInputList( \
-                "X spacing between clones [%f]: " \
-                % (ToUnit(cloneArraydX)) )
+            tmp = __helper.getInputList(
+                "X spacing between clones [%f]: " %
+                (ToUnit(cloneArraydX)) )
             tmp = [tmp, '']
 
       if tmp[0]: cloneArraydX = FromUnit(float(tmp[0]))
@@ -499,9 +501,9 @@ def clone():
       cloneY = srcRect.GetPosition().y
 
     if ask:
-      tmp = __helper.getInputList( \
-          "Clone start point (%f, %f): " \
-          % (ToUnit(cloneX), ToUnit(cloneY)))
+      tmp = __helper.getInputList(
+          "Clone start point (%f, %f): " %
+          (ToUnit(cloneX), ToUnit(cloneY)))
       tmp = tmp.split(' ') + [ '', '' ]
 
       if tmp[0]: cloneX = FromUnit(float(tmp[0]))
@@ -692,7 +694,7 @@ def clone():
       # Cloning the Traces
       print "  Clone traces"
       for track in srcTracks:
-        cloneNetCode = eqvNets.getEqvNetCode( \
+        cloneNetCode = eqvNets.getEqvNetCode(
             track.GetNetCode(), track.GetShortNetname())
         if cloneNetCode is not None:
           #if track.GetLayer() in CloneLayers:
@@ -722,7 +724,7 @@ def clone():
       for zone in srcZones:
         # Figure out what is appropriate eqv netname for copper filled zone
         if zone.IsOnCopperLayer():
-          cloneNetCode = eqvNets.getEqvNetCode( \
+          cloneNetCode = eqvNets.getEqvNetCode(
               zone.GetNetCode(), zone.GetShortNetname())
           if cloneNetCode is not None:
             cloneZone = zone.Duplicate()
@@ -839,6 +841,8 @@ def replicateRefs():
   if len(srcZones)>1:
     i = int(raw_input("Please choose a zone #"))
     srcZone = srcZones[i]
+  else:
+    srcZone = srcZones[0]
   del srcZones
   srcRect = srcZone.GetBoundingBox()
 
@@ -892,7 +896,7 @@ def replicateRefs():
     for ch_idx, ch_name in enumerate(channel_names):
       print " ", ch_idx," -- ", ch_name[1]
 
-    tmp  = __helper.getInputList( \
+    tmp  = __helper.getInputList(
         "Enter set of channels will be cloned [all channels if empty]: ")
 
     if tmp:
