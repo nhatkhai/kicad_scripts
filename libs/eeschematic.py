@@ -8,6 +8,8 @@ import shlex
 import re
 import logging
 
+from linkeddata import linkedVirtualStrData, linkedStrData
+
 log = logging.getLogger(__name__)
 
 SHEET_ID  ='ID'
@@ -95,8 +97,7 @@ class schematic:
   """
 
   def __init__(self, sch_dir
-               , extractComponents=False
-               , extractComponentFields=False):
+               , extractComponents=False):
     """
     @param sch_dir; (str) root path of schematic files
     """
@@ -115,7 +116,6 @@ class schematic:
     self._IDsToRefs   = {}  # Dict of { Component_ID : List of Component_References }
 
     self._extractComponents     = extractComponents      # True will extract component references information.
-    self._extractComponentFields= extractComponentFields # True will extract component field information.
 
   def GetSheets(self):
     return self._sheets
@@ -136,71 +136,33 @@ class schematic:
 
     TODO: Use schIter for this
     """
-    inBlock = ""
     sheets  = {}
     sheetIDs= {}
     comps   = {}
 
-    for line in open(self._sch_dir + os.sep + sch_file):
-      items = shlex.split(line)
-      if items[0]=="$Sheet": 
-        inBlock= items[0]
-        sheetInfo = { "ID":"", "NAME":"", "FILE":"" }
+    with open(os.path.join(self._sch_dir, sch_file)) as f:
+      for e, state in schIter(f):
+        if state == e.SUB_SCH_EX:
+          _id   = str(e.info[SHEET_ID])
+          sheetIDs[_id] = sheets.setdefault(str(e.info[SHEET_FILE])
+            , {}  ).setdefault(_id
+                , {'NAME' : str(e.info[SHEET_NAME])} )
 
-      elif items[0]=="$EndSheet": 
-        inBlock = ""
-        tmp = sheets.setdefault(sheetInfo['FILE'], {})
-        tmpSheetID = tmp.setdefault(sheetInfo['ID'], {'NAME':sheetInfo['NAME']})
-        sheetIDs[sheetInfo['ID']] = tmpSheetID
+        elif state == e.COMP_EX:
+          _ref = str(e.info[COMP_REF])
+          if _ref.startswith('#'):
+            continue
 
-      elif items[0]=="$Comp":
-        if self._extractComponents: inBlock = items[0]
-        compInfo = { "ID":'', "Lib":"", "Ref":"", 'Part':'', 'AR':{ }, 'Fields': {} }
-
-      elif items[0]=="$EndComp":
-        inBlock = ""
-        if not compInfo['Ref'].startswith('#'):
-          tmp = comps.setdefault(compInfo['ID'], {})
-          tmp['Lib']  = compInfo['Lib']
-          tmp['Ref']  = compInfo['Ref']
-          tmp['Part'] = compInfo['Part']
-          tmp['AR']   = compInfo['AR']
-          if self._extractComponentFields: 
-            tmp['Fields'] = compInfo['Fields']
-
-      else:
-
-        if inBlock=='$Sheet':
-          if items[0]=='U':  # Sch unique ID
-            sheetInfo['ID'] = items[1]
-          elif items[0]=='F0': # Sch name
-            sheetInfo['NAME'] = items[1]
-          elif items[0]=='F1': # Sch file name
-            sheetInfo['FILE'] = items[1]
-
-        elif inBlock=='$Comp':
-
-          if items[0]=='L': # Component_Library Reference
-            compInfo['Lib'] = items[1]
-            compInfo['Ref']  = items[2]
-          elif items[0]=='U': # ComponentPart ?? ComponentID
-            compInfo['Part'] = items[1]
-            compInfo['ID']  = items[3]
-          elif items[0]=='AR': # Component_Path&ID Ref ComponentPart
-            path = items[1][5:]
-            tmp = compInfo['AR'].setdefault(path, {})
-            tmp['Ref']  = items[2][4:]
-            tmp['Part'] = items[3][5:]
-          elif items[0]=='F' and self._extractComponentFields: # Component_Fields
-            tmp = compInfo['Fields'].setdefault(items[1],{})
-            tmp['Value'] = items[2]
-            if len(items)<=10:
-              tmp['Name']  = [FIELD_REF_NAME, FIELD_VAL_NAME, FIELD_FP_NAME, FIELD_PDF_NAME][int(items[1])]
-            else:
-              tmp['Name']  = items[10]
+          comps.setdefault(str(e.info[COMP_ID]), {
+            'Lib' : str(e.info[COMP_LIB]),
+            'Ref' : _ref,
+            'Part': str(e.info[COMP_PART]),
+            'AR'  : MapNestedDict(e.info[COMP_AR], str),
+          })
 
     ret = { 'sheets' : sheets, 'sheetIDs' : sheetIDs }
-    if self._extractComponents: ret['Components'] = comps
+    if self._extractComponents: 
+      ret['Components'] = comps
 
     self._sheets[sch_file] = ret
     return ret
@@ -511,10 +473,10 @@ class ARTree:
 
 
 class schIter:
-  """ This is a KiCad parser iteratively allow process large file.
+  """ This is a eeschema iterative parser.
   
-  It possible to process the large files without require to store the whole
-  file raw date in computer memory.
+  It allow process the large files in smaller chunk without store every
+  thing in memory.
   """
 
   SUB_SCH_ENT = "Sheet"
@@ -523,56 +485,80 @@ class schIter:
   COMP_EX     = "CompExit"
 
   ELM_RE = re.compile(
-      '(?P<'+SUB_SCH_ENT +'>' r' *\$Sheet *'    r')\r?\n$|'
-      '(?P<'+SUB_SCH_EX  +'>' r' *\$EndSheet *' r')\r?\n$|'
-      '(?P<'+COMP_ENT    +'>' r' *\$Comp *'     r')\r?\n$|'
-      '(?P<'+COMP_EX     +'>' r' *\$EndComp *'  r')\r?\n$|'
+      '(?P<'+SUB_SCH_ENT +'>' r'\$Sheet'    r')$|'
+      '(?P<'+SUB_SCH_EX  +'>' r'\$EndSheet' r')$|'
+      '(?P<'+COMP_ENT    +'>' r'\$Comp'     r')$|'
+      '(?P<'+COMP_EX     +'>' r'\$EndComp'  r')$|'
       , flags=re.I)
 
   # This is a token splitter which reserve all characters, space, and
-  # detect text in double quote as one single token. Is will ignore the
-  # spaces at beginning of the line
+  # detect text in double quote as one single token.
   SPLIT_RE = re.compile(r'\s+|(?:[^\s"]|"(?:\\.|[^"])*")+')
 
   def __init__(self, afile):
     self.file    = afile
 
-    self.line         = ""
-    self.lineCnt      = 0
-    self.dataType     = ""
-    self.state        = ""
-    self.stateFunc    = lambda: None
-    self.raw   = [] # Use to store raw data from the file
-    self.info  = {} # Key data map to raw data
-                    # ID : (1, [U ABCBS])
-                    # Mean ID value is index 1 of the array
+    self.lineCnt  = 0  # Current processing line number
+    self.stateFunc= lambda: None
 
-    self._elementFuncs = {
+    self.raw   = [] # Store a chunk of raw data from the file
+    self.info  = {} # Store a extracted relevant data in dict style
+
+    # Process functions for each keywords
+    # Transition function by keyword
+    self._stateFuncs = {
         self.SUB_SCH_ENT: self._SheetEnter,
         self.SUB_SCH_EX : self._SheetExit,
         self.COMP_ENT   : self._CompEnter,
         self.COMP_EX    : self._CompExit, 
         }
 
+    # Functions call before file continue to be read
+    # transition -> pre read file function
+    self._preReadFuncs = {
+        self._CompEnter : lambda: None,
+        self._CompItem  : lambda: None,
+        self._SheetEnter: lambda: None,
+        self._SheetItem : lambda: None,
+    }
+
+    # Processing functions stack
     self._processor = [self._OtherItem]
 
   def __iter__(self):
     return self
 
   def next(self):
-    for self.line in self.file:
+    self._preReadFuncs.get(self.stateFunc, self._clearData)()
+    for line in self.file:
       self.lineCnt = self.lineCnt + 1
 
-      m = self.ELM_RE.match(self.line)
-      self.state = m.lastgroup
-      self.stateFunc = self._elementFuncs.get(self.state, self._processor[-1])
-      return self.stateFunc(), self.state
+      # Split into words
+      items = []
+      if line[:1] != ' ':
+        items.append('')
+
+      for i in self.SPLIT_RE.finditer(line):
+        items.append(i.group(0))
+
+      self.raw.append(items)
+
+      # Looking for a keywords for change process function
+      m = self.ELM_RE.match(items[1])
+      state = m.lastgroup
+      self.stateFunc = self._stateFuncs.get(state, self._processor[-1])
+
+      # Apply transition/process function
+      return self.stateFunc(), state
+
     raise StopIteration
+
+  def _clearData(self):
+    self.raw   = [] # Store a chunk of raw data from the file
+    self.info  = {} # Store a extracted relevant data in dict style
 
   def _SheetEnter(self):
     self._processor.append(self._SheetItem)
-    self.raw  = []
-    self.info = {}
     return self
 
   def _SheetExit(self):
@@ -582,8 +568,6 @@ class schIter:
 
   def _CompEnter(self):
     self._processor.append(self._CompItem)
-    self.raw  = []
-    self.info = {}
     return self
 
   def _CompExit(self):
@@ -595,170 +579,93 @@ class schIter:
     return self
 
   def _SheetItem(self):
-    items = self.SPLIT_RE.findall(self.line)
-    self.raw.append(items)
-    i = 1 if items[0][0]==' ' else 0
+    items = self.raw[-1]
 
-    if   items[0+i]=='U':  # Sch unique ID
-      self.info[SHEET_ID]   = linkedStrData(items, 2+i)
-    elif items[0+i]=='F0': # Sch name
-      self.info[SHEET_NAME] = linkedStrData(items, 2+i)
-    elif items[0+i]=='F1': # Sch file name
-      self.info[SHEET_FILE] = linkedStrData(items, 2+i)
+    if   items[1]=='U':  # Sch unique ID
+      self.info[SHEET_ID]   = linkedStrData(items, 3)
+    elif items[1]=='F0': # Sch name
+      self.info[SHEET_NAME] = linkedStrData(items, 3)
+    elif items[1]=='F1': # Sch file name
+      self.info[SHEET_FILE] = linkedStrData(items, 3)
     return self
 
   def _CompItem(self):
-    items = self.SPLIT_RE.findall(self.line)
-    self.raw.append(items)
-    i = 1 if items[0][0]==' ' else 0
+    items = self.raw[-1]
 
-    if   items[0+i]=='L': # Component_Library Reference
-      self.info[COMP_LIB] = linkedStrData(items, 2+i)
-      self.info[COMP_REF] = linkedStrData(items, 4+i)
+    if   items[1]=='L': # Component_Library Reference
+      self.info[COMP_LIB] = linkedStrData(items, 3)
+      self.info[COMP_REF] = linkedStrData(items, 5)
 
-    elif items[0+i]=='U': # ComponentPart ?? ComponentID
-      self.info[COMP_PART]= linkedStrData(items, 2+i)
-      self.info[COMP_ID]  = linkedStrData(items, 6+i)
+    elif items[1]=='U': # ComponentPart ?? ComponentID
+      self.info[COMP_PART]= linkedStrData(items, 3)
+      self.info[COMP_ID]  = linkedStrData(items, 7)
 
-    elif items[0+i]=='AR': # Component_Path&ID Ref ComponentPart
+    elif items[1]=='AR': # Component_Path&ID Ref ComponentPart
       # Assume the line look like:
       # AR Path="THE_AR_PATH" Ref="THE_REF" Part="UNIT_NUMBER"
       # AR data { AR_PATH -> { COMP_REF, COMP_PART } }
-      path = items[2+i][5:]
+      path = items[3][5:]
       tmp = self.info.setdefault(COMP_AR, {}).setdefault(path, {})
-      tmp[COMP_REF]  = linkedStrData(items, 4+i, 4)
-      tmp[COMP_PART] = linkedStrData(items, 6+i, 5)
+      tmp[COMP_REF]  = linkedStrData(items, 5, 4)
+      tmp[COMP_PART] = linkedStrData(items, 7, 5)
 
-    elif items[0+i]=='F': # Component_Fields
+    elif items[1]=='F': # Component_Fields
       # data is { FIELD_NUMBER -> { FIELD_VALUE, FIELD_NAME } }
-      tmp = self.info.setdefault(COMP_FIELDS, {}).setdefault(items[2+i],{})
-      tmp[FIELD_VALUE]   = linkedStrData(items, 4+i)
+      tmp = self.info.setdefault(COMP_FIELDS, {}).setdefault(items[3],{})
+      tmp[FIELD_VALUE]   = linkedStrData(items, 5)
       if len(items)>=22:
-        tmp[FIELD_NAME]  = linkedStrData(items, 20+i)
+        tmp[FIELD_NAME]  = linkedStrData(items, 21)
       else:
         tmp[FIELD_NAME]  = linkedVirtualStrData(
               { '0': FIELD_REF_NAME,  # Default KiCad field name
                 '1': FIELD_VAL_NAME,
                 '2': FIELD_FP_NAME,
                 '3': FIELD_PDF_NAME,
-                }.get(items[2+i], '')
-            , items, 20+i
+                }.get(items[3], '')
+            , items, 21
             )
 
     return self
 
 
-class schTransformIter(schIter):
-  """ This is KiCad sch parse and transforming the large file.
+class schMapper(schIter):
+  """ This is eeschema iterative mapping 
 
-  It allow use the least amount of computer memory to transform the large
-  schematic file. This class read data from infile, and save transformed
-  data into outfile
+  It allow map the infile to outfile with a customized transforming
   """
 
   def __init__(self, infile, outfile):
     schIter.__init__(self, infile)
-    self.outfile= outfile
-    self.newline= '\r\n'
-    self._saveFuncs = {
-        self._SheetEnter: self._saveLine,
-        self._SheetExit : self._saveRaw,
-        self._CompEnter : self._saveLine,
-        self._CompExit  : self._saveRaw,
-        self._OtherItem : self._saveLine,
-    }
+    self.outfile = outfile
 
-  def next(self):
-    saveFunc = self._saveFuncs.get(self.stateFunc, lambda: None)
-    saveFunc()
-    return schIter.next(self)
-
-  def _saveLine(self):
-    self.outfile.write( self.line )
-
-  def _saveRaw(self):
+  def _clearData(self):
     for LineItems in self.raw:
       for item in LineItems:
         self.outfile.write(item)
-    self.outfile.write( self.line )
+    schIter._clearData(self)
 
 
-class baseLinkedData:
-  """Class allow link value to other places
+def MapNestedDict(data, func):
+  """Map a nested dictionary with specified func
 
-  When the value change, it change the linked data
+  @example:
+  >>> a                      = {"a": {"b": 1 , "c": 2 }, "d": 3 }
+  >>> MapNestedDict(a, str) == {'a': {'b':'1', 'c':'2'}, 'd':'3'}
+  True
   """
+  if not isinstance(data, dict):
+    return func(data)
 
-  def __init__(self):
-    pass
-
-  def getValue(self):
-    """
-    @return the token raw value with/without quotation
-    """
-    raise NotImplemented("Base class method")
-
-  def setValue(self, value):
-    """ Change the token raw value
-    """
-    raise NotImplemented("Base class method")
-
-  def setAndQuoteValue(self, value):
-    value = value.replace('"', r'\"')
-    self.setValue('"' + value + '"')
-
-  def __str__(self):
-    """
-    @return the token value without any quotation
-    """
-    s = self.getValue()
-    return s if s[0]!='"' else s[1:-1]
+  return {k:MapNestedDict(e, func) for k, e in data.items()}
 
 
-class linkedVirtualStrData(baseLinkedData):
-  def __init__(self, string, array, index, start=0, end=None):
-    baseLinkedData.__init__(self)
-    self.data = array
-    self.idx  = index
-    self.start= start
-    self.end  = end
-    self.value= string
+# Test section for pytest style
+#
+def tests():
+  log.info("Entering test mode")
+  assert True
+  import doctest
+  doctest.testmod(verbose=True)
 
-  def getValue(self):
-    return self.value
-
-  def setValue(self, value):
-    if self.value == value:
-      return
-
-    s = self.data[self.idx]
-    b = s[:self.start]
-    if self.end:
-      e = s[self.end:]
-      self.end = len(value) + self.start
-    else:
-      e = ''
-    self.data[self.idx] = b + value + e
-    self.value = value
-
-
-class linkedStrData(baseLinkedData):
-  def __init__(self, array, index, start=0, end=None):
-    baseLinkedData.__init__(self)
-    self.data = array
-    self.idx  = index
-    self.start= start
-    self.end  = end
-
-  def getValue(self):
-    return self.data[self.idx][self.start:self.end]
-
-  def setValue(self, value):
-    s = self.data[self.idx]
-    b = s[:self.start]
-    if self.end:
-      e = s[self.end:]
-      self.end = len(value) + self.start
-    else:
-      e = ''
-    self.data[self.idx] = b + value + e
+if __name__ == "__main__":
+  tests()

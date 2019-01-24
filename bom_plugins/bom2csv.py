@@ -107,8 +107,11 @@ def main():
       acsvwriter.writerow( utf8row )
   
   # Output a set of rows as a header providing general information
-  # No that, add the UTF-8-BOM to allow Excel read this file a UTF-8
-  writerow( out, ['\xef\xbb\xbfSource:', net.getSource()] )
+  # No that, add the UTF-8-BOM to allow Excel read this file as UTF-8
+  # However, when save from Excel, it will not work with UTF-8-BOM. So for
+  # saving back we better to not insert UTF-8-BOM code
+  #writerow( out, ['\xef\xbb\xbfSource:', net.getSource()] )
+  writerow( out, ['Source:', net.getSource()] )
   writerow( out, ['Date:', net.getDate()] )
   writerow( out, ['Tool:', net.getTool()] )
   writerow( out, ['Generator:', sys.argv[0]] )

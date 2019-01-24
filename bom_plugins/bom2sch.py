@@ -23,6 +23,7 @@ log = logging.getLogger(__name__)
 # Special BOM Header
 ITEM          = 'item'         
 QUANTITY      = 'quantity'     
+POPULATE      = 'populate'
 REFERENCE     = 'reference'    
 VALUE         = 'value'        
 SYMBOL        = 'symbol'       
@@ -99,6 +100,7 @@ class csv_bom(bom):
   HEADER_NAMES = re.compile(
       '(?P<'+ITEM        +'>' 'Item#?'                              ')$|'
       '(?P<'+QUANTITY    +'>' 'Qty|Qnty|Quantity'                   ')$|'
+      '(?P<'+POPULATE    +'>' 'Pop(ulate|ulation)?'                 ')$|'
       '(?P<'+REFERENCE   +'>' 'Ref|Reference.*'                     ')$|'
       '(?P<'+VALUE       +'>' 'Value'                               ')$|'
       '(?P<'+SYMBOL      +'>' 'Libpart|Part|Library.*'              ')$|'
@@ -360,7 +362,7 @@ def main_cli():
     log.info("  Processing %s", schfile)
     with open(schfile, 'r') as f, \
          open(schfile+".new", 'w') as of:
-      for e, state in eeschematic.schTransformIter(f, of):
+      for e, state in eeschematic.schMapper(f, of):
         if state != e.COMP_EX:
           continue
        
@@ -402,11 +404,19 @@ def main_cli():
           bomColID = fieldNameToColID.get(bomColID, bomColID)
           newValue = fieldsValue.get(bomColID)
           if newValue is not None:
+            newValue = newValue.strip()
             fieldInfo[eeschematic.FIELD_VALUE].setAndQuoteValue(newValue)
+
+        # TODO: Insert Populate field if is has value
+        # Hide Value if the Populate field has value, and it locate at same 
+        # position as Value
+        # Unhide Value if the Populate field has no value, and its location
+        # at same position as Value
 
         # Update Symbol value
         newValue = fieldsValue.get(SYMBOL, None)
         if newValue is not None:
+          newValue = newValue.strip()
           comLib = e.info[eeschematic.COMP_LIB]
 
           # Check current symbol style
