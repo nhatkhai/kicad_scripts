@@ -49,6 +49,9 @@ class bom:
   def getSchFileName(self):
     raise NotImplemented("Base class method")
 
+  def getHeaderTexts(self):
+    return {k:v[1] for k, v in self.header.iteritems()}
+
   def getReferences(self):
     return self.refs
 
@@ -60,8 +63,11 @@ class bom:
       values[SUPPLIER] = ":".join([a 
         for a in (values.pop(k, None) for k in (SUPPLIER, SUPPLIERNUM, PRICE))
         if a is not None])
-      if values.get(VALUE, '').upper() in {'DO NOT POPULATE'}:
-        values[VALUE] = "DNP"
+
+      dnp_values = {'DO NOT POPULATE'}
+      for k in (VALUE, POPULATE):
+        if values.get(k, '').upper() in dnp_values:
+          values[k] = "DNP"
 
 
   def joinValues4Refs(self, references):
@@ -162,9 +168,7 @@ class csv_bom(bom):
           , quoting=csv.QUOTE_MINIMAL )
 
       header = self._findHeader(csv_reader)
-      self.header = {k:v for k, v in header.items() 
-          if not self.header_excluded.match(k).group(0)}
-      log.info("Obtain info for %s", sorted(self.header.keys()))
+      self.header = self._excludedHeader(header)
       self.refs = self._readAllRefs(csv_reader, self.header)
 
   def _findHeader(self, reader):
@@ -181,18 +185,25 @@ class csv_bom(bom):
 
       for hMin in self.header_min:
         if hMin.issubset(header.keys()):
-          log.debug("CSV LINE %-3d : %s", self.lineCnt, row)
+          log.debug("CSV LINE %-3d : %s", self.lineCnt, ', '.join(row))
           return header
 
       for colIdx, cel in enumerate(row):
         m = self.META_NAMES.match(cel)
         if m.lastgroup:
           self.meta[m.lastgroup] = row[colIdx+1:]
-          log.debug("CSV LINE %-3d : %s", self.lineCnt, row)
+          log.debug("CSV LINE %-3d : %s", self.lineCnt, ', '.join(row))
           break
 
+  def _excludedHeader(self, header):
+      return {
+        k:v for k, v in header.items() 
+          if not self.header_excluded.match(k).group(0)
+      }
+
   def _readAllRefs(self, reader, header):
-    log.debug("%s", header.keys())
+    log.info("CSV LINE %-3d: Read data for %s", self.lineCnt
+        , ', '.join(sorted(self.header.keys())))
     refsData = {}
     refsItemIdx = {}
     for row in reader:
@@ -200,7 +211,7 @@ class csv_bom(bom):
       data = {}
       for colID, (colIdx, colname, special) in header.items():
         if colIdx>=len(row):
-          log.warn("Stop reading at line %d", self.lineCnt)
+          log.warn("CSV LINE %-3d: Stop reading", self.lineCnt)
           return refsData
 
         if row[colIdx]:
@@ -279,6 +290,7 @@ def main_cli():
   # Read all BOM data into memory
   myBom = csv_bom()
   myBom.read(bom_filename)
+  bomHeaderTexts = myBom.getHeaderTexts()
   if not sch_filename:
     sch_filename = myBom.getSchFileName()
   
@@ -398,7 +410,10 @@ def main_cli():
           log.warn("%s fields values had been combined", ','.join(effRefs) )
 
         # Update field values
-        for fieldNum, fieldInfo in e.info[eeschematic.COMP_FIELDS].items():
+        maxFieldNum = 0
+        updatedFields = {}
+        fields = e.info[eeschematic.COMP_FIELDS]
+        for fieldNum, fieldInfo in fields.items():
           #log.debug("%s - %s", fieldNum, {k:str(v) for k, v in fieldInfo.items()})
           bomColID = str(fieldInfo[eeschematic.FIELD_NAME])
           bomColID = fieldNameToColID.get(bomColID, bomColID)
@@ -407,11 +422,43 @@ def main_cli():
             newValue = newValue.strip()
             fieldInfo[eeschematic.FIELD_VALUE].setAndQuoteValue(newValue)
 
-        # TODO: Insert Populate field if is has value
-        # Hide Value if the Populate field has value, and it locate at same 
-        # position as Value
-        # Unhide Value if the Populate field has no value, and its location
-        # at same position as Value
+          _num = int(fieldNum)
+          if _num > maxFieldNum:
+            maxFieldNum = _num
+
+          updatedFields[bomColID] = fieldInfo
+
+        # Insert Populate field if is has value and not exist in the
+        # schematic yet
+        val_field = updatedFields.get(VALUE, {})
+        pop_val = fieldsValue.get(POPULATE)
+        if pop_val and (POPULATE not in updatedFields):
+          pop_field = e.duplicate(val_field
+              , fields[str(maxFieldNum)][eeschematic.FIELD_VALUE])
+          maxFieldNum = maxFieldNum + 1
+          pop_field[eeschematic.FIELD_NUMBER].setValue(str(maxFieldNum))
+          pop_field[eeschematic.FIELD_VALUE].setAndQuoteValue(pop_val)
+          pop_field[eeschematic.FIELD_NAME].setAndQuoteValue(
+            bomHeaderTexts[POPULATE])
+        else:
+          pop_field = updatedFields.get(POPULATE, {})
+
+        # + Hide Value if the Populate field has value, and it locate at
+        # same position as Value
+        # + Unhide Value if the Populate field has no value, and its
+        # location at same position as Value
+        valX = int(str(val_field.get(eeschematic.FIELD_POSX,'0')))
+        valY = int(str(val_field.get(eeschematic.FIELD_POSY,'0')))
+        popX = int(str(pop_field.get(eeschematic.FIELD_POSX,'1')))
+        popY = int(str(pop_field.get(eeschematic.FIELD_POSY,'1')))
+        if valX==popX and valY==popY:
+          if pop_val=="DNP":
+            # Show pop, Hide value
+            val_field[eeschematic.FIELD_FLAGS].setValue("0001")
+            pop_field[eeschematic.FIELD_FLAGS].setValue("0000")
+          else:
+            val_field[eeschematic.FIELD_FLAGS].setValue("0000")
+            pop_field[eeschematic.FIELD_FLAGS].setValue("0001")
 
         # Update Symbol value
         newValue = fieldsValue.get(SYMBOL, None)
@@ -455,6 +502,6 @@ def tests():
 if __name__ == "__main__":
   logging.basicConfig(
       level=logging.DEBUG,
-      format='%(asctime)s [%(filename)s:%(lineno)-4d] %(message)s')
+      format='%(asctime)s [%(filename)s:%(lineno)-4d] %(levelname)7s - %(message)s')
   main_cli()
   tests()

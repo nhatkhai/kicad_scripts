@@ -3,6 +3,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
+
 class baseLinkedData:
   """Class allow link text value from a arrays of strings
 
@@ -33,46 +34,6 @@ class baseLinkedData:
     """
     s = self.getValue()
     return s if s[0]!='"' else s[1:-1]
-
-
-class linkedVirtualStrData(baseLinkedData):
-  """ Allow to show fake value, but when set methods will change linked data
-
-  @example:
-  >>> for i in [1]:
-  ...     a = ['abc', 'test', 'beef']
-  ...     b = linkedVirtualStrData('Vir1', a, 1)
-  ...     print "1", str(b)
-  ...     b.setValue('ba')
-  ...     print "2", a
-  1 Vir1
-  2 ['abc', 'ba', 'beef']
-  """
-
-  def __init__(self, string, array, index, start=0, end=None):
-    baseLinkedData.__init__(self)
-    self.data = array
-    self.idx  = index
-    self.start= start
-    self.end  = end
-    self.value= string
-
-  def getValue(self):
-    return self.value
-
-  def setValue(self, value):
-    if self.value == value:
-      return
-
-    s = self.data[self.idx]
-    b = s[:self.start]
-    if self.end:
-      e = s[self.end:]
-      self.end = len(value) + self.start
-    else:
-      e = ''
-    self.data[self.idx] = b + value + e
-    self.value = value
 
 
 class linkedStrData(baseLinkedData):
@@ -114,6 +75,68 @@ class linkedStrData(baseLinkedData):
       e = ''
     self.data[self.idx] = b + value + e
 
+
+  def getSrc(self):
+    """Return array that this data linked
+    """
+    return self.data
+
+  def clone(self, clonedArray):
+    """Return a clone object that linked the same way but with cloned array
+    """
+    return linkedStrData(clonedArray, self.idx
+        , self.start, self.end )
+
+
+class linkedVirtualStrData(linkedStrData):
+  """ Allow to show fake value, but when set methods will change linked data
+
+  @example:
+  >>> for i in [1]:
+  ...     a = ['abc', 'test', 'beef']
+  ...     b = linkedVirtualStrData('Vir1', a, 1)
+  ...     aa= list(b.getSrc())
+  ...     bb= b.clone(aa)
+  ...     print "1", str(b)
+  ...     b.setValue('ba')
+  ...     print "2", a
+  ...     print "3", aa
+  ...     bb.setValue("new")
+  ...     print "4", aa
+  ...     bb.setValue("new2")
+  ...     print "5", aa
+  1 Vir1
+  2 ['abc', ' ba', 'test', 'beef']
+  3 ['abc', 'test', 'beef']
+  4 ['abc', ' new', 'test', 'beef']
+  5 ['abc', ' new2', 'test', 'beef']
+  """
+
+  def __init__(self, string, array, index, start=0, end=None, delimit=' '):
+    linkedStrData.__init__(self, array, index, start, end)
+    self.value   = string
+    self.delimit = delimit
+
+  def getValue(self):
+    return self.value
+
+  def setValue(self, value):
+    if self.value == value:
+      return
+
+    if self.delimit:
+      self.data.insert(self.idx, self.delimit)
+      self.start = len(self.delimit)
+      self.delimit = None
+
+    linkedStrData.setValue(self, value)
+    self.value = value
+
+  def clone(self, clonedArray):
+    """Return a clone object that linked the same way but with cloned array
+    """
+    return linkedVirtualStrData( self.value, clonedArray, self.idx
+        , self.start , self.end )
 
 #
 # Test section for pytest style
