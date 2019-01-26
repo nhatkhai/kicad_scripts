@@ -372,19 +372,23 @@ class comp():
                         in component itself
         """
 
-        if name == "Supplier":
-          return self.getSupplier(libraryToo)
-        elif name == "Supplier Number":
-          return self.getSupplierNumber(libraryToo)
-        elif name == "Supplier Price":
-          return self.getSupplierPrice(libraryToo)
-        elif name == "LibPart":
-          return self.getLibName() + ":" + self.getPartName()
-        elif name == "Footprint":
-          return self.getFootprint()
-        elif name == "Datasheet":
-          return self.getDatasheet()
+        func = {
+          "supplier"       : lambda: self.getSupplier(libraryToo),
+          "supplier number": lambda: self.getSupplierNumber(libraryToo),
+          "supplier price" : lambda: self.getSupplierPrice(libraryToo),
+          "libpart"        : lambda: ":".join((self.getLibName(), self.getPartName(),)),
+          "footprint"      : lambda: self.getFootprint(libraryToo),
+          "datasheet"      : lambda: self.getDatasheet(libraryToo),
+          "reference(s)"   : lambda: self.getRef(),
+          "value"          : lambda: self.getValue(),
+          "pop"            : lambda: self.getPopulation(),
+          "item"           : lambda: "",
+          "qty"            : lambda: "",
+        }.get(name.lower(), lambda: self._getField(name, libraryToo))
 
+        return func()
+
+    def _getField(self, name, libraryToo=True):
         field = self.element.get("field", "name", name)
         if field == "" and libraryToo:
             field = self.libpart.getField(name)
@@ -413,6 +417,11 @@ class comp():
         if i<0: return ""
         return field[i+1:]
 
+    def getPopulation(self):
+        field = self.element.get("field", "name", 'POP')
+        if not field:
+          field = self.element.get("field", "name", 'Population')
+        return field
 
     def getFieldNames(self):
         """Return a list of field names in play for this component.  Mandatory
@@ -657,9 +666,8 @@ class netlist():
                 ret.append(c)
 
         # Sort first by ref as this makes for easier to read BOM's
-        def f(v):
-            return re.sub(r'([.A-z]+)[0-9]+', r'\1', v) + '%08i' % int(re.sub(r'[.A-z]+([0-9]+)', r'\1', v))
-        ret.sort(key=lambda g: f(g.getRef()))
+        r = re.compile('[0-9]+(\.[0-9]+)?')
+        ret.sort(key=lambda g: r.sub(lambda m: '%016.8f' % float(m.group(0)), g.getRef()))
 
         return ret
 
@@ -700,35 +708,26 @@ class netlist():
 
         # Each group is a list of components, we need to sort each list first
         # to get them in order as this makes for easier to read BOM's
-        def f(v):
-            return re.sub(r'([.A-z]+)[0-9]+', r'\1', v) + '%08i' % int(re.sub(r'[.A-z]+([0-9]+)', r'\1', v))
+        r = re.compile('[0-9]+(\.[0-9]+)?')
+
         for g in groups:
-            g = sorted(g, key=lambda g: f(g.getRef()))
+            g = sorted(g, key=lambda g: r.sub(lambda m: '%016.8f' % float(m.group(0)), g.getRef()))
 
         # Finally, sort the groups to order the references alphabetically
-        groups = sorted(groups, key=lambda group: f(group[0].getRef()))
+        groups = sorted(groups, key=lambda g: r.sub(lambda m: '%016.8f' % float(m.group(0)), g[0].getRef()))
 
         return groups
 
-    def getGroupField(self, group, field):
+    def getGroupField(self, group, field, libraryToo=True):
         """Return the whatever is known about the given field by consulting each
         component in the group.  If any of them know something about the property/field,
         then return that first non-blank value.
         """
-        rets = set()
-        libs = set()
-        for c in group:
-            ret = c.getField(field, False)
-            libs.add(c.getLibPart())
-            if ret: rets.add(ret)
-        if len(rets): return ', '.join(rets)
-
-        for lib in libs:
-            ret = lib.getField(field)
-            if ret: rets.add(ret)
-
+        r = re.compile('[0-9]+(\.[0-9]+)?')
+        rets = set(c.getField(field, libraryToo) for c in group)
+        rets-= {''}
+        rets = sorted(rets, key=lambda v: r.sub(lambda m: '%016.8f' % float(m.group(0)), v))
         return ', '.join(rets)
-        #return group[0].getLibPart().getField(field)
 
     def getGroupFootprint(self, group):
         """Return the whatever is known about the Footprint by consulting each

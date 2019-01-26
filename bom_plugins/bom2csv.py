@@ -19,7 +19,7 @@ if lib_path not in sys.path:
   sys.path.append(lib_path)
 
 # Import the KiCad python helper module and the csv formatter
-import kicad_netlist_reader
+from libs import kicad_netlist_reader
 
 
 def myEqu(self, other):
@@ -79,22 +79,32 @@ def main():
   compfields = net.gatherComponentFieldUnion(components)
   partfields = net.gatherLibPartFieldUnion()
 
-  columnset = compfields | partfields \
-            | {'Supplier', 'Supplier Number', 'Supplier Price'}  # union
+  specialPrefixCol= ['Item', 'Qty',]
+
+  specialColOrder = []
+  if 'POP' in compfields:
+    specialColOrder.append('POP')
+  specialColOrder.extend(['Reference(s)', 'Value', 'Manufacturer','PartNumber',])
+
+  if 'Supplier' in compfields:
+    specialSuppCol  = ['Supplier', 'Supplier Number', 'Supplier Price',]
+
+  specialPosfixCol= ['LibPart', 'Footprint', 'Datasheet']
+
+  columnset = compfields | partfields | set(specialSuppCol)  # union
   
   # remove Reference, Value, Datasheet, and Footprint, they will come from 'columns' below
-  columnset -= { 'Reference', 'Value',
-                 'Datasheet', 'Footprint',
-                 'Manufacturer','PartNumber',
-                 'Supplier', 'Supplier Number', 'Supplier Price' }
+  columnset -= set(specialColOrder)
+  columnset -= set(specialSuppCol)
+  columnset -= {'Reference'}
+  columnset -= set(specialPosfixCol)
   
   # prepend an initial 'hard coded' list and put the enchillada into list 'columns'
-  columns = ['Item', 'Qty',
-             'Reference(s)', 'Value',
-             'Manufacturer','PartNumber',
-             'Supplier', 'Supplier Number', 'Supplier Price'] \
+  columns = specialPrefixCol \
+          + specialColOrder \
+          + specialSuppCol \
           + sorted(list(columnset)) \
-          + ['LibPart', 'Footprint', 'Datasheet'] \
+          + specialPosfixCol 
   
   # Create a new csv writer object to use as the output formatter
   out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting=csv.QUOTE_MINIMAL )
@@ -124,16 +134,7 @@ def main():
   # Output all the interesting components individually first:
   row = []
   for c in components:
-      del row[:]
-      row.append('')                                      # item is blank in individual table
-      row.append('')                                      # Qty is always 1, why print it
-      row.append( c.getRef() )                            # Reference
-      row.append( c.getValue() )                          # Value
-  
-      # from column 4 upwards, use the fieldnames to grab the data
-      for field in columns[4:]:
-          row.append( c.getField( field ) )
-  
+      row = [c.getField( field ) for field in columns]
       writerow( out, row )
   
   writerow( out, [] )                        # blank line
@@ -151,26 +152,10 @@ def main():
   # Output component information organized by group, aka as collated:
   item = 0
   for group in grouped:
-      del row[:]
-
-      # Add the reference of every component in the group and keep a reference
-      # to the component so that the other data can be filled in once per group
-      refs = []
-      c = None
-      for component in group:
-          refs.append(component.getRef())
-          c = component
-      refs = ', '.join(refs)
-  
-      # Fill in the component groups common data
       item += 1
-      row.append( item )
-      row.append( len(group) )
-      row.append( refs )
-      row.append( c.getValue() )
+      row = [item, len(group)]
   
-      # from column 4 upwards, use the fieldnames to grab the data
-      for field in columns[4:]:
+      for field in columns[2:]:
           row.append( net.getGroupField(group, field) )
   
       writerow( out, row  )
