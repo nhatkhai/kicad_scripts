@@ -1,11 +1,30 @@
 #!/bin/python
 """
     @package
-    Generate a csv BOM list.
-    Components are sorted by ref and grouped by Value, Manufacturer,
-    Partnumber, Footprint, Datasheet
+    Generate multiple BOM tables in a csv file from a KiCad XML netlist.
+    
+    * A BOM table with individual reference
+    * A BOM table with grouped by ref and grouped by Value, Manufacturer,
+        PartNumber, Datasheet, Footprint, and POP/Population. Other fields
+        will be combine with comma separators.
 
-    Item, Qty, Reference(s), Value, LibPart, Footprint, Datasheet
+    All BOM tables would contains following columns if existed:
+        Item, Qty, POP, 
+        Reference(s), Value, 
+        Manufacturer, PartNumber,
+        Supplier, Supplier Number, Supplier Price, 
+        Description, 
+        ... <-- customized/unrecognized fields
+        LibPart, Footprint, 
+        Datasheet
+
+    The Supplier, Supplier Number, Supplier Price are breaking out from a
+    field call "Supplier" with following format:
+        SUPPLIER_NAME:SUPPLIER_NUMBER:$SUPPLIER_PRICE
+
+    NOTE: Inserting UTF-8-BOM into csv will make excel show UTF-8
+        characters correctly. But Excel incorrectly saves back modified csv
+        file. This script will not insert UTF-8-BOM for this purpose.
 """
 
 from __future__ import print_function
@@ -22,45 +41,22 @@ if lib_path not in sys.path:
 from libs import kicad_netlist_reader
 
 
-def myEqu(self, other):
-    """myEqu is a more advanced equivalence function for components which is
-    used by component grouping. Normal operation is to group components based
-    on their value and footprint.
+def groupIdentity(component):
+    """Operation return a data help identify which component group belong to
 
     In this example of a custom equivalency operator we compare the
-    value, the part name and the footprint.
-
+    value, Manufacturer, PartNumber, Datasheet, Footprint, and POP
     """
-    result = True
-    if self.getValue() != other.getValue():
-        result = False
-    elif self.getField('Manufacturer') != other.getField('Manufacturer'):
-        result = False
-    elif self.getField('PartNumber') != other.getField('PartNumber'):
-        result = False
-    elif self.getFootprint() != other.getFootprint():
-        result = False
-    elif self.getDatasheet() != other.getDatasheet():
-        result = False
-    #elif self.getPartName() != other.getPartName():
-    #    result = False
-
-    return result
+    return tuple(component.getField(n) for n in (  
+                'Value'
+              , 'Manufacturer', 'PartNumber', 'Datasheet'
+              , 'Footprint', 'POP'))
 
 
 def main():
-  # Override the component equivalence operator - it is important to do this
-  # before loading the netlist, otherwise all components will have the original
-  # equivalency operator.
-  kicad_netlist_reader.comp.__eq__ = myEqu
-  
   if len(sys.argv) != 3:
       print("Usage ", sys.argv[0], "<generic_netlist.xml> <output.csv>", file=sys.stderr)
       sys.exit(1)
-  
-  # Generate an instance of a generic netlist, and load the netlist tree from
-  # the command line option. If the file doesn't exist, execution will stop
-  net = kicad_netlist_reader.netlist(sys.argv[1])
   
   # Open a file to write to, if the file cannot be opened output to stdout
   # instead
@@ -71,6 +67,10 @@ def main():
       e = "Can't open output file for writing: " + sys.argv[2]
       print( sys.argv[0], ":", e, sys.stderr )
       f = sys.stdout
+  
+  # Generate an instance of a generic netlist, and load the netlist tree from
+  # the command line option. If the file doesn't exist, execution will stop
+  net = kicad_netlist_reader.netlist(sys.argv[1])
   
   # subset the components to those wanted in the BOM, controlled
   # by <configure> block in kicad_netlist_reader.py
@@ -147,7 +147,7 @@ def main():
   
   # Get all of the components in groups of matching parts + values
   # (see kicad_netlist_reader.py)
-  grouped = net.groupComponents(components)
+  grouped = net.groupComponents(groupIdentity, components)
   
   # Output component information organized by group, aka as collated:
   item = 0

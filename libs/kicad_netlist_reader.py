@@ -316,27 +316,6 @@ class comp():
         # Set to true when this component is included in a component group
         self.grouped = False
 
-    def __eq__(self, other):
-        """ Equivalency operator, remember this can be easily overloaded
-            2 components are equivalent ( i.e. can be grouped
-            if they have same value and same footprint
-
-            Override the component equivalence operator must be done before
-            loading the netlist, otherwise all components will have the original
-            equivalency operator.
-
-            You have to define a comparison module (for instance named myEqu)
-            and add the line;
-                kicad_netlist_reader.comp.__eq__ = myEqu
-            in your bom generator script before calling the netliste reader by something like:
-                net = kicad_netlist_reader.netlist(sys.argv[1])
-        """
-        result = False
-        if self.getValue() == other.getValue():
-            if self.getFootprint() == other.getFootprint():
-                result = True
-        return result
-
     def setLibPart(self, part):
         self.libpart = part
 
@@ -671,8 +650,7 @@ class netlist():
 
         return ret
 
-
-    def groupComponents(self, components = None):
+    def groupComponents(self, groupIdentity, components = None):
         """Return a list of component lists. Components are grouped together
         when the value, library and part identifiers match.
 
@@ -680,41 +658,26 @@ class netlist():
         components -- is a list of components, typically an interesting subset
         of all components, or None.  If None, then all components are looked at.
         """
-        if not components:
+        if components is None:
             components = self.components
 
-        groups = []
-
-        # Make sure to start off will all components ungrouped to begin with
+        groups = {}
         for c in components:
-            c.grouped = False
-
-        # Group components based on the value, library and part identifiers
-        for c in components:
-            if c.grouped == False:
-                c.grouped = True
-                newgroup = []
-                newgroup.append(c)
-
-                # Check every other ungrouped component against this component
-                # and add to the group as necessary
-                for ci in components:
-                    if ci.grouped == False and ci == c:
-                        newgroup.append(ci)
-                        ci.grouped = True
-
-                # Add the new component group to the groups list
-                groups.append(newgroup)
+            groups.setdefault(groupIdentity(c), []).append(c)
 
         # Each group is a list of components, we need to sort each list first
         # to get them in order as this makes for easier to read BOM's
         r = re.compile('[0-9]+(\.[0-9]+)?')
 
-        for g in groups:
-            g = sorted(g, key=lambda g: r.sub(lambda m: '%016.8f' % float(m.group(0)), g.getRef()))
+        for g in groups.itervalues():
+            g = sorted(g
+                    , key=lambda g: r.sub(
+                        lambda m: '%016.8f' % float(m.group(0)), g.getRef()))
 
         # Finally, sort the groups to order the references alphabetically
-        groups = sorted(groups, key=lambda g: r.sub(lambda m: '%016.8f' % float(m.group(0)), g[0].getRef()))
+        groups = sorted(groups.itervalues()
+                , key=lambda g: r.sub(
+                    lambda m: '%016.8f' % float(m.group(0)), g[0].getRef()))
 
         return groups
 
@@ -728,33 +691,6 @@ class netlist():
         rets-= {''}
         rets = sorted(rets, key=lambda v: r.sub(lambda m: '%016.8f' % float(m.group(0)), v))
         return ', '.join(rets)
-
-    def getGroupFootprint(self, group):
-        """Return the whatever is known about the Footprint by consulting each
-        component in the group.  If any of them know something about the Footprint,
-        then return that first non-blank value.
-        """
-        for c in group:
-            ret = c.getFootprint()
-            if ret != "":
-                return ret
-        return group[0].getLibPart().getFootprint()
-
-    def getGroupDatasheet(self, group):
-        """Return the whatever is known about the Datasheet by consulting each
-        component in the group.  If any of them know something about the Datasheet,
-        then return that first non-blank value.
-        """
-        for c in group:
-            ret = c.getDatasheet()
-            if ret != "":
-                return ret
-
-        if len(group) > 0:
-            return group[0].getLibPart().getDatasheet()
-        else:
-            print("NULL!")
-        return ''
 
     def formatXML(self):
         """Return the whole netlist formatted in XML"""
