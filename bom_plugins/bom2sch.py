@@ -5,8 +5,6 @@
 """
 import sys
 import os
-import csv
-import re
 import logging
 from Queue import Queue
 
@@ -15,259 +13,12 @@ lib_path = os.path.normpath(lib_path)
 if lib_path not in sys.path:
   sys.path.append(lib_path)
 
+from libs import utils
 from libs import eeschematic
+from libs import bom
+
 
 log = logging.getLogger(__name__)
-
-
-# Special BOM Header
-ITEM          = 'item'         
-QUANTITY      = 'quantity'     
-POPULATE      = 'populate'
-REFERENCE     = 'reference'    
-VALUE         = 'value'        
-SYMBOL        = 'symbol'       
-FOOTPRINT     = 'footprint'    
-DATASHEET     = 'datasheet'    
-MANUFACTURER  = 'manufacturer' 
-PARTNUM       = 'partnum'      
-SUPPLIER      = 'supplier'     
-SUPPLIERNUM   = 'suppliernum'  
-PRICE         = 'price'        
-
-
-# Special meta data
-SCHFILE      = 'schfile'
-
-
-class bom:
-  def __init__(self):
-    self.meta = {} # A meta key with array of values
-    self.header={} # A PROGRAM_HEADER_ID -> (COLUMN_INDEX, COLUMN_NAME, FALSE_IF_UNKNOWN_USER_COLUMN)
-    self.refs = {} # A reference key with dict of field to values
-
-  def getSchFileName(self):
-    raise NotImplemented("Base class method")
-
-  def getHeaderTexts(self):
-    return {k:v[1] for k, v in self.header.iteritems()}
-
-  def getReferences(self):
-    return self.refs
-
-  def transformToSch(self, references):
-    """Combine supplier, price, and part number into once supplier field
-    """
-    for ref in references:
-      values = self.refs.get(ref, {})
-      values[SUPPLIER] = ":".join([a 
-        for a in (values.pop(k, None) for k in (SUPPLIER, SUPPLIERNUM, PRICE))
-        if a is not None])
-
-      dnp_values = {'DO NOT POPULATE'}
-      for k in (VALUE, POPULATE):
-        if values.get(k, '').upper() in dnp_values:
-          values[k] = "DNP"
-
-
-  def joinValues4Refs(self, references):
-    """
-    @param references: a collection of references
-    """
-    values = [self.refs.get(ref,{}) for ref in references]
-    values, isjoined = bom._join2Dict(values)
-    for ref in references: 
-      self.refs[ref] = values
-    return values, isjoined
-
-  def genSchFieldNameToBomColID(self):
-    return {fieldName:colID 
-        for colID, (colIdx, fieldName, special) in self.header.items()}
-
-  @staticmethod
-  def _join2Dict(dicts, sep="; "):
-    keys = set()
-    for d in dicts: keys.update(d.keys())
-
-    new = {}
-    isjoined = False
-    for key in keys:
-      val = set()
-      for d in dicts:
-        val.add(d.get(key,''))
-      if len(val)>1:
-        isjoined = True
-      new[key] = sep.join(val)
-
-    return new, isjoined
-
-
-class csv_bom(bom):
-  HEADER_NAMES = re.compile(
-      '(?P<'+ITEM        +'>' 'Item#?'                              ')$|'
-      '(?P<'+QUANTITY    +'>' 'Qty|Qnty|Quantity'                   ')$|'
-      '(?P<'+POPULATE    +'>' 'Pop(ulate|ulation)?'                 ')$|'
-      '(?P<'+REFERENCE   +'>' 'Ref|Reference.*'                     ')$|'
-      '(?P<'+VALUE       +'>' 'Value'                               ')$|'
-      '(?P<'+SYMBOL      +'>' 'Libpart|Part|Library.*'              ')$|'
-      '(?P<'+FOOTPRINT   +'>' 'Footprint'                           ')$|'
-      '(?P<'+DATASHEET   +'>' 'Datasheet'                           ')$|'
-      '(?P<'+MANUFACTURER+'>' 'M(anu?)?f(actu)?r?(er)?'             ')$|'
-      '(?P<'+PARTNUM     +'>' '(M(anu?)?f(actu)?r?(er)?|P(art)?)'
-                              '(#| ?number)'                        ')$|'
-      '(?P<'+SUPPLIER    +'>' 'Sup(plier)?|Vendor|Dist(ributor)?'   ')$|'
-      '(?P<'+SUPPLIERNUM +'>' '(Sup(plier)?|Vendor|Dist(ributor)?)'
-                              '(#| ?number)'                        ')$|'
-      '(?P<'+PRICE       +'>' '(Sup(plier)?|Vendor|Dist(ributor)?)?'
-                             r'(\$| ?Price)'                        ')$|'
-      , flags=re.I)
-
-  META_NAMES = re.compile(
-      '(?P<'+SCHFILE+'>' 'source:' ')$|'
-      , flags=re.I)
-
-  getAllReferences_re = re.compile(
-      " *(([a-z]*)(\d+)|([^,;]*)) *([-,;]?)"
-      , flags=re.I )
-
-  def __init__(self):
-    bom.__init__(self)
-    # To recognize a row as bom header of is have one of following columns
-    self.header_min = [
-        {REFERENCE, VALUE    }, 
-        {REFERENCE, FOOTPRINT},
-        {REFERENCE, DATASHEET},
-                      ]
-
-    self.header_excluded = re.compile(
-        '('+ITEM    +')$|'
-        '('+QUANTITY+')$|'
-        , flags=re.I)
-
-    self.meta = {} # A meta key with array of values
-    self.refs = {} # A reference key with dict of key and values
-    self.lineCnt = 0
-
-  def getSchFileName(self):
-    return self.meta.get(SCHFILE, [None])[0]
-
-  def read(self, filename):
-    self.lineCnt = 0
-    with open(filename) as bom_file:
-      first_file = bom_file.readline()
-      for skip_bom, c in enumerate(first_file):
-          if ord(c)<=127:
-              break
-
-    with open(filename) as bom_file:
-      bom_file.read(skip_bom)
-      csv_reader = csv.reader(bom_file
-          , lineterminator='\n'
-          , delimiter=','
-          , quotechar='\"'
-          , quoting=csv.QUOTE_MINIMAL )
-
-      header = self._findHeader(csv_reader)
-      self.header = self._excludedHeader(header)
-      self.refs = self._readAllRefs(csv_reader, self.header)
-
-  def _findHeader(self, reader):
-    for row in reader:
-      self.lineCnt = self.lineCnt+1
-      header = {}
-      for colIdx, cel in enumerate(row):
-        cel = cel.strip()
-        m = self.HEADER_NAMES.match(cel)
-        if m.lastgroup:
-          header[m.lastgroup] = (colIdx, cel, True)
-        elif cel:
-          header.setdefault(cel, (colIdx, cel, False))
-
-      for hMin in self.header_min:
-        if hMin.issubset(header.keys()):
-          log.debug("CSV LINE %-3d : %s", self.lineCnt, ', '.join(row))
-          return header
-
-      for colIdx, cel in enumerate(row):
-        m = self.META_NAMES.match(cel)
-        if m.lastgroup:
-          self.meta[m.lastgroup] = row[colIdx+1:]
-          log.debug("CSV LINE %-3d : %s", self.lineCnt, ', '.join(row))
-          break
-
-  def _excludedHeader(self, header):
-      return {
-        k:v for k, v in header.items() 
-          if not self.header_excluded.match(k).group(0)
-      }
-
-  def _readAllRefs(self, reader, header):
-    log.info("CSV LINE %-3d: Read data for %s", self.lineCnt
-        , ', '.join(sorted(self.header.keys())))
-    refsData = {}
-    refsItemIdx = {}
-    for row in reader:
-      self.lineCnt = self.lineCnt + 1
-      data = {}
-      for colID, (colIdx, colname, special) in header.items():
-        if colIdx>=len(row):
-          log.warn("CSV LINE %-3d: Stop reading", self.lineCnt)
-          return refsData
-
-        if row[colIdx]:
-          data[colID] = row[colIdx]
-
-      if not data:
-        log.warn("Reach end of BOM table at line %d", self.lineCnt)
-        return refsData
-
-      if not data[REFERENCE]:
-        log.warn("Ignoring line %d - No reference found", self.lineCnt)
-        continue
-
-      refs = self.getAllReferences(data[REFERENCE])
-
-      for ref in refs:
-        if ref in refsData:
-          log.warn("Ignoring %s at line %d - already exist at line(s): %d",
-              ref, self.lineCnt, ','.join(refsItemIdx[ref])) 
-          continue
-        refsData.setdefault(ref, data)
-        refsItemIdx.get(ref, []).append(str(self.lineCnt))
-
-    return refsData
-
-  @staticmethod
-  def getAllReferences(refs):
-    """ Return array of reference split out from the refs string
-
-    @example: 
-    >>> csv_bom.getAllReferences('C1-C4  ,  C21; C23')
-    ['C1', 'C2', 'C3', 'C4', 'C21', 'C23']
-    """
-    refNum= 0
-    state = ""
-    allref = []
-    for m in csv_bom.getAllReferences_re.finditer(refs):
-      #log.debug("MATCH: %s", m.groups())
-
-      if m.group(4):
-        allref.append(m.group(1))
-        state = ""
-        continue
-
-      if m.group(4) is None:
-        nextRefNum = int(m.group(3))+1
-        if state == "-":
-          for i in range(refNum, nextRefNum):
-            allref.append(m.group(2) + str(i)) 
-        else:
-          allref.append(m.group(1)) 
-
-        refNum = nextRefNum
-        state  = m.group(5)
-
-    return allref
 
 
 def main_cli():
@@ -288,35 +39,22 @@ def main_cli():
   log.info("Reading %s", bom_filename)
 
   # Read all BOM data into memory
-  myBom = csv_bom()
+  myBom = bom.csv_bom()
   myBom.read(bom_filename)
   bomHeaderTexts = myBom.getHeaderTexts()
   if not sch_filename:
     sch_filename = myBom.getSchFileName()
   
-  # Normalize path that can be either from Windows/Linux style
-  # By first check if any "/" character in the path
-  test_path = sch_filename.split("/")
-
-  if len(test_path)==0:
-  # Look like is it windows path, so we split it in Window way
-    test_path = sch_filename.split("\\")
-
-  # Check first part of this path to see if it is a relative path
-  if test_path[0] in ("..", ".", ""):
-    bom_path = os.path.dirname(bom_filename)
-    sch_filename = os.path.normpath(os.path.join(bom_path, sch_filename))
-  else:
-    sch_filename = os.path.sep.join(test_path)
+  sch_filename = utils.normPath(sch_filename, os.path.dirname(bom_filename))
 
   # Create a component field name map to ColID
-  fieldNameToColID = myBom.genSchFieldNameToBomColID()
+  fieldNameToColID = myBom.genColNameToHeaderID()
   fieldNameToColID.update(
     {
       eeschematic.FIELD_REF_NAME : None      ,
-      eeschematic.FIELD_VAL_NAME : VALUE     ,
-      eeschematic.FIELD_FP_NAME  : FOOTPRINT ,
-      eeschematic.FIELD_PDF_NAME : DATASHEET ,
+      eeschematic.FIELD_VAL_NAME : bom.VALUE     ,
+      eeschematic.FIELD_FP_NAME  : bom.FOOTPRINT ,
+      eeschematic.FIELD_PDF_NAME : bom.DATASHEET ,
     }
   )
 
@@ -430,18 +168,18 @@ def main_cli():
 
         # Insert Populate field if is has value and not exist in the
         # schematic yet
-        val_field = updatedFields.get(VALUE, {})
-        pop_val = fieldsValue.get(POPULATE)
-        if pop_val and (POPULATE not in updatedFields):
+        val_field = updatedFields.get(bom.VALUE, {})
+        pop_val = fieldsValue.get(bom.POPULATE)
+        if pop_val and (bom.POPULATE not in updatedFields):
           pop_field = e.duplicate(val_field
               , fields[str(maxFieldNum)][eeschematic.FIELD_VALUE])
           maxFieldNum = maxFieldNum + 1
           pop_field[eeschematic.FIELD_NUMBER].setValue(str(maxFieldNum))
           pop_field[eeschematic.FIELD_VALUE].setAndQuoteValue(pop_val)
           pop_field[eeschematic.FIELD_NAME].setAndQuoteValue(
-            bomHeaderTexts[POPULATE])
+            bomHeaderTexts[bom.POPULATE])
         else:
-          pop_field = updatedFields.get(POPULATE, {})
+          pop_field = updatedFields.get(bom.POPULATE, {})
 
         # + Hide Value if the Populate field has value, and it locate at
         # same position as Value
@@ -459,9 +197,12 @@ def main_cli():
           else:
             val_field[eeschematic.FIELD_FLAGS].setValue("0000")
             pop_field[eeschematic.FIELD_FLAGS].setValue("0001")
+            if not pop_val:
+                log.info("Remove %s %s field", effRefs, pop_field[eeschematic.FIELD_NAME])
+                e.delete(pop_field)
 
         # Update Symbol value
-        newValue = fieldsValue.get(SYMBOL, None)
+        newValue = fieldsValue.get(bom.SYMBOL, None)
         if newValue is not None:
           newValue = newValue.strip()
           comLib = e.info[eeschematic.COMP_LIB]

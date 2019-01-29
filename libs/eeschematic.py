@@ -712,6 +712,23 @@ class schIter:
     cloned_array = {}
     return MapNestedDict(info, _clone)
 
+  def delete(self, info):
+    """ Delete items in raw for later not save back to the file
+
+    @param info: (dict) A nested dict with leaves element are
+            baseLinkedData objects
+    """
+    setItems = {}
+
+    def _colectItems(x):
+      a = x.getSrc()
+      setItems.setdefault(id(a), a)
+
+    MapNestedDict(info, _colectItems)
+
+    for items in setItems.values():
+      items[:] = [e for e in items if isinstance(e, list)]
+
 
 class schMapper(schIter):
   """ This is eeschema iterative mapping 

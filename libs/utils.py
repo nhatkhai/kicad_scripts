@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import os
 import logging
 
 
@@ -31,6 +32,25 @@ def MapNestedList(data, func):
     return func(data)
 
   return [MapNestedList(e, func) for e in data]
+
+
+def normPath(path, curPath=None):
+  # Normalize path that can be either from Windows/Linux style
+  # By first check if any "/" character in the path
+  test_path = path.split("/")
+
+  if len(test_path)==0:
+  # Look like is it windows path, so we split it in Window way
+    test_path = path.split("\\")
+
+  # Check first part of this path to see if it is a relative path
+  if test_path[0] in ("..", ".", ""):
+    if not curPath: 
+        curPath = os.getcwd()
+    return os.path.normpath(os.path.join(curPath, path))
+  else:
+    return os.path.sep.join(test_path)
+
 
 # Test section for pytest style
 #
