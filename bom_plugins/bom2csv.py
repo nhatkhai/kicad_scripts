@@ -141,7 +141,7 @@ def main():
   writerow( out, [] )                        # blank line
   writerow( out, [] )                        # blank line
   
-  writerow( out, ['Collated Components:'] )
+  writerow( out, ['Grouped Style:'] )
   writerow( out, [] )                        # blank line
   writerow( out, columns )                   # reuse same columns
   

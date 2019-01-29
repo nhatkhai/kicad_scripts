@@ -646,7 +646,8 @@ class netlist():
 
         # Sort first by ref as this makes for easier to read BOM's
         r = re.compile('[0-9]+(\.[0-9]+)?')
-        ret.sort(key=lambda g: r.sub(lambda m: '%016.8f' % float(m.group(0)), g.getRef()))
+        ret.sort(key=lambda g: r.sub(
+            lambda m: '%016.8f' % float(m.group(0)), g.getRef()))
 
         return ret
 
@@ -670,9 +671,8 @@ class netlist():
         r = re.compile('[0-9]+(\.[0-9]+)?')
 
         for g in groups.itervalues():
-            g = sorted(g
-                    , key=lambda g: r.sub(
-                        lambda m: '%016.8f' % float(m.group(0)), g.getRef()))
+            g.sort(key=lambda g: r.sub(
+                lambda m: '%016.8f' % float(m.group(0)), g.getRef()))
 
         # Finally, sort the groups to order the references alphabetically
         groups = sorted(groups.itervalues()
