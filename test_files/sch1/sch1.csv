@@ -1,0 +1,68 @@
+Source:,sch1.sch
+Date:,1/29/2019 10:58:05 PM
+Tool:,Eeschema 4.0.7
+Generator:,../../bom_plugins/bom2csv.py
+Component Count:,39
+
+Individual Components:
+
+Item,Qty,POP,Reference(s),Value,Manufacturer,PartNumber,Supplier,Supplier Number,Supplier Price,Description,LibPart,Footprint,Datasheet
+,,,C1,220nF,Taiyo Yuden,EMK107B7224KA-T,Digikey,587-1249-1-ND,$0.10,CAP CER 0.22UF 16V X7R 0603,sch1-cache:C_0603,SM0603_Capacitor,https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&u=M
+,,,C2,2.2uF,Samsung Electro-Mechanics,CL10A225KQ8NNNC,Digikey, 1276-1183-1-ND,$0.13,CAP CER 2.2UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp
+,,,C3,2.2uF,Samsung Electro-Mechanics,CL10A225KQ8NNNC,Digikey, 1276-1183-1-ND,$0.13,CAP CER 2.2UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp
+,,,C4,22uF,Samsung Electro-Mechanics,CL10A226KQ8NRNE,Digikey,1276-2867-1-ND,$0.45,CAP CER 22UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp
+,,,C5,220nF,Taiyo Yuden,EMK107B7224KA-T,Digikey,587-1249-1-ND,$0.10,CAP CER 0.22UF 16V X7R 0603,sch1-cache:C_0603,SM0603_Capacitor,https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&u=M
+,,,C6,2.2uF,Samsung Electro-Mechanics,CL10A225KQ8NNNC,Digikey, 1276-1183-1-ND,$0.13,CAP CER 2.2UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp
+,,,C7,22uF,Samsung Electro-Mechanics,CL10A226KQ8NRNE,Digikey,1276-2867-1-ND,$0.45,CAP CER 22UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp
+,,,C8,220nF,Taiyo Yuden,EMK107B7224KA-T,Digikey,587-1249-1-ND,$0.10,CAP CER 0.22UF 16V X7R 0603,sch1-cache:C_0603,SM0603_Capacitor,https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&u=M
+,,,C9,2.2uF,Samsung Electro-Mechanics,CL10A225KQ8NNNC,Digikey, 1276-1183-1-ND,$0.13,CAP CER 2.2UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp
+,,,C10,2.2uF,Samsung Electro-Mechanics,CL10A225KQ8NNNC,Digikey, 1276-1183-1-ND,$0.13,CAP CER 2.2UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp
+,,,C11,22uF,Samsung Electro-Mechanics,CL10A226KQ8NRNE,Digikey,1276-2867-1-ND,$0.45,CAP CER 22UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp
+,,,C12,220nF,Taiyo Yuden,EMK107B7224KA-T,Digikey,587-1249-1-ND,$0.10,CAP CER 0.22UF 16V X7R 0603,sch1-cache:C_0603,SM0603_Capacitor,https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&u=M
+,,,C13,2.2uF,Samsung Electro-Mechanics,CL10A225KQ8NNNC,Digikey, 1276-1183-1-ND,$0.13,CAP CER 2.2UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp
+,,,C14,22uF,Samsung Electro-Mechanics,CL10A226KQ8NRNE,Digikey,1276-2867-1-ND,$0.45,CAP CER 22UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp
+,,,D1,GH CSSPM1.24,OSRAM Opto Semiconductors Inc.,GH CSSPM1.24-4T2U-1,Digikey,475-3279-1-ND,$3.46,LED OSLON SSL120 RED 657NM SMD,sch1-cache:LED_0603,SM1212_ALED_TPAD,https://dammedia.osram.info/media/resource/hires/osram-dam-4651431/GH%20CSSPM1.24.pdf
+,,,D2,TEMD5110X01,Vishay Semiconductor Opto Division,TEMD5110X01,Digikey,751-1048-1-ND,$1.87,"Photodiode 940nm 100ns 130° 4-SMD, No Lead",sch1-cache:PHOTO_DIODE,4-SMD_LED,http://www.vishay.com/docs/84658/temd5110.pdf
+,,,D3,TEMD5110X01,Vishay Semiconductor Opto Division,TEMD5110X01,Digikey,751-1048-1-ND,$1.87,"Photodiode 940nm 100ns 130° 4-SMD, No Lead",sch1-cache:PHOTO_DIODE,4-SMD_LED,http://www.vishay.com/docs/84658/temd5110.pdf
+,,,J1,C,Sullins Connector Solutions,PREC001DAAN-RC,Digikey,S2012EC-01-ND,$0.06,CONN HEADER VERT 2POS,sch1-cache:PREC001DAAN-RC,Pin_Header_Straight_2x01,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+,,,J2,B,Sullins Connector Solutions,PREC003SAAN-RC,Digikey,S1012EC-03-ND,$0.09,CONN HEADER VERT 3POS 2.54MM,sch1-cache:PREC003SAAN,Pin_Header_Straight_1x03,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b
+,,,J3,A,Sullins Connector Solutions,PREC003SAAN-RC,Digikey,S1012EC-03-ND,$0.09,CONN HEADER VERT 3POS 2.54MM,sch1-cache:PREC003SAAN,Pin_Header_Straight_1x03,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b
+,,,J4,EFM.A1,Sullins Connector Solutions,PREC001DAAN-RC,Digikey,S2012EC-01-ND,$0.06,CONN HEADER VERT 2POS,sch1-cache:PREC001DAAN-RC,Pin_Header_Straight_2x01,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+,,DNP,J5,D,Sullins Connector Solutions,PREC002DAAN-RC,Digikey,S2012EC-02-ND,$0.12,CONN HEADER VERT 4POS 2.54MM,sch1-cache:PREC002DAAN-RC,Pin_Header_Straight_2x02,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+,,,J6,EFM.A0,Sullins Connector Solutions,PREC001DAAN-RC,Digikey,S2012EC-01-ND,$0.06,CONN HEADER VERT 2POS,sch1-cache:PREC001DAAN-RC,Pin_Header_Straight_2x01,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+,,,J7,C,Sullins Connector Solutions,PREC001DAAN-RC,Digikey,S2012EC-01-ND,$0.06,CONN HEADER VERT 2POS,sch1-cache:PREC001DAAN-RC,Pin_Header_Straight_2x01,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+,,,J8,B,Sullins Connector Solutions,PREC003SAAN-RC,Digikey,S1012EC-03-ND,$0.09,CONN HEADER VERT 3POS 2.54MM,sch1-cache:PREC003SAAN,Pin_Header_Straight_1x03,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b
+,,,J9,A,Sullins Connector Solutions,PREC003SAAN-RC,Digikey,S1012EC-03-ND,$0.09,CONN HEADER VERT 3POS 2.54MM,sch1-cache:PREC003SAAN,Pin_Header_Straight_1x03,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b
+,,,J10,EFM.A1,Sullins Connector Solutions,PREC001DAAN-RC,Digikey,S2012EC-01-ND,$0.06,CONN HEADER VERT 2POS,sch1-cache:PREC001DAAN-RC,Pin_Header_Straight_2x01,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+,,DNP,J11,D,Sullins Connector Solutions,PREC002DAAN-RC,Digikey,S2012EC-02-ND,$0.12,CONN HEADER VERT 4POS 2.54MM,sch1-cache:PREC002DAAN-RC,Pin_Header_Straight_2x02,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+,,,J12,EFM.A0,Sullins Connector Solutions,PREC001DAAN-RC,Digikey,S2012EC-01-ND,$0.06,CONN HEADER VERT 2POS,sch1-cache:PREC001DAAN-RC,Pin_Header_Straight_2x01,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+,,,R1,4.99kΩ,Yageo,RC0603FR-074K99L,Digikey,311-4.99KHRCT-ND,$0.10,RES SMD 4.99K OHM 1% 1/10W 0603,sch1-cache:R_0603,SM0603_Resistor,http://www.yageo.com/documents/recent/PYu-RC_Group_51_RoHS_L_10.pdf
+,,,R2,10kΩ,Bourns Inc.,TC33X-2-103,Digikey,TC33X-103ECT-ND,$0.29,TRIMMER 10K OHM 0.1W J LEAD TOP,sch1-cache:RTRIM,BOURNS_TC33,https://www.bourns.com/docs/Product-Datasheets/TC33.pdf
+,,,R3,10kΩ,Bourns Inc.,TC33X-2-103,Digikey,TC33X-103ECT-ND,$0.29,TRIMMER 10K OHM 0.1W J LEAD TOP,sch1-cache:RTRIM,BOURNS_TC33,https://www.bourns.com/docs/Product-Datasheets/TC33.pdf
+,,,R4,4.99kΩ,Yageo,RC0603FR-074K99L,Digikey,311-4.99KHRCT-ND,$0.10,RES SMD 4.99K OHM 1% 1/10W 0603,sch1-cache:R_0603,SM0603_Resistor,http://www.yageo.com/documents/recent/PYu-RC_Group_51_RoHS_L_10.pdf
+,,,R5,10kΩ,Bourns Inc.,TC33X-2-103,Digikey,TC33X-103ECT-ND,$0.29,TRIMMER 10K OHM 0.1W J LEAD TOP,sch1-cache:RTRIM,BOURNS_TC33,https://www.bourns.com/docs/Product-Datasheets/TC33.pdf
+,,,R6,10kΩ,Bourns Inc.,TC33X-2-103,Digikey,TC33X-103ECT-ND,$0.29,TRIMMER 10K OHM 0.1W J LEAD TOP,sch1-cache:RTRIM,BOURNS_TC33,https://www.bourns.com/docs/Product-Datasheets/TC33.pdf
+,,,U1,NCx20072,ON Semiconductor,NCS20072DR2G,Digikey,NCS20072DR2GOSCT-ND,$0.85,IC OPAMP 3MHZ RRO DUAL 8SOIC,sch1-cache:NCx20072,8-MSOP,http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF
+,,,U2,NCx20072,ON Semiconductor,NCS20072DR2G,Digikey,NCS20072DR2GOSCT-ND,$0.85,IC OPAMP 3MHZ RRO DUAL 8SOIC,sch1-cache:NCx20072,8-MSOP,http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF
+,,,U3,NCx20072,ON Semiconductor,NCS20072DR2G,Digikey,NCS20072DR2GOSCT-ND,$0.85,IC OPAMP 3MHZ RRO DUAL 8SOIC,sch1-cache:NCx20072,8-MSOP,http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF
+,,,U4,NCx20072,ON Semiconductor,NCS20072DR2G,Digikey,NCS20072DR2GOSCT-ND,$0.85,IC OPAMP 3MHZ RRO DUAL 8SOIC,sch1-cache:NCx20072,8-MSOP,http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF
+
+
+
+Grouped Style:
+
+Item,Qty,POP,Reference(s),Value,Manufacturer,PartNumber,Supplier,Supplier Number,Supplier Price,Description,LibPart,Footprint,Datasheet
+1,4,,"C1, C5, C8, C12",220nF,Taiyo Yuden,EMK107B7224KA-T,Digikey,587-1249-1-ND,$0.10,CAP CER 0.22UF 16V X7R 0603,sch1-cache:C_0603,SM0603_Capacitor,https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&u=M
+2,6,,"C2, C3, C6, C9, C10, C13",2.2uF,Samsung Electro-Mechanics,CL10A225KQ8NNNC,Digikey, 1276-1183-1-ND,$0.13,CAP CER 2.2UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp
+3,4,,"C4, C7, C11, C14",22uF,Samsung Electro-Mechanics,CL10A226KQ8NRNE,Digikey,1276-2867-1-ND,$0.45,CAP CER 22UF 6.3V X5R 0603,sch1-cache:C_0603,SM0603_Capacitor,http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp
+4,1,,D1,GH CSSPM1.24,OSRAM Opto Semiconductors Inc.,GH CSSPM1.24-4T2U-1,Digikey,475-3279-1-ND,$3.46,LED OSLON SSL120 RED 657NM SMD,sch1-cache:LED_0603,SM1212_ALED_TPAD,https://dammedia.osram.info/media/resource/hires/osram-dam-4651431/GH%20CSSPM1.24.pdf
+5,2,,"D2, D3",TEMD5110X01,Vishay Semiconductor Opto Division,TEMD5110X01,Digikey,751-1048-1-ND,$1.87,"Photodiode 940nm 100ns 130° 4-SMD, No Lead",sch1-cache:PHOTO_DIODE,4-SMD_LED,http://www.vishay.com/docs/84658/temd5110.pdf
+6,2,,"J1, J7",C,Sullins Connector Solutions,PREC001DAAN-RC,Digikey,S2012EC-01-ND,$0.06,CONN HEADER VERT 2POS,sch1-cache:PREC001DAAN-RC,Pin_Header_Straight_2x01,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+7,2,,"J2, J8",B,Sullins Connector Solutions,PREC003SAAN-RC,Digikey,S1012EC-03-ND,$0.09,CONN HEADER VERT 3POS 2.54MM,sch1-cache:PREC003SAAN,Pin_Header_Straight_1x03,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b
+8,2,,"J3, J9",A,Sullins Connector Solutions,PREC003SAAN-RC,Digikey,S1012EC-03-ND,$0.09,CONN HEADER VERT 3POS 2.54MM,sch1-cache:PREC003SAAN,Pin_Header_Straight_1x03,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b
+9,2,,"J4, J10",EFM.A1,Sullins Connector Solutions,PREC001DAAN-RC,Digikey,S2012EC-01-ND,$0.06,CONN HEADER VERT 2POS,sch1-cache:PREC001DAAN-RC,Pin_Header_Straight_2x01,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+10,2,DNP,"J5, J11",D,Sullins Connector Solutions,PREC002DAAN-RC,Digikey,S2012EC-02-ND,$0.12,CONN HEADER VERT 4POS 2.54MM,sch1-cache:PREC002DAAN-RC,Pin_Header_Straight_2x02,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+11,2,,"J6, J12",EFM.A0,Sullins Connector Solutions,PREC001DAAN-RC,Digikey,S2012EC-01-ND,$0.06,CONN HEADER VERT 2POS,sch1-cache:PREC001DAAN-RC,Pin_Header_Straight_2x01,https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b
+12,2,,"R1, R4",4.99kΩ,Yageo,RC0603FR-074K99L,Digikey,311-4.99KHRCT-ND,$0.10,RES SMD 4.99K OHM 1% 1/10W 0603,sch1-cache:R_0603,SM0603_Resistor,http://www.yageo.com/documents/recent/PYu-RC_Group_51_RoHS_L_10.pdf
+13,4,,"R2, R3, R5, R6",10kΩ,Bourns Inc.,TC33X-2-103,Digikey,TC33X-103ECT-ND,$0.29,TRIMMER 10K OHM 0.1W J LEAD TOP,sch1-cache:RTRIM,BOURNS_TC33,https://www.bourns.com/docs/Product-Datasheets/TC33.pdf
+14,4,,"U1, U2, U3, U4",NCx20072,ON Semiconductor,NCS20072DR2G,Digikey,NCS20072DR2GOSCT-ND,$0.85,IC OPAMP 3MHZ RRO DUAL 8SOIC,sch1-cache:NCx20072,8-MSOP,http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF

@@ -6,6 +6,7 @@
 import os
 import re
 import logging
+from Queue import Queue
 
 from utils      import MapNestedList, MapNestedDict
 from linkeddata import linkedVirtualStrData, linkedStrData
@@ -166,8 +167,8 @@ class schematic:
     sheetIDs= {}
     comps   = {}
 
-    with open(os.path.join(self._sch_dir, sch_file)) as f:
-      for e, state in schIter(f):
+    with schIter(os.path.join(self._sch_dir, sch_file)) as sch:
+      for e, state in sch:
         if state == e.SUB_SCH_EX:
           _id   = str(e.info[SHEET_ID])
           sheetIDs[_id] = sheets.setdefault(str(e.info[SHEET_FILE])
@@ -528,6 +529,126 @@ class ARTree:
     return _groupByChannel(self._tree, refNeedToCover)
 
 
+class schCompIter:
+  def __init__(self, sch_filename, getSchIter):
+    self.filename = sch_filename
+    self._sheetARs = {}
+
+    self._sheetARsIter = {}
+    self._curSchIter   = None
+    self._getSchIter    = getSchIter
+
+  def getSubSheets(self):
+    """ Collect a set of schematic file with AR_ID and sub schematic file 
+    
+    @return {str(SCH_FILENAME) : [(str(AR_ID), str(SUB_SCH_FILENAME))]}
+    """
+    subSheets = {}
+
+    # Travel through all schematic files to figure out what is a set of
+    # relevant AR ID need to be working on
+    log.debug("Obtaining schematic hierarchy structure")
+    sheets = Queue()
+    sheets.put( (self.filename, subSheets.setdefault(self.filename, []),) )
+    while not sheets.empty():
+      schfile, schLinks = sheets.get()
+      log.debug("  Visiting %s", schfile)
+
+      rootPath = os.path.dirname(schfile)
+
+      with schIter(schfile) as sch:
+        for e, state in sch:
+          if state!=e.SUB_SCH_EX: 
+            continue
+
+          subAR = str(e.info[SHEET_ID])
+          subSchFile = os.path.join(rootPath, str(e.info[SHEET_FILE]))
+
+          schLinks.append( (subAR, subSchFile,) )
+
+          if subSchFile not in subSheets:
+            sheets.put( (subSchFile, subSheets.setdefault(subSchFile, []),) )
+    return subSheets
+
+  def getSubSheetARs(self):
+    """
+
+    @return { str(SCH_FILENAME) : set(str(AR_PATH)) }
+    """
+    if self._sheetARs:
+      return self._sheetARs.copy()
+
+    subSheets = self.getSubSheets()
+    sheetARs = { self.filename : set() }
+
+    # Walk through the sch graph to generate a set of AR path that relevant
+    # to the root schematic only
+    log.debug("Calculate all relevant AR path")
+    sheets = Queue()
+    sheets.put( (self.filename, '',) )
+    while not sheets.empty():
+      schfile, curAR = sheets.get()
+      log.debug("  Visiting %s", schfile)
+      for subAR, subSchFile in subSheets[schfile]:
+        subAR = curAR + '/' + subAR 
+        sheetARs.setdefault(subSchFile, set()).add(subAR)
+        sheets.put( (subSchFile, subAR) )
+
+    self._sheetARs = sheetARs
+    return sheetARs.copy()
+
+  def __enter__(self):
+    return self
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    try:
+      self._curSchIter.__exit__(exc_type, exc_val, exc_tb)
+    except AttributeError:
+      pass
+
+  def __iter__(self):
+    self._sheetARsIter = self.getSubSheetARs()
+    self._curSchIter = iter([])
+    self.arPaths    = None
+    return self
+
+  def next(self):
+    while True:
+      try:
+        e, state = self._curSchIter.next()
+        if state != e.COMP_EX:
+          continue
+
+        # Find a set of relevant references for this components
+        comARs = e.info.get(COMP_AR)
+        effRefs = []
+        if comARs is None or len(self.arPaths)==0:
+          ref = str(e.info[COMP_REF])
+          effRefs.append(ref)
+        else:
+          comID = "/" + str(e.info[COMP_ID])
+          for comARPath, values in comARs.items():
+            if comARPath[0]=='"': comARPath=comARPath[1:-1]
+            if comARPath.endswith(comID):
+              if comARPath[0:-len(comID)] in self.arPaths:
+                ref = str(values[COMP_REF])
+                if ref[0]=='"': ref=ref[1:-1]
+                effRefs.append(ref)
+
+        if len(self.arPaths)>len(effRefs):
+          log.error("%s:%d - Cannot find all %d AR Path" 
+              % (e.filename, e.lineCnt, len(self.arPaths)) )
+
+        return e, set(effRefs)
+
+      except StopIteration:
+        if not self._sheetARsIter:
+          raise StopIteration
+        schfile, self.arPaths = self._sheetARsIter.popitem()
+        log.info("  Processing %s", schfile)
+        self._curSchIter = self._getSchIter(schfile)
+
+
 class schIter:
   """ This is a eeschema iterative parser.
   
@@ -551,8 +672,9 @@ class schIter:
   # detect text in double quote as one single token.
   SPLIT_RE = re.compile(r'\s+|(?:[^\s"]|"(?:\\.|[^"])*")+')
 
-  def __init__(self, afile):
-    self.file    = afile
+  def __init__(self, filename):
+    self.filename= filename
+    self.file    = open(filename, 'r')
 
     self.lineCnt  = 0  # Current processing line number
     self.stateFunc= lambda: None
@@ -580,6 +702,12 @@ class schIter:
 
     # Processing functions stack
     self._processor = [self._OtherItem]
+
+  def __enter__(self):
+    return self
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    self.file.close()
 
   def __iter__(self):
     return self
@@ -738,7 +866,11 @@ class schMapper(schIter):
 
   def __init__(self, infile, outfile):
     schIter.__init__(self, infile)
-    self.outfile = outfile
+    self.outfile = open(outfile, 'w')
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    schIter.__exit__(self, exc_type, exc_val, exc_tb)
+    self.outfile.close()
 
   def _clearData(self):
     MapNestedList(self.raw, self.outfile.write)

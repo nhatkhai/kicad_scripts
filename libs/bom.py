@@ -114,10 +114,11 @@ class bom:
     @param references: a collection of references
     """
     values = [self.refs.get(ref,{}) for ref in references]
-    values, isjoined = bom._join2Dict(values)
+    values, joinedFields = bom._join2Dict(values)
+    joinedFields -= {REFERENCE}
     for ref in references: 
       self.refs[ref] = values
-    return values, isjoined
+    return values, joinedFields
 
   @staticmethod
   def _join2Dict(dicts, sep="; "):
@@ -125,16 +126,15 @@ class bom:
     for d in dicts: keys.update(d.keys())
 
     new = {}
-    isjoined = False
+    joinedFields = set()
     for key in keys:
-      val = set()
-      for d in dicts:
-        val.add(d.get(key,''))
+      val = set((d.get(key) for d in dicts))
+      val -= {None}
       if len(val)>1:
-        isjoined = True
+        joinedFields.add(key)
       new[key] = sep.join(val)
 
-    return new, isjoined
+    return new, joinedFields
 
 
 class csv_bom(bom):

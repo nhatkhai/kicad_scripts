@@ -1,0 +1,994 @@
+EESchema Schematic File Version 2
+EELAYER 25 0
+EELAYER END
+$Descr USLetter 11000 8500
+encoding utf-8
+Sheet 3 3
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L PHOTO_DIODE D2
+U 1 1 5B6F07F6
+P 2400 4300
+AR Path="/5BA15A66/5B6F07F6" Ref="D2"  Part="1" 
+AR Path="/5BA15A67/5B6F07F6" Ref="D3"  Part="1" 
+F 0 "D3" H 2500 4350 50  0000 L CNN
+F 1 "TEMD5110X01" H 2500 4250 40  0001 L CNN
+F 2 "4-SMD_LED" H 2400 4800 60  0001 L CNN
+F 3 "http://www.vishay.com/docs/84658/temd5110.pdf" H 2400 4900 60  0001 L CNN
+F 4 "Vishay Semiconductor Opto Division" H 2400 5100 60  0001 L CNN "Manufacturer"
+F 5 "TEMD5110X01" H 2400 5000 60  0001 L CNN "PartNumber"
+F 6 "Digikey:751-1048-1-ND:$1.87" H 2400 4600 60  0001 C CNN "Supplier"
+F 7 "Photodiode 940nm 100ns 130° 4-SMD, No Lead" H 2400 4700 60  0001 C CNN "Description"
+	1    2400 4300
+	1    0    0    -1  
+$EndComp
+$Comp
+L R_0603 R1
+U 1 1 5B810AE0
+P 1100 1200
+AR Path="/5BA15A66/5B810AE0" Ref="R1"  Part="1" 
+AR Path="/5BA15A67/5B810AE0" Ref="R4"  Part="1" 
+F 0 "R4" H 1200 1250 50  0000 C CNN
+F 1 "4.99kΩ" H 1205 1145 50  0000 C CNN
+F 2 "SM0603_Resistor" H 1100 1700 60  0001 L CNN
+F 3 "http://www.yageo.com/documents/recent/PYu-RC_Group_51_RoHS_L_10.pdf" H 1100 1800 60  0001 L CNN
+F 4 "Yageo" H 1100 2000 60  0001 L CNN "Manufacturer"
+F 5 "RC0603FR-074K99L" H 1100 1900 60  0001 L CNN "PartNumber"
+F 6 "Digikey:311-4.99KHRCT-ND:$0.10" H 1100 1500 60  0001 C CNN "Supplier"
+F 7 "RES SMD 4.99K OHM 1% 1/10W 0603" H 1100 1600 60  0001 L CNN "Description"
+	1    1100 1200
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR2
+U 1 1 5B876AA9
+P 2000 800
+AR Path="/5BA15A66/5B876AA9" Ref="#PWR2"  Part="1" 
+AR Path="/5BA15A67/5B876AA9" Ref="#PWR36"  Part="1" 
+F 0 "#PWR36" H 2000 650 50  0001 C CNN
+F 1 "+5VA" H 2130 880 50  0000 C CNN
+F 2 "" H 2000 800 50  0001 C CNN
+F 3 "" H 2000 800 50  0001 C CNN
+	1    2000 800 
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR3
+U 1 1 5B876B24
+P 2000 1400
+AR Path="/5BA15A66/5B876B24" Ref="#PWR3"  Part="1" 
+AR Path="/5BA15A67/5B876B24" Ref="#PWR37"  Part="1" 
+F 0 "#PWR37" H 2000 1150 50  0001 C CNN
+F 1 "GNDA" H 2100 1400 50  0000 C CNN
+F 2 "" H 2000 1400 50  0001 C CNN
+F 3 "" H 2000 1400 50  0001 C CNN
+	1    2000 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L NCx20072 U1
+U 1 1 5B896683
+P 1700 1000
+AR Path="/5BA15A66/5B896683" Ref="U1"  Part="1" 
+AR Path="/5BA15A67/5B896683" Ref="U3"  Part="1" 
+F 0 "U3" H 2100 1000 60  0000 L BNN
+F 1 "NCx20072" H 2000 900 40  0000 C CNN
+F 2 "8-MSOP" H 1700 1500 60  0001 L CNN
+F 3 "http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF" H 1700 1600 60  0001 L CNN
+F 4 "ON Semiconductor" H 1700 1800 60  0001 L CNN "Manufacturer"
+F 5 "NCS20072DR2G" H 1700 1700 60  0001 L CNN "PartNumber"
+F 6 "Digikey:NCS20072DR2GOSCT-ND:$0.85" H 1700 1300 60  0001 C CNN "Supplier"
+F 7 "IC OPAMP 3MHZ RRO DUAL 8SOIC" H 1700 1400 60  0001 L CNN "Description"
+	1    1700 1000
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR16
+U 1 1 5BEFB1FF
+P 3500 1200
+AR Path="/5BA15A66/5BEFB1FF" Ref="#PWR16"  Part="1" 
+AR Path="/5BA15A67/5BEFB1FF" Ref="#PWR50"  Part="1" 
+F 0 "#PWR50" H 3500 950 50  0001 C CNN
+F 1 "GNDA" V 3400 1250 50  0000 R CNN
+F 2 "" H 3500 1200 50  0001 C CNN
+F 3 "" H 3500 1200 50  0001 C CNN
+	1    3500 1200
+	0    -1   -1   0   
+$EndComp
+$Comp
+L NCx20072 U2
+U 1 1 5B74A005
+P 3700 900
+AR Path="/5BA15A66/5B74A005" Ref="U2"  Part="1" 
+AR Path="/5BA15A67/5B74A005" Ref="U4"  Part="1" 
+F 0 "U4" H 4100 900 60  0000 L BNN
+F 1 "NCx20072" H 4000 800 40  0000 C CNN
+F 2 "8-MSOP" H 3700 1400 60  0001 L CNN
+F 3 "http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF" H 3700 1500 60  0001 L CNN
+F 4 "ON Semiconductor" H 3700 1700 60  0001 L CNN "Manufacturer"
+F 5 "NCS20072DR2G" H 3700 1600 60  0001 L CNN "PartNumber"
+F 6 "Digikey:NCS20072DR2GOSCT-ND:$0.85" H 3700 1200 60  0001 C CNN "Supplier"
+F 7 "IC OPAMP 3MHZ RRO DUAL 8SOIC" H 3700 1300 60  0001 L CNN "Description"
+	1    3700 900 
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR23
+U 1 1 5BE633C6
+P 4000 700
+AR Path="/5BA15A66/5BE633C6" Ref="#PWR23"  Part="1" 
+AR Path="/5BA15A67/5BE633C6" Ref="#PWR57"  Part="1" 
+F 0 "#PWR57" H 4000 550 50  0001 C CNN
+F 1 "+5VA" V 4000 900 50  0000 C CNN
+F 2 "" H 4000 700 50  0001 C CNN
+F 3 "" H 4000 700 50  0001 C CNN
+	1    4000 700 
+	0    1    1    0   
+$EndComp
+$Comp
+L GNDA #PWR24
+U 1 1 5BE6334B
+P 4000 1300
+AR Path="/5BA15A66/5BE6334B" Ref="#PWR24"  Part="1" 
+AR Path="/5BA15A67/5BE6334B" Ref="#PWR58"  Part="1" 
+F 0 "#PWR58" H 4000 1050 50  0001 C CNN
+F 1 "GNDA" H 4100 1300 50  0000 C CNN
+F 2 "" H 4000 1300 50  0001 C CNN
+F 3 "" H 4000 1300 50  0001 C CNN
+	1    4000 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR15
+U 1 1 5BF2436D
+P 3300 1900
+AR Path="/5BA15A66/5BF2436D" Ref="#PWR15"  Part="1" 
+AR Path="/5BA15A67/5BF2436D" Ref="#PWR49"  Part="1" 
+F 0 "#PWR49" H 3300 1650 50  0001 C CNN
+F 1 "GNDA" V 3305 1773 50  0000 R CNN
+F 2 "" H 3300 1900 50  0001 C CNN
+F 3 "" H 3300 1900 50  0001 C CNN
+	1    3300 1900
+	0    1    1    0   
+$EndComp
+$Comp
+L NCx20072 U2
+U 2 1 5BF24390
+P 3700 1800
+AR Path="/5BA15A66/5BF24390" Ref="U2"  Part="2" 
+AR Path="/5BA15A67/5BF24390" Ref="U4"  Part="2" 
+F 0 "U4" H 4100 1800 60  0000 L BNN
+F 1 "NCx20072" H 4000 1700 40  0000 C CNN
+F 2 "8-MSOP" H 3700 2300 60  0001 L CNN
+F 3 "http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF" H 3700 2400 60  0001 L CNN
+F 4 "ON Semiconductor" H 3700 2600 60  0001 L CNN "Manufacturer"
+F 5 "NCS20072DR2G" H 3700 2500 60  0001 L CNN "PartNumber"
+F 6 "Digikey:NCS20072DR2GOSCT-ND:$0.85" H 3700 2100 60  0001 C CNN "Supplier"
+F 7 "IC OPAMP 3MHZ RRO DUAL 8SOIC" H 3700 2200 60  0001 L CNN "Description"
+	2    3700 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR25
+U 1 1 5BF24396
+P 4000 1600
+AR Path="/5BA15A66/5BF24396" Ref="#PWR25"  Part="1" 
+AR Path="/5BA15A67/5BF24396" Ref="#PWR59"  Part="1" 
+F 0 "#PWR59" H 4000 1450 50  0001 C CNN
+F 1 "+5VA" V 4000 1800 50  0000 C CNN
+F 2 "" H 4000 1600 50  0001 C CNN
+F 3 "" H 4000 1600 50  0001 C CNN
+	1    4000 1600
+	0    1    1    0   
+$EndComp
+$Comp
+L GNDA #PWR26
+U 1 1 5BF2439C
+P 4000 2200
+AR Path="/5BA15A66/5BF2439C" Ref="#PWR26"  Part="1" 
+AR Path="/5BA15A67/5BF2439C" Ref="#PWR60"  Part="1" 
+F 0 "#PWR60" H 4000 1950 50  0001 C CNN
+F 1 "GNDA" H 4100 2200 50  0000 C CNN
+F 2 "" H 4000 2200 50  0001 C CNN
+F 3 "" H 4000 2200 50  0001 C CNN
+	1    4000 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L PREC001DAAN-RC J1
+U 1 1 5BC252AE
+P 800 1200
+AR Path="/5BA15A66/5BC252AE" Ref="J1"  Part="1" 
+AR Path="/5BA15A67/5BC252AE" Ref="J7"  Part="1" 
+F 0 "J7" V 1050 1050 50  0000 L CNN
+F 1 "C" V 950 1150 50  0000 C CNN
+F 2 "Pin_Header_Straight_2x01" H 800 1500 60  0001 L CNN
+F 3 "https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b" H 800 1725 60  0001 L CNN
+F 4 "Sullins Connector Solutions" H 800 1925 60  0001 L CNN "Manufacturer"
+F 5 "PREC001DAAN-RC" V 984 1278 50  0001 L CNN "PartNumber"
+F 6 "Digikey:S2012EC-01-ND:$0.06" H 1000 1400 60  0001 C CNN "Supplier"
+F 7 "CONN HEADER VERT 2POS" H 800 1600 60  0001 L CNN "Description"
+	1    800  1200
+	0    1    -1   0   
+$EndComp
+$Comp
+L RTRIM R2
+U 1 1 5BED852A
+P 3300 1100
+AR Path="/5BA15A66/5BED852A" Ref="R2"  Part="1" 
+AR Path="/5BA15A67/5BED852A" Ref="R5"  Part="1" 
+F 0 "R5" H 3410 1170 50  0000 R CNN
+F 1 "10kΩ" H 3410 1030 40  0000 C CNN
+F 2 "BOURNS_TC33" H 3300 1600 60  0001 L CNN
+F 3 "https://www.bourns.com/docs/Product-Datasheets/TC33.pdf" H 3300 1700 60  0001 L CNN
+F 4 "TRIMMER 10K OHM 0.1W J LEAD TOP" H -1200 -1700 50  0001 C CNN "Description"
+F 5 "Bourns Inc." H -1200 -1700 50  0001 C CNN "Manufacturer"
+F 6 "TC33X-2-103" H -1200 -1700 50  0001 C CNN "PartNumber"
+F 7 "Digikey:TC33X-103ECT-ND:$0.29" H -1200 -1700 50  0001 C CNN "Supplier"
+	1    3300 1100
+	1    0    0    1   
+$EndComp
+$Comp
+L RTRIM R3
+U 1 1 5BF9DB03
+P 3500 2000
+AR Path="/5BA15A66/5BF9DB03" Ref="R3"  Part="1" 
+AR Path="/5BA15A67/5BF9DB03" Ref="R6"  Part="1" 
+F 0 "R6" H 3610 2070 50  0000 R CNN
+F 1 "10kΩ" H 3610 1930 40  0000 C CNN
+F 2 "BOURNS_TC33" H 3500 2500 60  0001 L CNN
+F 3 "https://www.bourns.com/docs/Product-Datasheets/TC33.pdf" H 3500 2600 60  0001 L CNN
+F 4 "TRIMMER 10K OHM 0.1W J LEAD TOP" H -1000 -800 50  0001 C CNN "Description"
+F 5 "Bourns Inc." H -1000 -800 50  0001 C CNN "Manufacturer"
+F 6 "TC33X-2-103" H -1000 -800 50  0001 C CNN "PartNumber"
+F 7 "Digikey:TC33X-103ECT-ND:$0.29" H -1000 -800 50  0001 C CNN "Supplier"
+	1    3500 2000
+	-1   0    0    -1  
+$EndComp
+$Comp
+L PREC002DAAN-RC J5
+U 1 1 5D3CA05F
+P 4500 1400
+AR Path="/5BA15A66/5D3CA05F" Ref="J5"  Part="1" 
+AR Path="/5BA15A67/5D3CA05F" Ref="J11"  Part="1" 
+F 0 "J11" H 4650 1500 50  0000 C CNN
+F 1 "D" V 4650 1350 50  0000 C CNN
+F 2 "Pin_Header_Straight_2x02" H 4500 1700 60  0001 L CNN
+F 3 "https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b" H 4500 1925 60  0001 L CNN
+F 4 "Sullins Connector Solutions" H 4500 2125 60  0001 L CNN "Manufacturer"
+F 5 "PREC002DAAN-RC" H 4700 1200 50  0001 C CNN "PartNumber"
+F 6 "Digikey:S2012EC-02-ND:$0.12" H 4700 1600 60  0001 C CNN "Supplier"
+F 7 "CONN HEADER VERT 4POS 2.54MM" H 4500 1800 60  0001 L CNN "Description"
+F 8 "DNP" H 4650 1575 50  0000 C CNN "POP"
+	1    4500 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_0603 C1
+U 1 1 5B9D22EF
+P 3300 800
+AR Path="/5BA15A66/5B9D22EF" Ref="C1"  Part="1" 
+AR Path="/5BA15A67/5B9D22EF" Ref="C8"  Part="1" 
+F 0 "C8" H 3325 725 50  0000 L CNN
+F 1 "220nF" H 3325 800 50  0000 L CNN
+F 2 "SM0603_Capacitor" H 3300 1300 60  0001 L CNN
+F 3 "https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&u=M" H 3300 1400 60  0001 L CNN
+F 4 "Taiyo Yuden" H 3300 1600 60  0001 L CNN "Manufacturer"
+F 5 "EMK107B7224KA-T" H 3300 1500 60  0001 L CNN "PartNumber"
+F 6 "Digikey:587-1249-1-ND:$0.10" H 3300 1100 60  0001 C CNN "Supplier"
+F 7 "CAP CER 0.22UF 16V X7R 0603" H 3300 1200 60  0001 L CNN "Description"
+	1    3300 800 
+	1    0    0    1   
+$EndComp
+$Comp
+L GNDA #PWR12
+U 1 1 5B9D22F6
+P 3300 800
+AR Path="/5BA15A66/5B9D22F6" Ref="#PWR12"  Part="1" 
+AR Path="/5BA15A67/5B9D22F6" Ref="#PWR46"  Part="1" 
+F 0 "#PWR46" H 3300 550 50  0001 C CNN
+F 1 "GNDA" H 3450 720 50  0000 C CNN
+F 2 "" H 3300 800 50  0001 C CNN
+F 3 "" H 3300 800 50  0001 C CNN
+	1    3300 800 
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR11
+U 1 1 5B9D22FC
+P 3300 700
+AR Path="/5BA15A66/5B9D22FC" Ref="#PWR11"  Part="1" 
+AR Path="/5BA15A67/5B9D22FC" Ref="#PWR45"  Part="1" 
+F 0 "#PWR45" H 3300 550 50  0001 C CNN
+F 1 "+5VA" H 3430 780 50  0000 C CNN
+F 2 "" H 3300 700 50  0001 C CNN
+F 3 "" H 3300 700 50  0001 C CNN
+	1    3300 700 
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_0603 C2
+U 1 1 5B9ECEBB
+P 3300 1700
+AR Path="/5BA15A66/5B9ECEBB" Ref="C2"  Part="1" 
+AR Path="/5BA15A67/5B9ECEBB" Ref="C9"  Part="1" 
+F 0 "C9" H 3325 1625 50  0000 L CNN
+F 1 "2.2uF" H 3325 1700 50  0000 L CNN
+F 2 "SM0603_Capacitor" H 3300 2200 60  0001 L CNN
+F 3 "http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp" H 3300 2300 60  0001 L CNN
+F 4 "Samsung Electro-Mechanics" H 3300 2500 60  0001 L CNN "Manufacturer"
+F 5 "CL10A225KQ8NNNC" H 3300 2400 60  0001 L CNN "PartNumber"
+F 6 "Digikey: 1276-1183-1-ND:$0.13" H 3300 2000 60  0001 C CNN "Supplier"
+F 7 "CAP CER 2.2UF 6.3V X5R 0603" H 3300 2100 60  0001 L CNN "Description"
+	1    3300 1700
+	1    0    0    1   
+$EndComp
+$Comp
+L GNDA #PWR14
+U 1 1 5B9ECEC2
+P 3300 1700
+AR Path="/5BA15A66/5B9ECEC2" Ref="#PWR14"  Part="1" 
+AR Path="/5BA15A67/5B9ECEC2" Ref="#PWR48"  Part="1" 
+F 0 "#PWR48" H 3300 1450 50  0001 C CNN
+F 1 "GNDA" H 3450 1620 50  0000 C CNN
+F 2 "" H 3300 1700 50  0001 C CNN
+F 3 "" H 3300 1700 50  0001 C CNN
+	1    3300 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR13
+U 1 1 5B9ECEC8
+P 3300 1600
+AR Path="/5BA15A66/5B9ECEC8" Ref="#PWR13"  Part="1" 
+AR Path="/5BA15A67/5B9ECEC8" Ref="#PWR47"  Part="1" 
+F 0 "#PWR47" H 3300 1450 50  0001 C CNN
+F 1 "+5VA" H 3430 1680 50  0000 C CNN
+F 2 "" H 3300 1600 50  0001 C CNN
+F 3 "" H 3300 1600 50  0001 C CNN
+	1    3300 1600
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_0603 C4
+U 1 1 5BE7A631
+P 1900 3600
+AR Path="/5BA15A66/5BE7A631" Ref="C4"  Part="1" 
+AR Path="/5BA15A67/5BE7A631" Ref="C11"  Part="1" 
+F 0 "C11" H 1925 3525 50  0000 L CNN
+F 1 "22uF" H 1925 3600 50  0000 L CNN
+F 2 "SM0603_Capacitor" H 1900 4100 60  0001 L CNN
+F 3 "http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp" H 1900 4200 60  0001 L CNN
+F 4 "Samsung Electro-Mechanics" H 1900 4400 60  0001 L CNN "Manufacturer"
+F 5 "CL10A226KQ8NRNE" H 1900 4300 60  0001 L CNN "PartNumber"
+F 6 "Digikey:1276-2867-1-ND:$0.45" H 1900 3900 60  0001 C CNN "Supplier"
+F 7 "CAP CER 22UF 6.3V X5R 0603" H 1900 4000 60  0001 L CNN "Description"
+	1    1900 3600
+	1    0    0    1   
+$EndComp
+$Comp
+L GNDA #PWR22
+U 1 1 5BE7A637
+P 1900 3600
+AR Path="/5BA15A66/5BE7A637" Ref="#PWR22"  Part="1" 
+AR Path="/5BA15A67/5BE7A637" Ref="#PWR56"  Part="1" 
+F 0 "#PWR56" H 1900 3350 50  0001 C CNN
+F 1 "GNDA" H 2050 3520 50  0000 C CNN
+F 2 "" H 1900 3600 50  0001 C CNN
+F 3 "" H 1900 3600 50  0001 C CNN
+	1    1900 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR21
+U 1 1 5BE7A63D
+P 1900 3500
+AR Path="/5BA15A66/5BE7A63D" Ref="#PWR21"  Part="1" 
+AR Path="/5BA15A67/5BE7A63D" Ref="#PWR55"  Part="1" 
+F 0 "#PWR55" H 1900 3350 50  0001 C CNN
+F 1 "+5VA" H 2030 3580 50  0000 C CNN
+F 2 "" H 1900 3500 50  0001 C CNN
+F 3 "" H 1900 3500 50  0001 C CNN
+	1    1900 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_0603 C3
+U 1 1 5BE7A6DF
+P 1900 3200
+AR Path="/5BA15A66/5BE7A6DF" Ref="C3"  Part="1" 
+AR Path="/5BA15A67/5BE7A6DF" Ref="C10"  Part="1" 
+F 0 "C10" H 1925 3125 50  0000 L CNN
+F 1 "2.2uF" H 1925 3200 50  0000 L CNN
+F 2 "SM0603_Capacitor" H 1900 3700 60  0001 L CNN
+F 3 "http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp" H 1900 3800 60  0001 L CNN
+F 4 "Samsung Electro-Mechanics" H 1900 4000 60  0001 L CNN "Manufacturer"
+F 5 "CL10A225KQ8NNNC" H 1900 3900 60  0001 L CNN "PartNumber"
+F 6 "Digikey: 1276-1183-1-ND:$0.13" H 1900 3500 60  0001 C CNN "Supplier"
+F 7 "CAP CER 2.2UF 6.3V X5R 0603" H 1900 3600 60  0001 L CNN "Description"
+	1    1900 3200
+	1    0    0    1   
+$EndComp
+$Comp
+L GNDA #PWR20
+U 1 1 5BE7A6E5
+P 1900 3200
+AR Path="/5BA15A66/5BE7A6E5" Ref="#PWR20"  Part="1" 
+AR Path="/5BA15A67/5BE7A6E5" Ref="#PWR54"  Part="1" 
+F 0 "#PWR54" H 1900 2950 50  0001 C CNN
+F 1 "GNDA" H 2050 3120 50  0000 C CNN
+F 2 "" H 1900 3200 50  0001 C CNN
+F 3 "" H 1900 3200 50  0001 C CNN
+	1    1900 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR19
+U 1 1 5BE7A6EB
+P 1900 3100
+AR Path="/5BA15A66/5BE7A6EB" Ref="#PWR19"  Part="1" 
+AR Path="/5BA15A67/5BE7A6EB" Ref="#PWR53"  Part="1" 
+F 0 "#PWR53" H 1900 2950 50  0001 C CNN
+F 1 "+5VA" H 2030 3180 50  0000 C CNN
+F 2 "" H 1900 3100 50  0001 C CNN
+F 3 "" H 1900 3100 50  0001 C CNN
+	1    1900 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L PREC001DAAN-RC J4
+U 1 1 5BF32155
+P 1400 3400
+AR Path="/5BA15A66/5BF32155" Ref="J4"  Part="1" 
+AR Path="/5BA15A67/5BF32155" Ref="J10"  Part="1" 
+F 0 "J10" H 1500 3500 50  0000 L CNN
+F 1 "EFM.A1" H 1600 3200 50  0000 R CNN
+F 2 "Pin_Header_Straight_2x01" H 1400 3700 60  0001 L CNN
+F 3 "https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b" H 1400 3925 60  0001 L CNN
+F 4 "Sullins Connector Solutions" H 1400 4125 60  0001 L CNN "Manufacturer"
+F 5 "PREC001DAAN-RC" V 1584 3478 50  0001 L CNN "PartNumber"
+F 6 "Digikey:S2012EC-01-ND:$0.06" H 1600 3600 60  0001 C CNN "Supplier"
+F 7 "CONN HEADER VERT 2POS" H 1400 3800 60  0001 L CNN "Description"
+	1    1400 3400
+	-1   0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR18
+U 1 1 5BF325F3
+P 1500 3600
+AR Path="/5BA15A66/5BF325F3" Ref="#PWR18"  Part="1" 
+AR Path="/5BA15A67/5BF325F3" Ref="#PWR52"  Part="1" 
+F 0 "#PWR52" H 1500 3350 50  0001 C CNN
+F 1 "GNDA" H 1550 3525 50  0000 L CNN
+F 2 "" H 1500 3600 50  0001 C CNN
+F 3 "" H 1500 3600 50  0001 C CNN
+	1    1500 3600
+	-1   0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR17
+U 1 1 5BF325FF
+P 1500 3300
+AR Path="/5BA15A66/5BF325FF" Ref="#PWR17"  Part="1" 
+AR Path="/5BA15A67/5BF325FF" Ref="#PWR51"  Part="1" 
+F 0 "#PWR51" H 1500 3150 50  0001 C CNN
+F 1 "+5VA" H 1500 3440 50  0000 R CNN
+F 2 "" H 1500 3300 50  0001 C CNN
+F 3 "" H 1500 3300 50  0001 C CNN
+	1    1500 3300
+	1    0    0    -1  
+$EndComp
+$Comp
+L PWR_FLAG #FLG1
+U 1 1 5BF32611
+P 1600 3200
+AR Path="/5BA15A66/5BF32611" Ref="#FLG1"  Part="1" 
+AR Path="/5BA15A67/5BF32611" Ref="#FLG4"  Part="1" 
+F 0 "#FLG4" H 1600 3275 50  0001 C CNN
+F 1 "PWR_FLAG" H 1600 3350 50  0000 R CNN
+F 2 "" H 1600 3200 50  0001 C CNN
+F 3 "~" H 1600 3200 50  0001 C CNN
+	1    1600 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L PWR_FLAG #FLG2
+U 1 1 5BF344B2
+P 1700 3100
+AR Path="/5BA15A66/5BF344B2" Ref="#FLG2"  Part="1" 
+AR Path="/5BA15A67/5BF344B2" Ref="#FLG5"  Part="1" 
+F 0 "#FLG5" H 1700 3175 50  0001 C CNN
+F 1 "PWR_FLAG" H 1700 3250 50  0000 R CNN
+F 2 "" H 1700 3100 50  0001 C CNN
+F 3 "~" H 1700 3100 50  0001 C CNN
+	1    1700 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L PREC001DAAN-RC J6
+U 1 1 5BF352CC
+P 2500 3400
+AR Path="/5BA15A66/5BF352CC" Ref="J6"  Part="1" 
+AR Path="/5BA15A67/5BF352CC" Ref="J12"  Part="1" 
+F 0 "J12" H 2600 3500 50  0000 L CNN
+F 1 "EFM.A0" H 2700 3200 50  0000 R CNN
+F 2 "Pin_Header_Straight_2x01" H 2500 3700 60  0001 L CNN
+F 3 "https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b" H 2500 3925 60  0001 L CNN
+F 4 "Sullins Connector Solutions" H 2500 4125 60  0001 L CNN "Manufacturer"
+F 5 "PREC001DAAN-RC" V 2684 3478 50  0001 L CNN "PartNumber"
+F 6 "Digikey:S2012EC-01-ND:$0.06" H 2700 3600 60  0001 C CNN "Supplier"
+F 7 "CONN HEADER VERT 2POS" H 2500 3800 60  0001 L CNN "Description"
+	1    2500 3400
+	-1   0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR30
+U 1 1 5BF352D2
+P 2600 3600
+AR Path="/5BA15A66/5BF352D2" Ref="#PWR30"  Part="1" 
+AR Path="/5BA15A67/5BF352D2" Ref="#PWR64"  Part="1" 
+F 0 "#PWR64" H 2600 3350 50  0001 C CNN
+F 1 "GNDA" H 2650 3525 50  0000 L CNN
+F 2 "" H 2600 3600 50  0001 C CNN
+F 3 "" H 2600 3600 50  0001 C CNN
+	1    2600 3600
+	-1   0    0    -1  
+$EndComp
+$Comp
+L PWR_FLAG #FLG3
+U 1 1 5BF352DE
+P 2700 3200
+AR Path="/5BA15A66/5BF352DE" Ref="#FLG3"  Part="1" 
+AR Path="/5BA15A67/5BF352DE" Ref="#FLG6"  Part="1" 
+F 0 "#FLG6" H 2700 3275 50  0001 C CNN
+F 1 "PWR_FLAG" H 2700 3350 50  0000 R CNN
+F 2 "" H 2700 3200 50  0001 C CNN
+F 3 "~" H 2700 3200 50  0001 C CNN
+	1    2700 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR29
+U 1 1 5BF38C17
+P 2600 3300
+AR Path="/5BA15A66/5BF38C17" Ref="#PWR29"  Part="1" 
+AR Path="/5BA15A67/5BF38C17" Ref="#PWR63"  Part="1" 
+F 0 "#PWR63" H 2600 3150 50  0001 C CNN
+F 1 "+3V3" H 2500 3450 50  0000 C CNN
+F 2 "" H 2600 3300 50  0001 C CNN
+F 3 "" H 2600 3300 50  0001 C CNN
+	1    2600 3300
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_0603 C7
+U 1 1 5BF40FBF
+P 2900 3600
+AR Path="/5BA15A66/5BF40FBF" Ref="C7"  Part="1" 
+AR Path="/5BA15A67/5BF40FBF" Ref="C14"  Part="1" 
+F 0 "C14" H 2925 3525 50  0000 L CNN
+F 1 "22uF" H 2925 3600 50  0000 L CNN
+F 2 "SM0603_Capacitor" H 2900 4100 60  0001 L CNN
+F 3 "http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp" H 2900 4200 60  0001 L CNN
+F 4 "Samsung Electro-Mechanics" H 2900 4400 60  0001 L CNN "Manufacturer"
+F 5 "CL10A226KQ8NRNE" H 2900 4300 60  0001 L CNN "PartNumber"
+F 6 "Digikey:1276-2867-1-ND:$0.45" H 2900 3900 60  0001 C CNN "Supplier"
+F 7 "CAP CER 22UF 6.3V X5R 0603" H 2900 4000 60  0001 L CNN "Description"
+	1    2900 3600
+	1    0    0    1   
+$EndComp
+$Comp
+L GNDA #PWR34
+U 1 1 5BF40FC5
+P 2900 3600
+AR Path="/5BA15A66/5BF40FC5" Ref="#PWR34"  Part="1" 
+AR Path="/5BA15A67/5BF40FC5" Ref="#PWR68"  Part="1" 
+F 0 "#PWR68" H 2900 3350 50  0001 C CNN
+F 1 "GNDA" H 3050 3520 50  0000 C CNN
+F 2 "" H 2900 3600 50  0001 C CNN
+F 3 "" H 2900 3600 50  0001 C CNN
+	1    2900 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR33
+U 1 1 5BF410E6
+P 2900 3500
+AR Path="/5BA15A66/5BF410E6" Ref="#PWR33"  Part="1" 
+AR Path="/5BA15A67/5BF410E6" Ref="#PWR67"  Part="1" 
+F 0 "#PWR67" H 2900 3350 50  0001 C CNN
+F 1 "+3V3" H 2900 3600 50  0000 L CNN
+F 2 "" H 2900 3500 50  0001 C CNN
+F 3 "" H 2900 3500 50  0001 C CNN
+	1    2900 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR8
+U 1 1 5BF4B88F
+P 1900 4200
+AR Path="/5BA15A66/5BF4B88F" Ref="#PWR8"  Part="1" 
+AR Path="/5BA15A67/5BF4B88F" Ref="#PWR42"  Part="1" 
+F 0 "#PWR42" H 1900 4050 50  0001 C CNN
+F 1 "+5VA" H 1900 4350 50  0000 C CNN
+F 2 "" H 1900 4200 50  0001 C CNN
+F 3 "" H 1900 4200 50  0001 C CNN
+	1    1900 4200
+	-1   0    0    -1  
+$EndComp
+$Comp
+L C_0603 C5
+U 1 1 5BE80230
+P 3200 4500
+AR Path="/5BA15A66/5BE80230" Ref="C5"  Part="1" 
+AR Path="/5BA15A67/5BE80230" Ref="C12"  Part="1" 
+F 0 "C12" H 3225 4425 50  0000 L CNN
+F 1 "220nF" H 3225 4500 50  0000 L CNN
+F 2 "SM0603_Capacitor" H 3200 5000 60  0001 L CNN
+F 3 "https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&u=M" H 3200 5100 60  0001 L CNN
+F 4 "Taiyo Yuden" H 3200 5300 60  0001 L CNN "Manufacturer"
+F 5 "EMK107B7224KA-T" H 3200 5200 60  0001 L CNN "PartNumber"
+F 6 "Digikey:587-1249-1-ND:$0.10" H 3200 4800 60  0001 C CNN "Supplier"
+F 7 "CAP CER 0.22UF 16V X7R 0603" H 3200 4900 60  0001 L CNN "Description"
+	1    3200 4500
+	1    0    0    1   
+$EndComp
+$Comp
+L GNDA #PWR28
+U 1 1 5BE80236
+P 3200 4500
+AR Path="/5BA15A66/5BE80236" Ref="#PWR28"  Part="1" 
+AR Path="/5BA15A67/5BE80236" Ref="#PWR62"  Part="1" 
+F 0 "#PWR62" H 3200 4250 50  0001 C CNN
+F 1 "GNDA" H 3350 4420 50  0000 C CNN
+F 2 "" H 3200 4500 50  0001 C CNN
+F 3 "" H 3200 4500 50  0001 C CNN
+	1    3200 4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR27
+U 1 1 5BE8023C
+P 3200 4400
+AR Path="/5BA15A66/5BE8023C" Ref="#PWR27"  Part="1" 
+AR Path="/5BA15A67/5BE8023C" Ref="#PWR61"  Part="1" 
+F 0 "#PWR61" H 3200 4250 50  0001 C CNN
+F 1 "+5VA" H 3330 4480 50  0000 C CNN
+F 2 "" H 3200 4400 50  0001 C CNN
+F 3 "" H 3200 4400 50  0001 C CNN
+	1    3200 4400
+	1    0    0    -1  
+$EndComp
+$Comp
+L LED_0603 D1
+U 2 1 5BF5A1DC
+P 1800 4500
+AR Path="/5BA15A66/5BF5A1DC" Ref="D1"  Part="1" 
+AR Path="/5BA15A67/5BF5A1DC" Ref="D1"  Part="2" 
+F 0 "D1" H 1900 4540 50  0000 L CNN
+F 1 "GH CSSPM1.24" H 1875 4600 40  0001 L CNN
+F 2 "SM1212_ALED_TPAD" H 1800 5000 60  0001 L CNN
+F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-4651431/GH%20CSSPM1.24.pdf" H 1800 5100 60  0001 L CNN
+F 4 "OSRAM Opto Semiconductors Inc." H 1800 5300 60  0001 L CNN "Manufacturer"
+F 5 "GH CSSPM1.24-4T2U-1" H 1800 5200 60  0001 L CNN "PartNumber"
+F 6 "Digikey:475-3279-1-ND:$3.46" H 1800 4800 60  0001 C CNN "Supplier"
+F 7 "LED OSLON SSL120 RED 657NM SMD" H 1800 4900 60  0001 C CNN "Description"
+	2    1800 4500
+	-1   0    0    1   
+$EndComp
+$Comp
+L GNDA #PWR7
+U 1 1 5BF5A1E5
+P 1800 4600
+AR Path="/5BA15A66/5BF5A1E5" Ref="#PWR7"  Part="1" 
+AR Path="/5BA15A67/5BF5A1E5" Ref="#PWR41"  Part="1" 
+F 0 "#PWR41" H 1800 4350 50  0001 C CNN
+F 1 "GNDA" H 1750 4525 50  0000 R CNN
+F 2 "" H 1800 4600 50  0001 C CNN
+F 3 "" H 1800 4600 50  0001 C CNN
+	1    1800 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L PREC003SAAN J2
+U 1 1 5BF5E278
+P 1400 4300
+AR Path="/5BA15A66/5BF5E278" Ref="J2"  Part="1" 
+AR Path="/5BA15A67/5BF5E278" Ref="J8"  Part="1" 
+F 0 "J8" H 1550 4475 50  0000 C CNN
+F 1 "B" V 1550 4200 50  0000 C CNN
+F 2 "Pin_Header_Straight_1x03" H 1400 4600 60  0001 L CNN
+F 3 "https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b" H 1400 4825 60  0001 L CNN
+F 4 "Sullins Connector Solutions" H 1400 5025 60  0001 L CNN "Manufacturer"
+F 5 "PREC003SAAN-RC" H 1600 4400 50  0001 R CNN "PartNumber"
+F 6 "Digikey:S1012EC-03-ND:$0.09" H 1600 4500 60  0001 C CNN "Supplier"
+F 7 "CONN HEADER VERT 3POS 2.54MM" H 1400 4700 60  0001 L CNN "Description"
+	1    1400 4300
+	-1   0    0    -1  
+$EndComp
+$Comp
+L PREC003SAAN J3
+U 1 1 5BF66FEC
+P 2700 4500
+AR Path="/5BA15A66/5BF66FEC" Ref="J3"  Part="1" 
+AR Path="/5BA15A67/5BF66FEC" Ref="J9"  Part="1" 
+F 0 "J9" H 2850 4200 50  0000 C CNN
+F 1 "A" V 2850 4400 50  0000 C CNN
+F 2 "Pin_Header_Straight_1x03" H 2700 4800 60  0001 L CNN
+F 3 "https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b" H 2700 5025 60  0001 L CNN
+F 4 "Sullins Connector Solutions" H 2700 5225 60  0001 L CNN "Manufacturer"
+F 5 "PREC003SAAN-RC" H 2925 4125 50  0001 R CNN "PartNumber"
+F 6 "Digikey:S1012EC-03-ND:$0.09" H 2900 4700 60  0001 C CNN "Supplier"
+F 7 "CONN HEADER VERT 3POS 2.54MM" H 2700 4900 60  0001 L CNN "Description"
+	1    2700 4500
+	1    0    0    1   
+$EndComp
+$Comp
+L GNDA #PWR10
+U 1 1 5BF6959D
+P 2700 4500
+AR Path="/5BA15A66/5BF6959D" Ref="#PWR10"  Part="1" 
+AR Path="/5BA15A67/5BF6959D" Ref="#PWR44"  Part="1" 
+F 0 "#PWR44" H 2700 4250 50  0001 C CNN
+F 1 "GNDA" H 2650 4425 50  0000 R CNN
+F 2 "" H 2700 4500 50  0001 C CNN
+F 3 "" H 2700 4500 50  0001 C CNN
+	1    2700 4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L NCx20072 U1
+U 2 1 5C09B008
+P 1700 2000
+AR Path="/5BA15A66/5C09B008" Ref="U1"  Part="2" 
+AR Path="/5BA15A67/5C09B008" Ref="U3"  Part="2" 
+F 0 "U3" H 2100 2000 60  0000 L BNN
+F 1 "NCx20072" H 2000 1900 40  0000 C CNN
+F 2 "8-MSOP" H 1700 2500 60  0001 L CNN
+F 3 "http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF" H 1700 2600 60  0001 L CNN
+F 4 "ON Semiconductor" H 1700 2800 60  0001 L CNN "Manufacturer"
+F 5 "NCS20072DR2G" H 1700 2700 60  0001 L CNN "PartNumber"
+F 6 "Digikey:NCS20072DR2GOSCT-ND:$0.85" H 1700 2300 60  0001 C CNN "Supplier"
+F 7 "IC OPAMP 3MHZ RRO DUAL 8SOIC" H 1700 2400 60  0001 L CNN "Description"
+	2    1700 2000
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR6
+U 1 1 5C09CB9F
+P 2000 2400
+AR Path="/5BA15A66/5C09CB9F" Ref="#PWR6"  Part="1" 
+AR Path="/5BA15A67/5C09CB9F" Ref="#PWR40"  Part="1" 
+F 0 "#PWR40" H 2000 2150 50  0001 C CNN
+F 1 "GNDA" H 2050 2325 50  0000 L CNN
+F 2 "" H 2000 2400 50  0001 C CNN
+F 3 "" H 2000 2400 50  0001 C CNN
+	1    2000 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR4
+U 1 1 5C09D255
+P 1600 2300
+AR Path="/5BA15A66/5C09D255" Ref="#PWR4"  Part="1" 
+AR Path="/5BA15A67/5C09D255" Ref="#PWR38"  Part="1" 
+F 0 "#PWR38" H 1600 2050 50  0001 C CNN
+F 1 "GNDA" H 1600 2150 50  0000 C CNN
+F 2 "" H 1600 2300 50  0001 C CNN
+F 3 "" H 1600 2300 50  0001 C CNN
+	1    1600 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR5
+U 1 1 5C0A02EA
+P 2000 1800
+AR Path="/5BA15A66/5C0A02EA" Ref="#PWR5"  Part="1" 
+AR Path="/5BA15A67/5C0A02EA" Ref="#PWR39"  Part="1" 
+F 0 "#PWR39" H 2000 1650 50  0001 C CNN
+F 1 "+5VA" V 2000 2000 50  0000 C CNN
+F 2 "" H 2000 1800 50  0001 C CNN
+F 3 "" H 2000 1800 50  0001 C CNN
+	1    2000 1800
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1300 1200 1500 1200
+Wire Wire Line
+	1500 1200 1600 1200
+Wire Wire Line
+	1600 1200 1700 1200
+Wire Wire Line
+	1700 1000 1700 600 
+Wire Wire Line
+	3700 600  3700 900 
+Wire Wire Line
+	4400 600  4400 1000
+Wire Wire Line
+	4400 1000 4400 1400
+Wire Wire Line
+	3700 600  4400 600 
+Wire Wire Line
+	3000 1100 3300 1100
+Wire Wire Line
+	3700 1500 3700 1800
+Wire Wire Line
+	4400 1500 4400 1900
+Wire Wire Line
+	3700 1500 4400 1500
+Wire Wire Line
+	4400 1500 4500 1500
+Wire Wire Line
+	3000 2000 3300 2000
+Wire Wire Line
+	2300 4200 2300 4300
+Wire Wire Line
+	2300 4300 2400 4300
+Wire Wire Line
+	2500 4300 2600 4300
+Wire Wire Line
+	2600 4300 2700 4300
+Wire Wire Line
+	800  1200 1100 1200
+Wire Wire Line
+	3500 2000 3700 2000
+Wire Wire Line
+	3500 1100 3700 1100
+Wire Wire Line
+	5100 1500 4800 1500
+Wire Wire Line
+	5100 1400 4800 1400
+Connection ~ 4400 1500
+Wire Wire Line
+	4400 1400 4500 1400
+Connection ~ 4400 1000
+Wire Wire Line
+	1700 600  2500 600 
+Wire Wire Line
+	1500 3300 1500 3400
+Wire Wire Line
+	1400 3400 1500 3400
+Wire Wire Line
+	1500 3400 1600 3400
+Wire Wire Line
+	1500 3600 1500 3500
+Wire Wire Line
+	1400 3500 1500 3500
+Wire Wire Line
+	1500 3500 1700 3500
+Wire Wire Line
+	1700 3500 1700 3100
+Connection ~ 1500 3500
+Wire Wire Line
+	1600 3400 1600 3200
+Connection ~ 1500 3400
+Wire Wire Line
+	2600 3300 2600 3400
+Wire Wire Line
+	2500 3400 2600 3400
+Wire Wire Line
+	2600 3400 2700 3400
+Wire Wire Line
+	2600 3600 2600 3500
+Wire Wire Line
+	2600 3500 2500 3500
+Wire Wire Line
+	2700 3400 2700 3200
+Connection ~ 2600 3400
+Wire Wire Line
+	1900 3600 1900 3600
+Wire Wire Line
+	1900 4500 1800 4500
+Wire Wire Line
+	1900 4200 1900 4300
+Wire Wire Line
+	1900 4300 1900 4500
+Wire Wire Line
+	1400 4300 1900 4300
+Connection ~ 1900 4300
+Wire Wire Line
+	1400 4500 1700 4500
+Wire Wire Line
+	1700 2000 1600 2000
+Wire Wire Line
+	1600 2000 1600 1700
+Wire Wire Line
+	1600 1700 2500 1700
+Wire Wire Line
+	2500 1700 2500 2100
+Wire Wire Line
+	2500 2100 2400 2100
+Wire Wire Line
+	1600 2300 1600 2200
+Wire Wire Line
+	1600 2200 1700 2200
+$Comp
+L C_0603 C6
+U 1 1 5C0BCA2F
+P 2900 3200
+AR Path="/5BA15A66/5C0BCA2F" Ref="C6"  Part="1" 
+AR Path="/5BA15A67/5C0BCA2F" Ref="C13"  Part="1" 
+F 0 "C13" H 2925 3125 50  0000 L CNN
+F 1 "2.2uF" H 2925 3200 50  0000 L CNN
+F 2 "SM0603_Capacitor" H 2900 3700 60  0001 L CNN
+F 3 "http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp" H 2900 3800 60  0001 L CNN
+F 4 "Samsung Electro-Mechanics" H 2900 4000 60  0001 L CNN "Manufacturer"
+F 5 "CL10A225KQ8NNNC" H 2900 3900 60  0001 L CNN "PartNumber"
+F 6 "Digikey: 1276-1183-1-ND:$0.13" H 2900 3500 60  0001 C CNN "Supplier"
+F 7 "CAP CER 2.2UF 6.3V X5R 0603" H 2900 3600 60  0001 L CNN "Description"
+	1    2900 3200
+	1    0    0    1   
+$EndComp
+$Comp
+L +3V3 #PWR31
+U 1 1 5C0BCBEE
+P 2900 3100
+AR Path="/5BA15A66/5C0BCBEE" Ref="#PWR31"  Part="1" 
+AR Path="/5BA15A67/5C0BCBEE" Ref="#PWR65"  Part="1" 
+F 0 "#PWR65" H 2900 2950 50  0001 C CNN
+F 1 "+3V3" H 2900 3200 50  0000 L CNN
+F 2 "" H 2900 3100 50  0001 C CNN
+F 3 "" H 2900 3100 50  0001 C CNN
+	1    2900 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR32
+U 1 1 5C0BCDA0
+P 2900 3200
+AR Path="/5BA15A66/5C0BCDA0" Ref="#PWR32"  Part="1" 
+AR Path="/5BA15A67/5C0BCDA0" Ref="#PWR66"  Part="1" 
+F 0 "#PWR66" H 2900 2950 50  0001 C CNN
+F 1 "GNDA" H 3050 3120 50  0000 C CNN
+F 2 "" H 2900 3200 50  0001 C CNN
+F 3 "" H 2900 3200 50  0001 C CNN
+	1    2900 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5VA #PWR9
+U 1 1 5C20A299
+P 2300 4200
+AR Path="/5BA15A66/5C20A299" Ref="#PWR9"  Part="1" 
+AR Path="/5BA15A67/5C20A299" Ref="#PWR43"  Part="1" 
+F 0 "#PWR43" H 2300 4050 50  0001 C CNN
+F 1 "+5VA" H 2425 4250 50  0000 C CNN
+F 2 "" H 2300 4200 50  0001 C CNN
+F 3 "" H 2300 4200 50  0001 C CNN
+	1    2300 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR1
+U 1 1 5BC252B4
+P 700 1200
+AR Path="/5BA15A66/5BC252B4" Ref="#PWR1"  Part="1" 
+AR Path="/5BA15A67/5BC252B4" Ref="#PWR35"  Part="1" 
+F 0 "#PWR35" H 700 950 50  0001 C CNN
+F 1 "GNDA" H 850 1125 50  0000 C CNN
+F 2 "" H 700 1200 50  0001 C CNN
+F 3 "" H 700 1200 50  0001 C CNN
+	1    700  1200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2500 600  2500 1100
+Wire Wire Line
+	2500 1100 2400 1100
+Text Label 5100 1500 2    50   ~ 0
+O2
+Text Label 5100 1400 2    50   ~ 0
+O1
+Text Label 3000 2000 0    50   ~ 0
+N2
+Text Label 3000 1100 0    50   ~ 0
+N1
+$EndSCHEMATC

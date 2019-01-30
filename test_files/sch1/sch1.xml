@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>C:/projects/git/exts/kicad_scripts/test_files/sch1/sch1.sch</source>
+    <date>1/29/2019 10:58:05 PM</date>
+    <tool>Eeschema 4.0.7</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>sch1.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="2" name="/a1/" tstamps="/5BA15A66/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>a1.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="3" name="/a2/" tstamps="/5BA15A67/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>a1.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="D2">
+      <value>TEMD5110X01</value>
+      <footprint>4-SMD_LED</footprint>
+      <datasheet>http://www.vishay.com/docs/84658/temd5110.pdf</datasheet>
+      <fields>
+        <field name="Manufacturer">Vishay Semiconductor Opto Division</field>
+        <field name="PartNumber">TEMD5110X01</field>
+        <field name="Supplier">Digikey:751-1048-1-ND:$1.87</field>
+        <field name="Description">Photodiode 940nm 100ns 130° 4-SMD, No Lead</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PHOTO_DIODE"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5B6F07F6</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>4.99kΩ</value>
+      <footprint>SM0603_Resistor</footprint>
+      <datasheet>http://www.yageo.com/documents/recent/PYu-RC_Group_51_RoHS_L_10.pdf</datasheet>
+      <fields>
+        <field name="Manufacturer">Yageo</field>
+        <field name="PartNumber">RC0603FR-074K99L</field>
+        <field name="Supplier">Digikey:311-4.99KHRCT-ND:$0.10</field>
+        <field name="Description">RES SMD 4.99K OHM 1% 1/10W 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="R_0603"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5B810AE0</tstamp>
+    </comp>
+    <comp ref="U1">
+      <value>NCx20072</value>
+      <footprint>8-MSOP</footprint>
+      <datasheet>http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF</datasheet>
+      <fields>
+        <field name="Manufacturer">ON Semiconductor</field>
+        <field name="PartNumber">NCS20072DR2G</field>
+        <field name="Supplier">Digikey:NCS20072DR2GOSCT-ND:$0.85</field>
+        <field name="Description">IC OPAMP 3MHZ RRO DUAL 8SOIC</field>
+      </fields>
+      <libsource lib="sch1-cache" part="NCx20072"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5B896683</tstamp>
+    </comp>
+    <comp ref="U2">
+      <value>NCx20072</value>
+      <footprint>8-MSOP</footprint>
+      <datasheet>http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF</datasheet>
+      <fields>
+        <field name="Manufacturer">ON Semiconductor</field>
+        <field name="PartNumber">NCS20072DR2G</field>
+        <field name="Supplier">Digikey:NCS20072DR2GOSCT-ND:$0.85</field>
+        <field name="Description">IC OPAMP 3MHZ RRO DUAL 8SOIC</field>
+      </fields>
+      <libsource lib="sch1-cache" part="NCx20072"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5B74A005</tstamp>
+    </comp>
+    <comp ref="J1">
+      <value>C</value>
+      <footprint>Pin_Header_Straight_2x01</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC001DAAN-RC</field>
+        <field name="Supplier">Digikey:S2012EC-01-ND:$0.06</field>
+        <field name="Description">CONN HEADER VERT 2POS</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC001DAAN-RC"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BC252AE</tstamp>
+    </comp>
+    <comp ref="R2">
+      <value>10kΩ</value>
+      <footprint>BOURNS_TC33</footprint>
+      <datasheet>https://www.bourns.com/docs/Product-Datasheets/TC33.pdf</datasheet>
+      <fields>
+        <field name="Description">TRIMMER 10K OHM 0.1W J LEAD TOP</field>
+        <field name="Manufacturer">Bourns Inc.</field>
+        <field name="PartNumber">TC33X-2-103</field>
+        <field name="Supplier">Digikey:TC33X-103ECT-ND:$0.29</field>
+      </fields>
+      <libsource lib="sch1-cache" part="RTRIM"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BED852A</tstamp>
+    </comp>
+    <comp ref="R3">
+      <value>10kΩ</value>
+      <footprint>BOURNS_TC33</footprint>
+      <datasheet>https://www.bourns.com/docs/Product-Datasheets/TC33.pdf</datasheet>
+      <fields>
+        <field name="Description">TRIMMER 10K OHM 0.1W J LEAD TOP</field>
+        <field name="Manufacturer">Bourns Inc.</field>
+        <field name="PartNumber">TC33X-2-103</field>
+        <field name="Supplier">Digikey:TC33X-103ECT-ND:$0.29</field>
+      </fields>
+      <libsource lib="sch1-cache" part="RTRIM"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BF9DB03</tstamp>
+    </comp>
+    <comp ref="J5">
+      <value>D</value>
+      <footprint>Pin_Header_Straight_2x02</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC002DAAN-RC</field>
+        <field name="Supplier">Digikey:S2012EC-02-ND:$0.12</field>
+        <field name="Description">CONN HEADER VERT 4POS 2.54MM</field>
+        <field name="POP">DNP</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC002DAAN-RC"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5D3CA05F</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>220nF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&amp;u=M</datasheet>
+      <fields>
+        <field name="Manufacturer">Taiyo Yuden</field>
+        <field name="PartNumber">EMK107B7224KA-T</field>
+        <field name="Supplier">Digikey:587-1249-1-ND:$0.10</field>
+        <field name="Description">CAP CER 0.22UF 16V X7R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5B9D22EF</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>2.2uF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp</datasheet>
+      <fields>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="PartNumber">CL10A225KQ8NNNC</field>
+        <field name="Supplier">Digikey: 1276-1183-1-ND:$0.13</field>
+        <field name="Description">CAP CER 2.2UF 6.3V X5R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5B9ECEBB</tstamp>
+    </comp>
+    <comp ref="C4">
+      <value>22uF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp</datasheet>
+      <fields>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="PartNumber">CL10A226KQ8NRNE</field>
+        <field name="Supplier">Digikey:1276-2867-1-ND:$0.45</field>
+        <field name="Description">CAP CER 22UF 6.3V X5R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BE7A631</tstamp>
+    </comp>
+    <comp ref="C3">
+      <value>2.2uF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp</datasheet>
+      <fields>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="PartNumber">CL10A225KQ8NNNC</field>
+        <field name="Supplier">Digikey: 1276-1183-1-ND:$0.13</field>
+        <field name="Description">CAP CER 2.2UF 6.3V X5R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BE7A6DF</tstamp>
+    </comp>
+    <comp ref="J4">
+      <value>EFM.A1</value>
+      <footprint>Pin_Header_Straight_2x01</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC001DAAN-RC</field>
+        <field name="Supplier">Digikey:S2012EC-01-ND:$0.06</field>
+        <field name="Description">CONN HEADER VERT 2POS</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC001DAAN-RC"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BF32155</tstamp>
+    </comp>
+    <comp ref="J6">
+      <value>EFM.A0</value>
+      <footprint>Pin_Header_Straight_2x01</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC001DAAN-RC</field>
+        <field name="Supplier">Digikey:S2012EC-01-ND:$0.06</field>
+        <field name="Description">CONN HEADER VERT 2POS</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC001DAAN-RC"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BF352CC</tstamp>
+    </comp>
+    <comp ref="C7">
+      <value>22uF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp</datasheet>
+      <fields>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="PartNumber">CL10A226KQ8NRNE</field>
+        <field name="Supplier">Digikey:1276-2867-1-ND:$0.45</field>
+        <field name="Description">CAP CER 22UF 6.3V X5R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BF40FBF</tstamp>
+    </comp>
+    <comp ref="C5">
+      <value>220nF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&amp;u=M</datasheet>
+      <fields>
+        <field name="Manufacturer">Taiyo Yuden</field>
+        <field name="PartNumber">EMK107B7224KA-T</field>
+        <field name="Supplier">Digikey:587-1249-1-ND:$0.10</field>
+        <field name="Description">CAP CER 0.22UF 16V X7R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BE80230</tstamp>
+    </comp>
+    <comp ref="D1">
+      <value>GH CSSPM1.24</value>
+      <footprint>SM1212_ALED_TPAD</footprint>
+      <datasheet>https://dammedia.osram.info/media/resource/hires/osram-dam-4651431/GH%20CSSPM1.24.pdf</datasheet>
+      <fields>
+        <field name="Manufacturer">OSRAM Opto Semiconductors Inc.</field>
+        <field name="PartNumber">GH CSSPM1.24-4T2U-1</field>
+        <field name="Supplier">Digikey:475-3279-1-ND:$3.46</field>
+        <field name="Description">LED OSLON SSL120 RED 657NM SMD</field>
+      </fields>
+      <libsource lib="sch1-cache" part="LED_0603"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BF5A1DC</tstamp>
+    </comp>
+    <comp ref="J2">
+      <value>B</value>
+      <footprint>Pin_Header_Straight_1x03</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC003SAAN-RC</field>
+        <field name="Supplier">Digikey:S1012EC-03-ND:$0.09</field>
+        <field name="Description">CONN HEADER VERT 3POS 2.54MM</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC003SAAN"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BF5E278</tstamp>
+    </comp>
+    <comp ref="J3">
+      <value>A</value>
+      <footprint>Pin_Header_Straight_1x03</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC003SAAN-RC</field>
+        <field name="Supplier">Digikey:S1012EC-03-ND:$0.09</field>
+        <field name="Description">CONN HEADER VERT 3POS 2.54MM</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC003SAAN"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5BF66FEC</tstamp>
+    </comp>
+    <comp ref="C6">
+      <value>2.2uF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp</datasheet>
+      <fields>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="PartNumber">CL10A225KQ8NNNC</field>
+        <field name="Supplier">Digikey: 1276-1183-1-ND:$0.13</field>
+        <field name="Description">CAP CER 2.2UF 6.3V X5R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a1/" tstamps="/5BA15A66/"/>
+      <tstamp>5C0BCA2F</tstamp>
+    </comp>
+    <comp ref="D3">
+      <value>TEMD5110X01</value>
+      <footprint>4-SMD_LED</footprint>
+      <datasheet>http://www.vishay.com/docs/84658/temd5110.pdf</datasheet>
+      <fields>
+        <field name="Manufacturer">Vishay Semiconductor Opto Division</field>
+        <field name="PartNumber">TEMD5110X01</field>
+        <field name="Supplier">Digikey:751-1048-1-ND:$1.87</field>
+        <field name="Description">Photodiode 940nm 100ns 130° 4-SMD, No Lead</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PHOTO_DIODE"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5B6F07F6</tstamp>
+    </comp>
+    <comp ref="R4">
+      <value>4.99kΩ</value>
+      <footprint>SM0603_Resistor</footprint>
+      <datasheet>http://www.yageo.com/documents/recent/PYu-RC_Group_51_RoHS_L_10.pdf</datasheet>
+      <fields>
+        <field name="Manufacturer">Yageo</field>
+        <field name="PartNumber">RC0603FR-074K99L</field>
+        <field name="Supplier">Digikey:311-4.99KHRCT-ND:$0.10</field>
+        <field name="Description">RES SMD 4.99K OHM 1% 1/10W 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="R_0603"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5B810AE0</tstamp>
+    </comp>
+    <comp ref="U3">
+      <value>NCx20072</value>
+      <footprint>8-MSOP</footprint>
+      <datasheet>http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF</datasheet>
+      <fields>
+        <field name="Manufacturer">ON Semiconductor</field>
+        <field name="PartNumber">NCS20072DR2G</field>
+        <field name="Supplier">Digikey:NCS20072DR2GOSCT-ND:$0.85</field>
+        <field name="Description">IC OPAMP 3MHZ RRO DUAL 8SOIC</field>
+      </fields>
+      <libsource lib="sch1-cache" part="NCx20072"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5B896683</tstamp>
+    </comp>
+    <comp ref="U4">
+      <value>NCx20072</value>
+      <footprint>8-MSOP</footprint>
+      <datasheet>http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF</datasheet>
+      <fields>
+        <field name="Manufacturer">ON Semiconductor</field>
+        <field name="PartNumber">NCS20072DR2G</field>
+        <field name="Supplier">Digikey:NCS20072DR2GOSCT-ND:$0.85</field>
+        <field name="Description">IC OPAMP 3MHZ RRO DUAL 8SOIC</field>
+      </fields>
+      <libsource lib="sch1-cache" part="NCx20072"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5B74A005</tstamp>
+    </comp>
+    <comp ref="J7">
+      <value>C</value>
+      <footprint>Pin_Header_Straight_2x01</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC001DAAN-RC</field>
+        <field name="Supplier">Digikey:S2012EC-01-ND:$0.06</field>
+        <field name="Description">CONN HEADER VERT 2POS</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC001DAAN-RC"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BC252AE</tstamp>
+    </comp>
+    <comp ref="R5">
+      <value>10kΩ</value>
+      <footprint>BOURNS_TC33</footprint>
+      <datasheet>https://www.bourns.com/docs/Product-Datasheets/TC33.pdf</datasheet>
+      <fields>
+        <field name="Description">TRIMMER 10K OHM 0.1W J LEAD TOP</field>
+        <field name="Manufacturer">Bourns Inc.</field>
+        <field name="PartNumber">TC33X-2-103</field>
+        <field name="Supplier">Digikey:TC33X-103ECT-ND:$0.29</field>
+      </fields>
+      <libsource lib="sch1-cache" part="RTRIM"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BED852A</tstamp>
+    </comp>
+    <comp ref="R6">
+      <value>10kΩ</value>
+      <footprint>BOURNS_TC33</footprint>
+      <datasheet>https://www.bourns.com/docs/Product-Datasheets/TC33.pdf</datasheet>
+      <fields>
+        <field name="Description">TRIMMER 10K OHM 0.1W J LEAD TOP</field>
+        <field name="Manufacturer">Bourns Inc.</field>
+        <field name="PartNumber">TC33X-2-103</field>
+        <field name="Supplier">Digikey:TC33X-103ECT-ND:$0.29</field>
+      </fields>
+      <libsource lib="sch1-cache" part="RTRIM"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BF9DB03</tstamp>
+    </comp>
+    <comp ref="J11">
+      <value>D</value>
+      <footprint>Pin_Header_Straight_2x02</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC002DAAN-RC</field>
+        <field name="Supplier">Digikey:S2012EC-02-ND:$0.12</field>
+        <field name="Description">CONN HEADER VERT 4POS 2.54MM</field>
+        <field name="POP">DNP</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC002DAAN-RC"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5D3CA05F</tstamp>
+    </comp>
+    <comp ref="C8">
+      <value>220nF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&amp;u=M</datasheet>
+      <fields>
+        <field name="Manufacturer">Taiyo Yuden</field>
+        <field name="PartNumber">EMK107B7224KA-T</field>
+        <field name="Supplier">Digikey:587-1249-1-ND:$0.10</field>
+        <field name="Description">CAP CER 0.22UF 16V X7R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5B9D22EF</tstamp>
+    </comp>
+    <comp ref="C9">
+      <value>2.2uF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp</datasheet>
+      <fields>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="PartNumber">CL10A225KQ8NNNC</field>
+        <field name="Supplier">Digikey: 1276-1183-1-ND:$0.13</field>
+        <field name="Description">CAP CER 2.2UF 6.3V X5R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5B9ECEBB</tstamp>
+    </comp>
+    <comp ref="C11">
+      <value>22uF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp</datasheet>
+      <fields>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="PartNumber">CL10A226KQ8NRNE</field>
+        <field name="Supplier">Digikey:1276-2867-1-ND:$0.45</field>
+        <field name="Description">CAP CER 22UF 6.3V X5R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BE7A631</tstamp>
+    </comp>
+    <comp ref="C10">
+      <value>2.2uF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp</datasheet>
+      <fields>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="PartNumber">CL10A225KQ8NNNC</field>
+        <field name="Supplier">Digikey: 1276-1183-1-ND:$0.13</field>
+        <field name="Description">CAP CER 2.2UF 6.3V X5R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BE7A6DF</tstamp>
+    </comp>
+    <comp ref="J10">
+      <value>EFM.A1</value>
+      <footprint>Pin_Header_Straight_2x01</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC001DAAN-RC</field>
+        <field name="Supplier">Digikey:S2012EC-01-ND:$0.06</field>
+        <field name="Description">CONN HEADER VERT 2POS</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC001DAAN-RC"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BF32155</tstamp>
+    </comp>
+    <comp ref="J12">
+      <value>EFM.A0</value>
+      <footprint>Pin_Header_Straight_2x01</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutions-xrxczzzdxxn-rc_11636-b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC001DAAN-RC</field>
+        <field name="Supplier">Digikey:S2012EC-01-ND:$0.06</field>
+        <field name="Description">CONN HEADER VERT 2POS</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC001DAAN-RC"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BF352CC</tstamp>
+    </comp>
+    <comp ref="C14">
+      <value>22uF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A226KQ8NRNE.jsp</datasheet>
+      <fields>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="PartNumber">CL10A226KQ8NRNE</field>
+        <field name="Supplier">Digikey:1276-2867-1-ND:$0.45</field>
+        <field name="Description">CAP CER 22UF 6.3V X5R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BF40FBF</tstamp>
+    </comp>
+    <comp ref="C12">
+      <value>220nF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>https://ds.yuden.co.jp/TYCOMPAS/ut/detail?pn=EMK107B7224KA-T%20%20&amp;u=M</datasheet>
+      <fields>
+        <field name="Manufacturer">Taiyo Yuden</field>
+        <field name="PartNumber">EMK107B7224KA-T</field>
+        <field name="Supplier">Digikey:587-1249-1-ND:$0.10</field>
+        <field name="Description">CAP CER 0.22UF 16V X7R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BE80230</tstamp>
+    </comp>
+    <comp ref="J8">
+      <value>B</value>
+      <footprint>Pin_Header_Straight_1x03</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC003SAAN-RC</field>
+        <field name="Supplier">Digikey:S1012EC-03-ND:$0.09</field>
+        <field name="Description">CONN HEADER VERT 3POS 2.54MM</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC003SAAN"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BF5E278</tstamp>
+    </comp>
+    <comp ref="J9">
+      <value>A</value>
+      <footprint>Pin_Header_Straight_1x03</footprint>
+      <datasheet>https://www.digikey.com/en/datasheets/sullins-connector-solutions/sullins-connector-solutionsz20rzczzzszznrc20st11635b</datasheet>
+      <fields>
+        <field name="Manufacturer">Sullins Connector Solutions</field>
+        <field name="PartNumber">PREC003SAAN-RC</field>
+        <field name="Supplier">Digikey:S1012EC-03-ND:$0.09</field>
+        <field name="Description">CONN HEADER VERT 3POS 2.54MM</field>
+      </fields>
+      <libsource lib="sch1-cache" part="PREC003SAAN"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5BF66FEC</tstamp>
+    </comp>
+    <comp ref="C13">
+      <value>2.2uF</value>
+      <footprint>SM0603_Capacitor</footprint>
+      <datasheet>http://www.samsungsem.com/kr/support/product-search/mlcc/CL10A225KQ8NNNC.jsp</datasheet>
+      <fields>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="PartNumber">CL10A225KQ8NNNC</field>
+        <field name="Supplier">Digikey: 1276-1183-1-ND:$0.13</field>
+        <field name="Description">CAP CER 2.2UF 6.3V X5R 0603</field>
+      </fields>
+      <libsource lib="sch1-cache" part="C_0603"/>
+      <sheetpath names="/a2/" tstamps="/5BA15A67/"/>
+      <tstamp>5C0BCA2F</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="sch1-cache" part="C_0603">
+      <footprints>
+        <fp>SM0603_Capacitor</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C_0603</field>
+        <field name="Footprint">SM0603_Capacitor</field>
+        <field name="Datasheet">TODO-PDF</field>
+        <field name="Manufacturer">TODO-MANUFACTURER</field>
+        <field name="PartNumber">TODO-PARTNUMBER</field>
+        <field name="Supplier">[SUPPLIER]:[SUPPLIER#]:$[PRICE]</field>
+        <field name="Description">TODO-DESCRIPTION</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="sch1-cache" part="LED_0603">
+      <footprints>
+        <fp>SM0603_LED</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">LED_0603</field>
+        <field name="Footprint">SM0603_LED</field>
+        <field name="Datasheet">TODO-PDF</field>
+        <field name="Manufacturer">TODO-MANUFACTURER</field>
+        <field name="PartNumber">TODO-PARTNUMBER</field>
+        <field name="Supplier">[SUPPLIER]:[SUPPLIER#]:$[PRICE]</field>
+        <field name="Description">TODO-DESCRIPTION</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A" type="passive"/>
+        <pin num="2" name="K" type="passive"/>
+        <pin num="TPAD" name="TPAD" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="sch1-cache" part="NCx20072">
+      <footprints>
+        <fp>8-SOIC</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">NCx20072</field>
+        <field name="Footprint">8-SOIC</field>
+        <field name="Datasheet">http://www.onsemi.com/pub_link/Collateral/NCS20071-D.PDF</field>
+        <field name="Manufacturer">ON Semi</field>
+        <field name="PartNumber">NCS20072DR2G</field>
+        <field name="Supplier">Digikey:NCS20072DR2GOSCT-ND:$0.85</field>
+        <field name="Description">IC OPAMP 3MHZ RRO DUAL 8SOIC</field>
+      </fields>
+      <pins>
+        <pin num="1" name="out" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+        <pin num="3" name="+" type="passive"/>
+        <pin num="4" name="GND" type="passive"/>
+        <pin num="5" name="+" type="passive"/>
+        <pin num="6" name="-" type="passive"/>
+        <pin num="7" name="out" type="passive"/>
+        <pin num="8" name="Vcc" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="sch1-cache" part="PHOTO_DIODE">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">PHOTO_DIODE</field>
+        <field name="Footprint">TODO-FOOTPRINT</field>
+        <field name="Datasheet">TODO-PDF</field>
+        <field name="Manufacturer">TODO-MANUFACTURER</field>
+        <field name="PartNumber">TODO-PARTNUMBER</field>
+        <field name="Supplier">[SUPPLIER]:[SUPPLIER#]:$[PRICE]</field>
+        <field name="Description">TODO-DESCRIPTION</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A" type="passive"/>
+        <pin num="2" name="K" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="sch1-cache" part="PREC001DAAN-RC">
+      <footprints>
+        <fp>Pin_Header_Straight_2x01</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">PREC001DAAN-RC</field>
+        <field name="Footprint">Pin_Header_Straight_2x01</field>
+        <field name="Datasheet">http://media.digikey.com/PDF/Data%20Sheets/Sullins%20PDFs/xRxCzzzDxxN-RC_11636-B.pdf</field>
+        <field name="Manufacturer">Sullins</field>
+        <field name="PartNumber">PREC001DAAN-RC</field>
+        <field name="Supplier">Digikey:S2012EC-01-ND:$0.22</field>
+        <field name="Description">CONN HEADER .100" DUAL STR 2POS</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="sch1-cache" part="PREC002DAAN-RC">
+      <footprints>
+        <fp>Pin_Header_Straight_2x02</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">PREC002DAAN-RC</field>
+        <field name="Footprint">Pin_Header_Straight_2x02</field>
+        <field name="Datasheet">http://media.digikey.com/PDF/Data%20Sheets/Sullins%20PDFs/xRxCzzzDxxN-RC_11636-B.pdf</field>
+        <field name="Manufacturer">Sullins</field>
+        <field name="PartNumber">PREC002DAAN-RC</field>
+        <field name="Supplier">[SUPPLIER]:[SUPPLIER#]:$[PRICE]</field>
+        <field name="Description">Connector Header Through Hole 4 position 0.100" (2.54mm)</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+        <pin num="4" name="4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="sch1-cache" part="PREC003SAAN">
+      <footprints>
+        <fp>Pin_Header_Straight_1x03</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">PREC003SAAN</field>
+        <field name="Footprint">Pin_Header_Straight_1x03</field>
+        <field name="Datasheet">https://media.digikey.com/PDF/Data%20Sheets/Sullins%20PDFs/z%20RzCzzzSzzN-RC,%20ST,11635-B.pdf</field>
+        <field name="Manufacturer">Sullins</field>
+        <field name="PartNumber">PREC003SAAN</field>
+        <field name="Supplier">Digikey:S1012EC-03-ND:$0.09</field>
+        <field name="Description">Connector Header Through Hole 3 position 0.100" (2.54mm)</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="sch1-cache" part="RTRIM">
+      <footprints>
+        <fp>SM0603_Resistor</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">RTRIM</field>
+        <field name="Footprint">TODO-FOOTPRINT</field>
+        <field name="Datasheet">TODO-PDF</field>
+        <field name="Manufacturer">TODO-MANUFACTURER</field>
+        <field name="PartNumber">TODO-PARTNUMBER</field>
+        <field name="Supplier">[SUPPLIER]:[SUPPLIER#]:$[PRICE]</field>
+        <field name="Description">TODO-DESCRIPTION</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+        <pin num="3" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="sch1-cache" part="R_0603">
+      <footprints>
+        <fp>SM0603_Resistor</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R_0603</field>
+        <field name="Footprint">SM0603_Resistor</field>
+        <field name="Datasheet">TODO-PDF</field>
+        <field name="Manufacturer">TODO-MANUFACTURER</field>
+        <field name="PartNumber">TODO-PARTNUMBER</field>
+        <field name="Supplier">[SUPPLIER]:[SUPPLIER#]:$[PRICE]</field>
+        <field name="Description">TODO-DESCRIPTION</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="sch1-cache">
+      <uri>C:\projects\git\exts\kicad_scripts\test_files\sch1\sch1-cache.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(J5-Pad3)">
+      <node ref="J5" pin="3"/>
+      <node ref="U2" pin="7"/>
+      <node ref="U2" pin="6"/>
+    </net>
+    <net code="2" name="GNDA">
+      <node ref="R3" pin="2"/>
+      <node ref="J1" pin="2"/>
+      <node ref="C5" pin="1"/>
+      <node ref="U1" pin="4"/>
+      <node ref="U2" pin="4"/>
+      <node ref="C13" pin="1"/>
+      <node ref="J7" pin="2"/>
+      <node ref="R2" pin="2"/>
+      <node ref="D1" pin="TPAD"/>
+      <node ref="C1" pin="1"/>
+      <node ref="C2" pin="1"/>
+      <node ref="C3" pin="1"/>
+      <node ref="C4" pin="1"/>
+      <node ref="U3" pin="5"/>
+      <node ref="J4" pin="2"/>
+      <node ref="J6" pin="2"/>
+      <node ref="J9" pin="1"/>
+      <node ref="C7" pin="1"/>
+      <node ref="J3" pin="1"/>
+      <node ref="C14" pin="1"/>
+      <node ref="U1" pin="5"/>
+      <node ref="J12" pin="2"/>
+      <node ref="C6" pin="1"/>
+      <node ref="C10" pin="1"/>
+      <node ref="C12" pin="1"/>
+      <node ref="R6" pin="2"/>
+      <node ref="C9" pin="1"/>
+      <node ref="C11" pin="1"/>
+      <node ref="J10" pin="2"/>
+      <node ref="U4" pin="4"/>
+      <node ref="C8" pin="1"/>
+      <node ref="U3" pin="4"/>
+      <node ref="R5" pin="2"/>
+    </net>
+    <net code="3" name="+5VA">
+      <node ref="C9" pin="2"/>
+      <node ref="C12" pin="2"/>
+      <node ref="C11" pin="2"/>
+      <node ref="C10" pin="2"/>
+      <node ref="D3" pin="2"/>
+      <node ref="J10" pin="1"/>
+      <node ref="U4" pin="8"/>
+      <node ref="C8" pin="2"/>
+      <node ref="U3" pin="8"/>
+      <node ref="J8" pin="1"/>
+      <node ref="C1" pin="2"/>
+      <node ref="J4" pin="1"/>
+      <node ref="C5" pin="2"/>
+      <node ref="D2" pin="2"/>
+      <node ref="U2" pin="8"/>
+      <node ref="D1" pin="1"/>
+      <node ref="J2" pin="1"/>
+      <node ref="U1" pin="8"/>
+      <node ref="C2" pin="2"/>
+      <node ref="C4" pin="2"/>
+      <node ref="C3" pin="2"/>
+    </net>
+    <net code="4" name="Net-(R1-Pad2)">
+      <node ref="R1" pin="2"/>
+      <node ref="U1" pin="3"/>
+    </net>
+    <net code="5" name="/a1/N1">
+      <node ref="R2" pin="1"/>
+    </net>
+    <net code="6" name="/a1/N2">
+      <node ref="R3" pin="3"/>
+    </net>
+    <net code="7" name="Net-(D2-Pad1)">
+      <node ref="J3" pin="3"/>
+      <node ref="D2" pin="1"/>
+    </net>
+    <net code="8" name="Net-(J1-Pad1)">
+      <node ref="R1" pin="1"/>
+      <node ref="J1" pin="1"/>
+    </net>
+    <net code="9" name="Net-(R3-Pad1)">
+      <node ref="R3" pin="1"/>
+      <node ref="U2" pin="5"/>
+    </net>
+    <net code="10" name="Net-(R2-Pad3)">
+      <node ref="U2" pin="3"/>
+      <node ref="R2" pin="3"/>
+    </net>
+    <net code="11" name="/a1/O2">
+      <node ref="J5" pin="4"/>
+    </net>
+    <net code="12" name="/a1/O1">
+      <node ref="J5" pin="2"/>
+    </net>
+    <net code="13" name="Net-(D1-Pad2)">
+      <node ref="D1" pin="2"/>
+      <node ref="J2" pin="3"/>
+    </net>
+    <net code="14" name="Net-(J2-Pad2)">
+      <node ref="J2" pin="2"/>
+    </net>
+    <net code="15" name="Net-(J3-Pad2)">
+      <node ref="J3" pin="2"/>
+    </net>
+    <net code="16" name="Net-(U1-Pad6)">
+      <node ref="U1" pin="7"/>
+      <node ref="U1" pin="6"/>
+    </net>
+    <net code="17" name="+3V3">
+      <node ref="C13" pin="2"/>
+      <node ref="C14" pin="2"/>
+      <node ref="J6" pin="1"/>
+      <node ref="C7" pin="2"/>
+      <node ref="J12" pin="1"/>
+      <node ref="C6" pin="2"/>
+    </net>
+    <net code="18" name="Net-(U1-Pad1)">
+      <node ref="U1" pin="2"/>
+      <node ref="U1" pin="1"/>
+    </net>
+    <net code="19" name="Net-(J5-Pad1)">
+      <node ref="U2" pin="2"/>
+      <node ref="J5" pin="1"/>
+      <node ref="U2" pin="1"/>
+    </net>
+    <net code="20" name="/a2/N1">
+      <node ref="R5" pin="1"/>
+    </net>
+    <net code="21" name="Net-(R4-Pad2)">
+      <node ref="U3" pin="3"/>
+      <node ref="R4" pin="2"/>
+    </net>
+    <net code="22" name="Net-(J11-Pad3)">
+      <node ref="U4" pin="7"/>
+      <node ref="U4" pin="6"/>
+      <node ref="J11" pin="3"/>
+    </net>
+    <net code="23" name="/a2/N2">
+      <node ref="R6" pin="3"/>
+    </net>
+    <net code="24" name="Net-(D3-Pad1)">
+      <node ref="J9" pin="3"/>
+      <node ref="D3" pin="1"/>
+    </net>
+    <net code="25" name="Net-(J7-Pad1)">
+      <node ref="J7" pin="1"/>
+      <node ref="R4" pin="1"/>
+    </net>
+    <net code="26" name="Net-(R6-Pad1)">
+      <node ref="U4" pin="5"/>
+      <node ref="R6" pin="1"/>
+    </net>
+    <net code="27" name="Net-(R5-Pad3)">
+      <node ref="U4" pin="3"/>
+      <node ref="R5" pin="3"/>
+    </net>
+    <net code="28" name="/a2/O2">
+      <node ref="J11" pin="4"/>
+    </net>
+    <net code="29" name="/a2/O1">
+      <node ref="J11" pin="2"/>
+    </net>
+    <net code="30" name="Net-(J8-Pad2)">
+      <node ref="J8" pin="2"/>
+    </net>
+    <net code="31" name="Net-(D1-Pad2)">
+      <node ref="J8" pin="3"/>
+    </net>
+    <net code="32" name="Net-(J9-Pad2)">
+      <node ref="J9" pin="2"/>
+    </net>
+    <net code="33" name="Net-(U3-Pad6)">
+      <node ref="U3" pin="6"/>
+      <node ref="U3" pin="7"/>
+    </net>
+    <net code="34" name="Net-(U3-Pad1)">
+      <node ref="U3" pin="1"/>
+      <node ref="U3" pin="2"/>
+    </net>
+    <net code="35" name="Net-(J11-Pad1)">
+      <node ref="J11" pin="1"/>
+      <node ref="U4" pin="1"/>
+      <node ref="U4" pin="2"/>
+    </net>
+  </nets>
+</export>

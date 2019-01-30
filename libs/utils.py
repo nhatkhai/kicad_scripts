@@ -44,7 +44,7 @@ def normPath(path, curPath=None):
     test_path = path.split("\\")
 
   # Check first part of this path to see if it is a relative path
-  if test_path[0] in ("..", ".", ""):
+  if test_path[0] in {'..', '.'} and test_path[0][-1]!=":":
     if not curPath: 
         curPath = os.getcwd()
     return os.path.normpath(os.path.join(curPath, path))
