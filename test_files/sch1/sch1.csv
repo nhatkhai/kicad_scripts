@@ -1,7 +1,7 @@
 Source:,sch1.sch
 Date:,1/29/2019 10:58:05 PM
 Tool:,Eeschema 4.0.7
-Generator:,../../bom_plugins/bom2csv.py
+Generator:,bom_plugins/bom2csv.py
 Component Count:,39
 
 Individual Components:
@@ -66,3 +66,6 @@ Item,Qty,POP,Reference(s),Value,Manufacturer,PartNumber,Supplier,Supplier Number
 12,2,,"R1, R4",4.99kΩ,Yageo,RC0603FR-074K99L,Digikey,311-4.99KHRCT-ND,$0.10,RES SMD 4.99K OHM 1% 1/10W 0603,sch1-cache:R_0603,SM0603_Resistor,http://www.yageo.com/documents/recent/PYu-RC_Group_51_RoHS_L_10.pdf
 13,4,,"R2, R3, R5, R6",10kΩ,Bourns Inc.,TC33X-2-103,Digikey,TC33X-103ECT-ND,$0.29,TRIMMER 10K OHM 0.1W J LEAD TOP,sch1-cache:RTRIM,BOURNS_TC33,https://www.bourns.com/docs/Product-Datasheets/TC33.pdf
 14,4,,"U1, U2, U3, U4",NCx20072,ON Semiconductor,NCS20072DR2G,Digikey,NCS20072DR2GOSCT-ND,$0.85,IC OPAMP 3MHZ RRO DUAL 8SOIC,sch1-cache:NCx20072,8-MSOP,http://www.onsemi.com/pub/Collateral/NCS20071-D.PDF
+
+
+

@@ -1,11 +1,11 @@
 #!/bin/python
 """
-    @package
-    Update eeschema symbol files from CSV BOM list.
+Update eeschema symbol fields from specified CSV BOM file.
 """
 import sys
 import os
 import logging
+import argparse
 from Queue import Queue
 
 lib_path = os.path.join(os.path.dirname(sys.argv[0]),'..')
@@ -21,20 +21,17 @@ from libs import bom
 log = logging.getLogger(__name__)
 
 
-def main_cli():
-  if len(sys.argv)<2:
-    log.info("""
-    %s csv_file.csv [root_schematic_file.sch]
+def main_cli(argv=None):
+  p = argparse.ArgumentParser(description=__doc__)
+  p.add_argument('bom', type=str, metavar='bom.csv')
+  p.add_argument('sch', type=str, metavar='root_schematic_file.sch', nargs='?'
+      , help = '''can be automatically extracted from csv file where
+          "Source:" field specified in the header meta data. This usually
+          create by eeschema BOM generator scripts''')
+  p = p.parse_args(argv)
 
-    root_schematic_file.sch can be automatically extracted from csv file
-    where "Source:" field specified in the header meta data. This usually
-    create by eeschema BOM generator scripts
-    """, os.path.basename(sys.argv[0]))
-    sys.exit(1)
-
-  bom_filename = sys.argv[1] if len(sys.argv)>1 else None
-  sch_filename = sys.argv[2] if len(sys.argv)>2 else None
-  if bom_filename == "--test": return
+  bom_filename = p.bom
+  sch_filename = p.sch
 
   log.info("Reading %s", bom_filename)
 
@@ -159,20 +156,37 @@ def main_cli():
     for schfile in sheetARs.keys():
         os.rename(schfile + '.new', schfile)
 
-  sys.exit(0)
 
 #
 # Test section for pytest style
 #
 def tests():
   log.info("Entering test mode")
-  assert True
   import doctest
-  doctest.testmod(verbose=True)
+  import os
+  import time
+
+  doctest.testmod(verbose=False)
+
+  log.info("Test sch1 for normal use case")
+  main_cli(['test_files/sch1/sch1.csv'])
+
+  for f in ('sch1.sch', 'a1.sch'):
+    actual = os.system(' '.join(('diff -s -q --strip-trailing-cr'
+      , 'test_files/sch1/%s' % f
+      , 'test_files/sch1/%s.bak' % f
+    ,)))
+    assert actual==0, "diff[%d] - generated %s not match" % (actual, f)
+
+  sys.exit(0)
+
 
 if __name__ == "__main__":
   logging.basicConfig(
       level=logging.DEBUG,
       format='%(asctime)s [%(filename)s:%(lineno)-4d] %(levelname)7s - %(message)s')
+
+  if '--test' in sys.argv: 
+    tests()
+
   main_cli()
-  tests()
