@@ -12,6 +12,7 @@ from utils      import MapNestedList, MapNestedDict
 from linkeddata import linkedVirtualStrData, linkedStrData
 
 log = logging.getLogger(__name__)
+log.setLevel(logging.WARN)
 
 SHEET_ID    = 'ID'
 SHEET_FILE  = 'FILE'
@@ -535,8 +536,8 @@ class schCompIter:
     self._sheetARs = {}
 
     self._sheetARsIter = {}
-    self._curSchIter   = None
-    self._getSchIter    = getSchIter
+    self._usedIters    = []
+    self._getSchIter   = getSchIter
 
   def getSubSheets(self):
     """ Collect a set of schematic file with AR_ID and sub schematic file 
@@ -601,21 +602,23 @@ class schCompIter:
     return self
 
   def __exit__(self, exc_type, exc_val, exc_tb):
-    try:
-      self._curSchIter.__exit__(exc_type, exc_val, exc_tb)
-    except AttributeError:
-      pass
+    for i in self._usedIters:
+      try:
+        i.__exit__(exc_type, exc_val, exc_tb)
+      except AttributeError:
+        pass
+    self._usedIters = []
 
   def __iter__(self):
     self._sheetARsIter = self.getSubSheetARs()
-    self._curSchIter = iter([])
+    self._usedIters  = [iter([])]
     self.arPaths    = None
     return self
 
   def next(self):
     while True:
       try:
-        e, state = self._curSchIter.next()
+        e, state = self._usedIters[-1].next()
         if state != e.COMP_EX:
           continue
 
@@ -646,7 +649,7 @@ class schCompIter:
           raise StopIteration
         schfile, self.arPaths = self._sheetARsIter.popitem()
         log.info("  Processing %s", schfile)
-        self._curSchIter = self._getSchIter(schfile)
+        self._usedIters.append(self._getSchIter(schfile))
 
 
 class schIter:
@@ -707,6 +710,7 @@ class schIter:
     return self
 
   def __exit__(self, exc_type, exc_val, exc_tb):
+    log.debug("__exit__ %s", self.filename)
     self.file.close()
 
   def __iter__(self):
@@ -870,6 +874,7 @@ class schMapper(schIter):
 
   def __exit__(self, exc_type, exc_val, exc_tb):
     schIter.__exit__(self, exc_type, exc_val, exc_tb)
+    log.debug("__exit__ out file of %s", self.filename)
     self.outfile.close()
 
   def _clearData(self):
