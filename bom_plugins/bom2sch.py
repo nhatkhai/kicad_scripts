@@ -172,7 +172,7 @@ def tests():
   main_cli(['test_files/sch1/sch1.csv'])
 
   for f in ('sch1.sch', 'a1.sch'):
-    actual = os.system(' '.join(('diff -s -q --strip-trailing-cr'
+    actual = os.system(' '.join(('diff -s --strip-trailing-cr'
       , 'test_files/sch1/%s' % f
       , 'test_files/sch1/%s.bak' % f
     ,)))

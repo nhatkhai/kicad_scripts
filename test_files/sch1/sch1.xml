@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <export version="D">
   <design>
-    <source>C:/projects/git/exts/kicad_scripts/test_files/sch1/sch1.sch</source>
+    <source>test_files/sch1/sch1.sch</source>
     <date>1/29/2019 10:58:05 PM</date>
     <tool>Eeschema 4.0.7</tool>
     <sheet number="1" name="/" tstamps="/">
@@ -777,7 +777,7 @@
   </libparts>
   <libraries>
     <library logical="sch1-cache">
-      <uri>C:\projects\git\exts\kicad_scripts\test_files\sch1\sch1-cache.lib</uri>
+      <uri>test_files\sch1\sch1-cache.lib</uri>
     </library>
   </libraries>
   <nets>

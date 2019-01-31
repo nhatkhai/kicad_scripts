@@ -1,7 +1,7 @@
 Source:,sch1.sch
 Date:,1/29/2019 10:58:05 PM
 Tool:,Eeschema 4.0.7
-Generator:,bom_plugins/bom2csv.py
+Generator:,./bom_plugins/bom2csv.py
 Component Count:,39
 
 Individual Components:

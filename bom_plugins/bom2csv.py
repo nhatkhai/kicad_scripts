@@ -219,7 +219,7 @@ def tests():
     , 'test_files/sch1/test_bom2csv.csv'
   ])
 
-  actual = os.system(' '.join(('diff -q --strip-trailing-cr'
+  actual = os.system(' '.join(('diff -s --strip-trailing-cr'
   , 'test_files/sch1/sch1.csv' 
   , 'test_files/sch1/test_bom2csv.csv'
   ,)))
