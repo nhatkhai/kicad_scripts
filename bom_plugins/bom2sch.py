@@ -36,8 +36,8 @@ def main_cli(argv=None):
   log.info("Reading %s", bom_filename)
 
   # Read all BOM data into memory
-  myBom = bom.csv_bom()
-  myBom.read(bom_filename)
+  myBom = bom.csv_bom(bom_filename)
+  myBom.read()
   bomHeaderTexts = myBom.getHeaderTexts()
   if not sch_filename:
     sch_filename = myBom.getSchFileName()

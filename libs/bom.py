@@ -8,20 +8,16 @@ import os
 import csv
 import re
 import logging
-from Queue import Queue
 
 lib_path = os.path.join(os.path.dirname(sys.argv[0]),'..')
 lib_path = os.path.normpath(lib_path)
 if lib_path not in sys.path:
   sys.path.append(lib_path)
 
-from libs import eeschematic
-from libs import utils
-
 log = logging.getLogger(__name__)
 
 
-# Special BOM Header
+# Special recognized column name/BOM_HEADER_ID
 ITEM          = 'item'         
 QUANTITY      = 'quantity'     
 POPULATE      = 'populate'
@@ -39,9 +35,29 @@ PRICE         = 'price'
 
 # Special meta data
 SCHFILE      = 'schfile'
+SRCFILE      = 'srcfile'
 
 
 class bom:
+  # Use regex for map some of special BOM_HEADER_ID from user typical
+  # header names
+  BOM_HEADER_ID_REGEXS = [
+    '(?P<'+POPULATE    +'>' 'Pop(ulate|ulation)?'                 ,
+    '(?P<'+REFERENCE   +'>' 'Ref|Reference.*'                     ,
+    '(?P<'+VALUE       +'>' 'Value'                               ,
+    '(?P<'+SYMBOL      +'>' 'Libpart|Part|Library.*'              ,
+    '(?P<'+FOOTPRINT   +'>' 'Footprint'                           ,
+    '(?P<'+DATASHEET   +'>' 'Datasheet'                           ,
+    '(?P<'+MANUFACTURER+'>' 'M(anu?)?f(actu)?r?(er)?'             ,
+    '(?P<'+PARTNUM     +'>' '(M(anu?)?f(actu)?r?(er)?|P(art)?)'
+                            '(#| ?number)'                        ,
+    '(?P<'+SUPPLIER    +'>' 'Sup(plier)?|Vendor|Dist(ributor)?'   ,
+    '(?P<'+SUPPLIERNUM +'>' '(Sup(plier)?|Vendor|Dist(ributor)?)'
+                            '(#| ?number)'                        ,
+    '(?P<'+PRICE       +'>' '(Sup(plier)?|Vendor|Dist(ributor)?)?'
+                           r'(\$| ?Price)'                        ,
+  ]
+
   def __init__(self):
     self.meta = {} # META_KEY -> [VALUE]
     self.header={} # HEADER_ID -> ( COLUMN_INDEX
@@ -50,16 +66,40 @@ class bom:
     self.refs = {} # REFERENCE -> { HEADER_ID -> value }
 
   def getSchFileName(self):
+    """ Obtain the origin root schematic file path
+    @return (str or None) a file path to root schematic 
+    """
     return self.meta.get(SCHFILE, [None])[0]
 
+  def getSrcFileName(self):
+    """ Obtain the origin source file path where this bom read from
+    @return (str or None) a file path to source file
+    """
+    return self.meta.get(SRCFILE, [None])[0]
+
+  def getMetaData(self):
+    return self.meta.copy()
+
   def getHeaderTexts(self):
+    """ Obtain header row detail information
+
+    @return (dict) BOM_HEADER_ID -> Actual user header name 
+    """
     return {k:v[1] for k, v in self.header.iteritems()}
 
   def genColNameToHeaderID(self):
+    """ Obtain a map of actual column name to it's column index
+
+    @return (dict) actual column name -> BOM_HEADER_ID
+    """
     return {fieldName:colID 
         for colID, (colIdx, fieldName, special) in self.header.items()}
 
   def getReferences(self):
+    """ Obtain a full data set of all references
+
+    @return (dict) str(REFERENCE) -> {BOM_HEADER_ID:str(VALUE)}
+    """
     return self.refs
 
   @staticmethod
@@ -138,24 +178,13 @@ class bom:
 
 
 class csv_bom(bom):
-  HEADER_NAMES = re.compile(
-      '(?P<'+ITEM        +'>' 'Item#?'                              ')$|'
-      '(?P<'+QUANTITY    +'>' 'Qty|Qnty|Quantity'                   ')$|'
-      '(?P<'+POPULATE    +'>' 'Pop(ulate|ulation)?'                 ')$|'
-      '(?P<'+REFERENCE   +'>' 'Ref|Reference.*'                     ')$|'
-      '(?P<'+VALUE       +'>' 'Value'                               ')$|'
-      '(?P<'+SYMBOL      +'>' 'Libpart|Part|Library.*'              ')$|'
-      '(?P<'+FOOTPRINT   +'>' 'Footprint'                           ')$|'
-      '(?P<'+DATASHEET   +'>' 'Datasheet'                           ')$|'
-      '(?P<'+MANUFACTURER+'>' 'M(anu?)?f(actu)?r?(er)?'             ')$|'
-      '(?P<'+PARTNUM     +'>' '(M(anu?)?f(actu)?r?(er)?|P(art)?)'
-                              '(#| ?number)'                        ')$|'
-      '(?P<'+SUPPLIER    +'>' 'Sup(plier)?|Vendor|Dist(ributor)?'   ')$|'
-      '(?P<'+SUPPLIERNUM +'>' '(Sup(plier)?|Vendor|Dist(ributor)?)'
-                              '(#| ?number)'                        ')$|'
-      '(?P<'+PRICE       +'>' '(Sup(plier)?|Vendor|Dist(ributor)?)?'
-                             r'(\$| ?Price)'                        ')$|'
-      , flags=re.I)
+  HEADER_NAMES = re.compile(')$|'.join(bom.BOM_HEADER_ID_REGEXS 
+    + [
+      '(?P<'+ITEM        +'>' 'Item#?'                              ,
+      '(?P<'+QUANTITY    +'>' 'Qty|Qnty|Quantity'                   ,
+      ''
+      ])
+    , flags=re.I)
 
   META_NAMES = re.compile(
       '(?P<'+SCHFILE+'>' 'source:' ')$|'
@@ -165,8 +194,10 @@ class csv_bom(bom):
       " *(([a-z]*)(\d+)|([^-,;]*)) *([-,;]|\.\.|$)"
       , flags=re.I )
 
-  def __init__(self):
+  def __init__(self, filename):
     bom.__init__(self)
+    self.meta[SRCFILE] = [filename]
+
     # To recognize a row as bom header of is have one of following columns
     self.header_min = [
         {REFERENCE, VALUE    }, 
@@ -179,12 +210,13 @@ class csv_bom(bom):
         '('+QUANTITY+')$|'
         , flags=re.I)
 
-    self.meta = {} # A meta key with array of values
-    self.refs = {} # A reference key with dict of key and values
     self.lineCnt = 0
 
-  def read(self, filename):
+  def read(self):
+    filename = self.getSrcFileName()
+
     self.lineCnt = 0
+    skip_bom = 0
     with open(filename) as bom_file:
       first_file = bom_file.readline()
       for skip_bom, c in enumerate(first_file):
@@ -237,11 +269,13 @@ class csv_bom(bom):
     log.info("CSV LINE %-3d: Read data for %s", self.lineCnt
         , ', '.join(sorted(self.header.keys())))
     refsData = {}
-    refsItemIdx = {}
+    refsItemIdx = {} # Trace file line numbers where ref show up
     for row in reader:
       self.lineCnt = self.lineCnt + 1
       data = {}
       allEmpty = True
+
+      # Create a data dict {BOM_HEADER_ID : VALUE}
       for colID, (colIdx, colname, special) in header.items():
         if colIdx>=len(row):
           log.warn("CSV LINE %-3d: Stop reading", self.lineCnt)

@@ -352,17 +352,17 @@ class comp():
         """
 
         func = {
-          "supplier"       : lambda: self.getSupplier(libraryToo),
-          "supplier number": lambda: self.getSupplierNumber(libraryToo),
-          "supplier price" : lambda: self.getSupplierPrice(libraryToo),
+        #  "supplier"       : lambda: self.getSupplier(libraryToo),
+        #  "supplier number": lambda: self.getSupplierNumber(libraryToo),
+        #  "supplier price" : lambda: self.getSupplierPrice(libraryToo),
           "libpart"        : lambda: ":".join((self.getLibName(), self.getPartName(),)),
           "footprint"      : lambda: self.getFootprint(libraryToo),
           "datasheet"      : lambda: self.getDatasheet(libraryToo),
-          "reference(s)"   : lambda: self.getRef(),
+        #  "reference(s)"   : lambda: self.getRef(),
           "value"          : lambda: self.getValue(),
-          "pop"            : lambda: self.getPopulation(),
-          "item"           : lambda: "",
-          "qty"            : lambda: "",
+        #  "pop"            : lambda: self.getPopulation(),
+        #  "item"           : lambda: "",
+        #  "qty"            : lambda: "",
         }.get(name.lower(), lambda: self._getField(name, libraryToo))
 
         return func()
@@ -524,7 +524,6 @@ class netlist():
             if not c.getLibPart():
                 print( 'missing libpart for ref:', c.getRef(), c.getPartName(), c.getLibName() )
 
-
     def aliasMatch(self, partName, aliasList):
         for alias in aliasList:
             if partName == alias:
@@ -589,6 +588,15 @@ class netlist():
                 ret.add(field)
 
         return ret       # this is a python 'set'
+
+    def getComponents(self):
+        """
+        @Return (list of comp) all components
+        """
+        return self.components
+
+    def getLibparts(self):
+      return self.libparts
 
     def getInterestingComponents(self):
         """Return a subset of all components, those that should show up in the BOM.
@@ -707,14 +715,9 @@ class netlist():
         fname -- The name of the generic netlist file to open
 
         """
-        try:
-            self._reader = sax.make_parser()
-            self._reader.setContentHandler(_gNetReader(self))
-            self._reader.parse(fname)
-        except IOError as e:
-            print( __file__, ":", e, file=sys.stderr )
-            sys.exit(-1)
-
+        self._reader = sax.make_parser()
+        self._reader.setContentHandler(_gNetReader(self))
+        self._reader.parse(fname)
 
 
 class _gNetReader(sax.handler.ContentHandler):

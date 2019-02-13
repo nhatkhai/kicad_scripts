@@ -26,10 +26,10 @@ NOTE: Inserting UTF-8-BOM into csv will make excel show UTF-8
     file. This script will not insert UTF-8-BOM for this purpose.
 """
 
-from __future__ import print_function
 import csv
 import sys
 import os
+import re
 import logging
 import argparse
 
@@ -41,6 +41,8 @@ if lib_path not in sys.path:
 # Import the KiCad python helper module and the csv formatter
 from libs import kicad_netlist_reader
 from libs import utils
+from libs import eeschematic
+from libs import bom
 
 
 log = logging.getLogger(__name__)
@@ -52,10 +54,10 @@ def groupIdentity(component):
     In this example of a custom equivalency operator we compare the
     value, Manufacturer, PartNumber, Datasheet, Footprint, and POP
     """
-    return tuple(component.getField(n) for n in (  
-                'Value'
-              , 'Manufacturer', 'PartNumber', 'Datasheet'
-              , 'Footprint', 'POP'))
+    return tuple(component.get(n) for n in (  
+                bom.VALUE
+              , bom.MANUFACTURER, bom.PARTNUM, bom.DATASHEET
+              , bom.FOOTPRINT, bom.POPULATE))
 
 
 def main_cli(argv=None):
@@ -97,44 +99,76 @@ def main_cli(argv=None):
       print( sys.argv[0], ":", e, sys.stderr )
       f = sys.stdout
   
-  # Generate an instance of a generic netlist, and load the netlist tree from
-  # the command line option. If the file doesn't exist, execution will stop
-  net = kicad_netlist_reader.netlist(p.xml)
-  
-  # subset the components to those wanted in the BOM, controlled
-  # by <configure> block in kicad_netlist_reader.py
-  components = net.getInterestingComponents()
-  
-  compfields = net.gatherComponentFieldUnion(components)
-  partfields = net.gatherLibPartFieldUnion()
+  infileext = os.path.splitext(p.xml)[1]
+  myBom = { 
+    '.xml' : xml_bom,
+    '.sch' : sch_bom,
+    '.csv' : bom.csv_bom,
+  }.get(infileext.lower(), notsupportedfile)(p.xml)
 
-  specialPrefixCol= ['Item', 'Qty',]
+  exclude_filters = {
+      bom.REFERENCE : re.compile("#.*"),
+  }
+
+  myBom.read(exclude_filters)
+
+  meta = myBom.getMetaData()
+  bomHeader = myBom.getHeaderTexts()
+  refs = myBom.getReferences()
+
+  for data in refs.itervalues():
+    supplier = data.get(bom.SUPPLIER)
+    if supplier is not None:
+      suppInfo = supplier.split(":")
+      if len(supplier)>0: data[bom.SUPPLIER]   = suppInfo[0]
+      if len(supplier)>1: data.setdefault(bom.SUPPLIERNUM, suppInfo[1])
+      if len(suppInfo)>2: data.setdefault(bom.PRICE      , suppInfo[2])
+
+  specialPrefixCol= [bom.ITEM, bom.QUANTITY,]
 
   specialColOrder = []
-  if 'POP' in compfields:
-    specialColOrder.append('POP')
-  specialColOrder.extend(['Reference(s)', 'Value', 'Manufacturer','PartNumber',])
+  if bom.POPULATE in bomHeader:
+    specialColOrder.append(bom.POPULATE)
+  specialColOrder.extend([bom.REFERENCE, bom.VALUE, bom.MANUFACTURER, bom.PARTNUM])
 
-  if 'Supplier' in compfields:
-    specialSuppCol  = ['Supplier', 'Supplier Number', 'Supplier Price',]
+  specialSuppCol  = []
+  if bom.SUPPLIER in bomHeader:
+    specialSuppCol  = [bom.SUPPLIER, bom.SUPPLIERNUM, bom.PRICE,]
 
-  specialPosfixCol= ['LibPart', 'Footprint', 'Datasheet']
+  specialPosfixCol= [bom.SYMBOL, bom.FOOTPRINT, bom.DATASHEET]
 
-  columnset = compfields | partfields | set(specialSuppCol)  # union
+  colIDset = set(bomHeader.keys())
+
+  # Remove always included colIDs
+  colIDset -= set(specialColOrder)
+  colIDset -= set(specialSuppCol)
+  colIDset -= {'Reference'}
+  colIDset -= set(specialPosfixCol)
   
-  # Remove always included columns
-  columnset -= set(specialColOrder)
-  columnset -= set(specialSuppCol)
-  columnset -= {'Reference'}
-  columnset -= set(specialPosfixCol)
+  # Create a complete set of colIDs to generate BOM table
+  colIDs = specialPrefixCol \
+        + specialColOrder \
+        + specialSuppCol \
+        + sorted(list(colIDset)) \
+        + specialPosfixCol 
+
+  # Overwrite some of user header text
+  myText = {
+      bom.ITEM        : 'Item',
+      bom.QUANTITY    : 'Qty',
+      bom.POPULATE    : 'POP',
+      bom.REFERENCE   : 'Reference(s)',
+      bom.SUPPLIERNUM : 'Supplier Number',
+      bom.PRICE       : 'Supplier Price',
+      bom.SYMBOL      : 'LibPart',
+  }
+  for colID, colText in myText.iteritems():
+    if colID in bomHeader or colID in colIDs:
+      bomHeader[colID] = colText
   
-  # Create a complete set of columns to generate BOM table
-  columns = specialPrefixCol \
-          + specialColOrder \
-          + specialSuppCol \
-          + sorted(list(columnset)) \
-          + specialPosfixCol 
-  
+  # Obtain user header text
+  columns = [bomHeader.get(c, c) for c in colIDs]
+
   # Create a new csv writer object to use as the output formatter
   out = csv.writer( f
       , lineterminator='\n'
@@ -151,25 +185,36 @@ def main_cli(argv=None):
     source = ['\xef\xbb\xbfSource:']
   else:
     source = [            'Source:']
-  source.append( utils.relPath( net.getSource(), os.path.dirname(p.bom) ) )
+  source.append( utils.relPath( meta.get(bom.SCHFILE)[0]
+    , os.path.dirname(p.bom) ) )
 
   # Output a set of rows as a header providing general information
   writerow( out, source )
-  writerow( out, ['Date:', net.getDate()] )
-  writerow( out, ['Tool:', net.getTool()] )
+  for a in ['Date', 'Tool']:
+    if a in meta:
+      writerow( out, [a + ':', meta.get(a)[0]] )
   writerow( out, ['Generator:', sys.argv[0]] )
-  writerow( out, ['Component Count:', len(components)] )
+  writerow( out, ['Component Count:', len(refs)] )
   writerow( out, [] )
   
+  # TODO - I'm here
+  r = re.compile('[0-9]+(\.[0-9]+)?')
+  
   if 'i' in p.bomtype:
-  # Output all the interesting components individually first:
+  # Output all the interesting references individually first:
     writerow( out, ['Individual Components:'] )
     writerow( out, [] )                        # blank line
     writerow( out, columns )
     row = []
-    for c in components:
-        row = [c.getField( field ) for field in columns]
-        writerow( out, row )
+
+    sortedRefs = sorted(refs.iterkeys()
+      , key=lambda g: r.sub( lambda m: '%016.8f' % float(m.group(0)), g )
+    )
+
+    for ref in sortedRefs:
+      data = refs[ref]
+      row = [data.get( field, '' ) for field in colIDs]
+      writerow( out, row )
     
     writerow( out, [] )                        # blank line
     writerow( out, [] )                        # blank line
@@ -180,17 +225,37 @@ def main_cli(argv=None):
     writerow( out, [] )                        # blank line
     writerow( out, columns )                   # reuse same columns
   
-    # Get all of the components in groups 
-    grouped = net.groupComponents(groupIdentity, components)
-    
+    # Group all references that have the same set of info
+    groups = {}
+    for ref, data in refs.iteritems():
+        groups.setdefault(groupIdentity(data), []).append(ref)
+
+    # Each group is a list of components, we need to sort each list first
+    # to get them in order as this makes for easier to read BOM's
+    for g in groups.itervalues():
+        g.sort(key=lambda gg: r.sub(
+            lambda m: '%016.8f' % float(m.group(0)), gg))
+
+    # Finally, sort the groups to order the references alphabetically
+    groups = sorted(groups.itervalues()
+              , key=lambda gg: r.sub(
+                lambda m: '%016.8f' % float(m.group(0)), gg[0]))
+    #TODO - HERE
+
     # Output component information organized by group, aka as collated:
-    for item, group in enumerate(grouped):
+    for item, group in enumerate(groups):
         row = [item+1, len(group)]
     
-        for field in columns[2:]:
-            row.append( net.getGroupField(group, field) )
+        for field in colIDs[2:]:
+          vals = set(refs[ref].get(field, '') for ref in group)
+          vals-= {''}
+          vals = sorted(vals, 
+              key=lambda v: r.sub(
+                lambda m: '%016.8f' % float(m.group(0)), v))
+          row.append( ', '.join(vals) )
     
         writerow( out, row  )
+
     writerow( out, [] )                        # blank line
     writerow( out, [] )                        # blank line
     writerow( out, [] )                        # blank line
@@ -202,6 +267,122 @@ def main_cli(argv=None):
     except:
       pass
 
+def notsupportedfile(filename):
+  log.error("%s is not a supported file type", filename)
+  exit(1)
+
+
+class xml_bom(bom.bom):
+  HEADER_NAMES = re.compile(')$|'.join(bom.bom.BOM_HEADER_ID_REGEXS + [''])
+      , flags=re.I)
+
+  def __init__(self, filename):
+    bom.bom.__init__(self)
+    self.meta[bom.SRCFILE] = [filename]
+
+  def read(self, exclude_filters=None):
+    if exclude_filters is None:
+      exclude_filters = {}
+
+    filename = self.getSrcFileName()
+
+    # Load xml netlist file ( Generic Netlist file )
+    net = kicad_netlist_reader.netlist(filename)
+
+    # Save meta data in to meta dict
+    self.meta[bom.SCHFILE] = [net.getSource()]
+    self.meta['Date']      = [net.getDate()  ]
+    self.meta['Tool']      = [net.getTool()  ]
+    
+    # Collect a map of lib name to libparts class for latter retrieval for
+    # component fields names
+    libByNames = {}
+    for lib in net.getLibparts():
+      libByNames[lib.getLibName()] = lib 
+
+    for c in net.getComponents():
+      ref     = c.getRef()
+      cData   = {}
+      cHeader = {}
+
+      fields = {'libpart'}
+      fields.update(c.getFieldNames())
+      lib = libByNames.get( c.getLibName() )
+      if lib is not None:
+        fields.update( lib.getFieldNames() )
+
+      for f in fields:
+        m = self.HEADER_NAMES.match(f)
+        if m.lastgroup:
+          cData  [m.lastgroup] = c.getField( f )
+          cHeader[m.lastgroup] = ( -1, f, True)
+        else:
+          cData  [f] = c.getField( f )
+          cHeader[f] = ( -1, f, False)
+      cData[bom.REFERENCE] = ref
+
+      excluded = False
+      for k, regex in exclude_filters.iteritems():
+        value = cData.get(k)
+        if value is not None:
+          if regex.match(value):
+            excluded = True
+            break
+
+      if not excluded:
+        self.refs[ref] = cData
+        self.header.update(cHeader)
+
+
+class sch_bom(bom.bom):
+  HEADER_NAMES = re.compile(')$|'.join(bom.bom.BOM_HEADER_ID_REGEXS + [''])
+      , flags=re.I)
+
+  def __init__(self, filename):
+    bom.bom.__init__(self)
+    self.meta[bom.SCHFILE] = self.meta[bom.SRCFILE] = [filename]
+
+  def read(self, exclude_filters):
+    if exclude_filters is None:
+      exclude_filters = {}
+
+    filename = self.getSrcFileName()
+
+    with eeschematic.schCompIter(filename) as sch:
+      for e, effRefs in sch:
+        cData = {}
+        cHeader = {}
+
+        symbol = str(e.info.get(eeschematic.COMP_LIB))
+        if symbol: 
+          cData[bom.SYMBOL] = symbol
+
+        for fields in e.info[eeschematic.COMP_FIELDS].itervalues():
+          _fname = str(fields[eeschematic.FIELD_NAME ])
+          _fval  = str(fields[eeschematic.FIELD_VALUE])
+
+          m = self.HEADER_NAMES.match(_fname)
+          if m.lastgroup:
+            cData  [m.lastgroup] = _fval
+            cHeader[m.lastgroup] = ( -1, _fname, True )
+          else:
+            cData  [_fname] = _fval
+            cHeader[_fname] = ( -1, _fname, True )
+
+        for ref in effRefs:
+          data = cData.copy()
+          data[bom.REFERENCE] = ref
+          excluded = False
+          for k, regex in exclude_filters.iteritems():
+            value = data.get(k)
+            if value is not None:
+              if regex.match(value):
+                excluded = True
+                break
+
+          if not excluded:
+            self.refs[ref] = data
+            self.header.update(cHeader)
 
 #
 # Test section for pytest style
@@ -222,6 +403,25 @@ def tests():
   actual = os.system(' '.join(('diff -s --strip-trailing-cr'
   , 'test_files/sch1/sch1.csv' 
   , 'test_files/sch1/test_bom2csv.csv'
+  ,)))
+  assert actual==0, "diff[%d] - generated test_bom2csv.csv not match" % actual
+
+  log.info("Test sch1 for convert direct sch to csv")
+  main_cli(['--noopen'
+    , 'test_files/sch1/sch1.sch'
+    , 'test_files/sch1/test2_bom2csv.csv'
+  ])
+
+  os.system(' '.join(('sed -e "s/sch1-cache://g"'
+  , 'test_files/sch1/sch1.csv'
+  , '|' , 'sed -e "/^Date:/d"'
+  , '|' , 'sed -e "/^Tool:/d"'
+  , '>' , 'test_files/sch1/exp2_sch1.csv'
+  )))
+
+  actual = os.system(' '.join(('diff -s --strip-trailing-cr'
+  , 'test_files/sch1/exp2_sch1.csv' 
+  , 'test_files/sch1/test2_bom2csv.csv'
   ,)))
   assert actual==0, "diff[%d] - generated test_bom2csv.csv not match" % actual
 

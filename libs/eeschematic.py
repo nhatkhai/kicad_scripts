@@ -531,13 +531,29 @@ class ARTree:
 
 
 class schCompIter:
-  def __init__(self, sch_filename, getSchIter):
+  """ Iterate through all the symbol in schematic
+
+  Each iteration elements will be a tuple of (SYM_DATA, SET_OF_REFS).
+    * SET_OF_REFS is a set of reference string in the schematic.
+    * SYM_DATA is a schIter object which contain a info dictionary about
+    the symbol. 
+  """
+
+  def __init__(self, sch_filename, getSchIter = None):
+    """
+    @param sch_filename: (str) the root schematic file
+    @param getSchIter: (lambda) is a function that take a sch filename and
+    return a iterator object of the schematic such as schIter
+    """
     self.filename = sch_filename
     self._sheetARs = {}
 
     self._sheetARsIter = {}
     self._usedIters    = []
     self._getSchIter   = getSchIter
+    
+    if getSchIter is None:
+      self._getSchIter = lambda f: iter(schIter(f));
 
   def getSubSheets(self):
     """ Collect a set of schematic file with AR_ID and sub schematic file 
