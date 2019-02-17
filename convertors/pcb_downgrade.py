@@ -19,7 +19,7 @@ def main_cli(argv=None):
   p = p.parse_args(argv)
 
   # 5.x use offset in mm
-  # 4.x use at in inch (4 decimal for nm precision)
+  # 4.x use at in inch (5 decimal for nm precision)
   offset = re.compile(
       "\( *offset +\( *xyz +" 
                     "([-+]?\d+\.?\d*) +"
