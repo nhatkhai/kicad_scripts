@@ -15,4 +15,6 @@ A set of scripts can be use to work with KiCad
   and Cmts.User zones as marker for clone area.
 
 * convertors/modToPretty.py: Convert old mod file into pretty file.
+* convertors/pcb_downgrade.py: Down grade .kicad_pcb or .kicad_mod file
+  save by 5.x so that it can be open on 4.x or 5.x
 
