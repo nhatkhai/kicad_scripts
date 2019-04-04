@@ -153,7 +153,7 @@ def convertModToPretty(mod_file, pretty_dir):
             
             #Process all T* X Y H W A Pen Mirror Visible Layer Italic "Text"
             for txt in cur.setdefault('T',[]):
-                lbl = txt[11][1:-1]
+                lbl = txt[1][1:-1]
                 if   txt[0]=='T0':  
                     type = 'reference'
                     if not lbl: lbl = 'Ref**'
